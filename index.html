@@ -3,38 +3,59 @@
 <style>
 /* Layout: one full-width filter bar over a single dense registrar-style table; burnt-orange UT accent on warm paper */
 :root{
-  --bg:#FAF7F2; --surface:#FFFFFF; --fg:#241F19; --muted:#6E6557; --line:#E5DED2;
-  --accent:#BF5700; --accent-ink:#FFFFFF; --accent-soft:rgba(191,87,0,.09); --danger:#A8322C; --head:#F3EEE5;
+  --wood:#413327; --wood2:#2E2317; --parch:#F8F1DE; --parch-hi:#FBF7EA; --parch-lo:#F0E5C8;
+  --bg:#F8F1DE; --surface:#FFFEF9; --fg:#2A2117; --muted:#7A6647; --ink:#5A4226;
+  --line:#E2D5B4; --hairline:#EFE7D2;
+  --accent:#A8352C; --accent-ink:#F7EBD4; --accent-soft:rgba(168,53,44,.08); --danger:#8C2B23; --head:#F7F0DD;
+  --roller:linear-gradient(180deg,#7A4E27,#4A2D14 55%,#6B4423);
   --font-body:"Libre Franklin",-apple-system,"Segoe UI",Helvetica,Arial,sans-serif;
+  --font-display:"Cinzel",serif;
+  --font-fell:"IM Fell English",Georgia,serif;
+  --font-black:"UnifrakturMaguntia","Cinzel",serif;
   --font-mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
 }
 @media (prefers-color-scheme: dark){
   :root:not([data-theme="light"]){
-    --bg:#1B1813; --surface:#242019; --fg:#EDE6DA; --muted:#A19784; --line:#3B352B;
-    --accent:#EC8137; --accent-ink:#241505; --accent-soft:rgba(236,129,55,.14); --danger:#E0695F; --head:#2B2620;
+    --wood:#1C1510; --wood2:#120D08; --parch:#332919; --parch-hi:#3B2F1D; --parch-lo:#28200F;
+    --bg:#332919; --surface:#272013; --fg:#EDE3CC; --muted:#B5A181; --ink:#D9C49A;
+    --line:#55452A; --hairline:#453823;
+    --accent:#DE7A62; --accent-ink:#2A160F; --accent-soft:rgba(222,122,98,.14); --danger:#E0695F; --head:#3A2F1C;
     color-scheme:dark;
   }
 }
 :root[data-theme="dark"]{
-  --bg:#1B1813; --surface:#242019; --fg:#EDE6DA; --muted:#A19784; --line:#3B352B;
-  --accent:#EC8137; --accent-ink:#241505; --accent-soft:rgba(236,129,55,.14); --danger:#E0695F; --head:#2B2620;
+  --wood:#1C1510; --wood2:#120D08; --parch:#332919; --parch-hi:#3B2F1D; --parch-lo:#28200F;
+    --bg:#332919; --surface:#272013; --fg:#EDE3CC; --muted:#B5A181; --ink:#D9C49A;
+    --line:#55452A; --hairline:#453823;
+  --accent:#DE7A62; --accent-ink:#2A160F; --accent-soft:rgba(222,122,98,.14); --danger:#E0695F; --head:#3A2F1C;
   color-scheme:dark;
 }
 body{
-  background:var(--bg); color:var(--fg); font-family:var(--font-body);
+  background:linear-gradient(180deg,var(--wood),var(--wood2)) fixed; color:var(--fg); font-family:var(--font-body);
   font-size:14px; line-height:1.45;
   padding-left:max(16px,env(safe-area-inset-left,0px));
   padding-right:max(16px,env(safe-area-inset-right,0px));
   padding-block:20px 48px;
 }
-header h1{font-size:22px; font-weight:800; letter-spacing:-.01em; margin:0; text-wrap:balance}
-header p{margin:4px 0 0; color:var(--muted); max-width:65ch}
-.tabs{display:flex; gap:6px; margin-top:16px}
-.tabs button{all:unset; cursor:pointer; font-weight:700; font-size:13px; padding:6px 14px; border:1px solid var(--line); border-radius:999px; color:var(--muted); background:var(--surface); font-variant-numeric:tabular-nums}
+.roller{height:38px; border-radius:19px; background:var(--roller); max-width:1248px; margin:0 auto; position:relative; box-shadow:0 3px 8px rgba(0,0,0,.45)}
+.roller::before,.roller::after{content:""; position:absolute; top:6px; width:26px; height:26px; border-radius:50%; background:radial-gradient(circle at 35% 35%,#8C5A2E,#3A2210)}
+.roller::before{left:10px}
+.roller::after{right:10px}
+.sheet{max-width:1200px; margin:0 auto; background:radial-gradient(ellipse at 20% 10%,var(--parch-hi),var(--parch) 55%,var(--parch-lo)); box-shadow:0 10px 26px rgba(0,0,0,.45), inset 0 0 70px rgba(122,78,39,.16); padding:34px 34px 26px}
+@keyframes unroll{from{clip-path:inset(0 0 100% 0)}to{clip-path:inset(0 0 -40px 0)}}
+.sheet{animation:unroll 1.4s cubic-bezier(.22,.61,.36,1) .2s both}
+@media (prefers-reduced-motion: reduce){.sheet{animation:none}}
+.subtitle{font-family:var(--font-display); font-size:13px; letter-spacing:.2em; text-align:center; color:var(--ink); margin:6px 0 0}
+.fleuron{text-align:center; color:var(--muted); letter-spacing:.4em; font-size:16px; margin-top:8px}
+header{text-align:center}
+header h1{font-family:var(--font-black); font-size:42px; font-weight:400; letter-spacing:.01em; margin:0; text-wrap:balance}
+header p{margin:10px auto 0; color:var(--muted); max-width:72ch; font-family:var(--font-fell); font-style:italic; font-size:15px}
+.tabs{display:flex; gap:10px; margin-top:18px; align-items:center}
+.tabs button{all:unset; cursor:pointer; font-family:var(--font-display); font-weight:700; font-size:13px; letter-spacing:.06em; padding:8px 20px; border:1.5px solid var(--ink); color:var(--ink); background:transparent; font-variant-numeric:tabular-nums}
 .tabs button:hover{color:var(--accent); border-color:var(--accent)}
 .tabs button:focus-visible{outline:2px solid var(--accent); outline-offset:1px}
-.tabs button[aria-selected="true"]{background:var(--accent); border-color:var(--accent); color:var(--accent-ink)}
-th.plan{font-weight:700; font-size:11.5px; text-transform:uppercase; letter-spacing:.06em; color:var(--muted)}
+.tabs button[aria-selected="true"]{background:#6E1F1A; border-color:#6E1F1A; color:#F2E3BF; clip-path:polygon(0 0,100% 0,94% 50%,100% 100%,0 100%); padding-right:28px}
+th.plan{font-family:var(--font-display); font-weight:700; font-size:11.5px; text-transform:uppercase; letter-spacing:.08em; color:var(--ink)}
 td.plan,th.plan{text-align:center}
 td.plan input{width:16px; height:16px; accent-color:var(--accent); cursor:pointer}
 td.pts input{width:64px; font:inherit; font-size:12.5px; font-variant-numeric:tabular-nums; color:var(--fg); background:var(--surface); border:1px solid var(--line); border-radius:6px; padding:4px 6px; text-align:right}
@@ -43,8 +64,8 @@ a.rmp{display:inline-block; font-size:11.5px; font-weight:700; font-variant-nume
 a.rmp:hover{text-decoration:underline}
 a.rmp .n{font-weight:400; color:var(--muted)}
 td.rmpc{white-space:nowrap}
-.budget{margin-left:auto; font-size:12.5px; font-weight:700; font-variant-numeric:tabular-nums; color:var(--muted); border:1px solid var(--line); border-radius:999px; padding:6px 14px; background:var(--surface); white-space:nowrap}
-.budget.over{color:var(--danger); border-color:var(--danger)}
+.budget{margin-left:auto; width:92px; height:92px; box-sizing:border-box; border-radius:50%; display:flex; align-items:center; justify-content:center; text-align:center; padding:10px; font-family:var(--font-display); font-size:12.5px; font-weight:700; font-variant-numeric:tabular-nums; line-height:1.25; color:#F2D9B0; background:radial-gradient(circle at 35% 30%,#A8352C,#7A1E18 60%,#5E130F); box-shadow:0 3px 8px rgba(0,0,0,.4), inset 0 0 0 6px rgba(255,235,200,.14); transform:rotate(-6deg); white-space:normal}
+.budget.over{color:#FFD9A0; box-shadow:0 3px 8px rgba(0,0,0,.4), inset 0 0 0 6px rgba(255,120,100,.55)}
 .toolbar{display:flex; flex-wrap:wrap; gap:8px; align-items:center; margin:12px 0 10px}
 .toolbar input[type=search],.toolbar select{
   font:inherit; color:var(--fg); background:var(--surface); border:1px solid var(--line);
@@ -54,15 +75,15 @@ td.rmpc{white-space:nowrap}
 .toolbar select{flex:0 1 auto}
 .toolbar label.toggle{display:flex; gap:6px; align-items:center; color:var(--muted); cursor:pointer; white-space:nowrap}
 .toolbar input[type=search]:focus-visible,.toolbar select:focus-visible,th button:focus-visible{outline:2px solid var(--accent); outline-offset:1px}
-#count{color:var(--muted); font-size:12.5px; margin:0 0 8px; font-variant-numeric:tabular-nums}
-.tablewrap{overflow-x:auto; border:1px solid var(--line); border-radius:8px; background:var(--surface)}
+#count{color:var(--muted); font-size:13px; margin:0 0 8px; font-variant-numeric:tabular-nums; font-family:var(--font-fell); font-style:italic}
+.tablewrap{overflow-x:auto; border:1px solid var(--line); border-radius:6px; background:var(--surface); box-shadow:0 2px 10px rgba(59,42,23,.12)}
 table{border-collapse:collapse; width:100%; min-width:1100px}
-th,td{text-align:left; padding:8px 10px; border-bottom:1px solid var(--line); vertical-align:top}
+th,td{text-align:left; padding:8px 10px; border-bottom:1px solid var(--hairline); vertical-align:top}
 tbody tr:last-child td{border-bottom:none}
-thead th{position:sticky; top:env(safe-area-inset-top,0px); background:var(--head); z-index:2; border-bottom:1px solid var(--line)}
+thead th{position:sticky; top:env(safe-area-inset-top,0px); background:var(--head); z-index:2; border-bottom:2px solid var(--line)}
 th button{
-  all:unset; cursor:pointer; font-weight:700; font-size:11.5px; text-transform:uppercase;
-  letter-spacing:.06em; color:var(--muted); display:inline-flex; gap:4px; align-items:center;
+  all:unset; cursor:pointer; font-family:var(--font-display); font-weight:700; font-size:11.5px; text-transform:uppercase;
+  letter-spacing:.08em; color:var(--ink); display:inline-flex; gap:4px; align-items:center;
 }
 th button:hover,th button[data-dir]{color:var(--accent)}
 th button[data-dir]::after{content:"↑"; font-size:10px}
@@ -82,15 +103,19 @@ td.notes{color:var(--muted); font-size:12.5px; max-width:34ch}
 .chip.req{border-color:currentColor}
 tr.dim td{opacity:.55}
 tr.cancel td .t{text-decoration:line-through}
-tr.group td{background:var(--head); color:var(--muted); font-weight:700; font-size:11px; text-transform:uppercase; letter-spacing:.07em; padding:6px 10px}
+tr.group td{background:var(--head); color:var(--ink); font-family:var(--font-display); font-weight:700; font-size:11px; text-transform:uppercase; letter-spacing:.1em; padding:7px 10px; text-align:center}
 td.num .more{color:var(--accent); font-weight:700}
 @media (max-width:640px){ header h1{font-size:19px} }
 </style>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@400;600;700;800&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=IM+Fell+English:ital@0;1&family=Libre+Franklin:wght@400;600;700;800&family=UnifrakturMaguntia&display=swap">
 
+<div class="roller" aria-hidden="true"></div>
+<div class="sheet">
 <header>
-  <h1>McCombs Spring 2027 Courses</h1>
+  <h1>The Codex of Courses</h1>
+  <div class="subtitle">McCOMBS SCHOOL · SPRING TERM · MMXXVII</div>
   <p>121 Spring 2027 sections plus recent years' abroad programs. Click a column header to sort, use the filters to narrow it down, and tick Plan to build your spring list and spread your 1,000 bid points across it. Bid history: '25 Seats is Spring 2025 average seats awarded per course; Rd 1 / Rd 2 avg is the market-clearing bid averaged across Spring 2024 and Spring 2025 (0 = seats still open at close, n/a = no data).</p>
+  <div class="fleuron" aria-hidden="true">———&nbsp;❦&nbsp;———</div>
 </header>
 
 <div class="tabs" role="tablist" aria-label="View">
@@ -138,6 +163,8 @@ td.num .more{color:var(--accent); font-weight:700}
   <tbody id="tb"></tbody>
 </table>
 </div>
+</div>
+<div class="roller" aria-hidden="true"></div>
 
 <script>
 // u, dept, code, title, prof, days, time, start(min, 9999=TBA), room, sess(""|S1|S2|short), tags[], note
@@ -531,7 +558,7 @@ function render(){
       for(const cat of ['Required core','Custom core','Electives','Abroad']){
         const grp=rows.filter(r=>catOf(r)===cat);
         if(!grp.length)continue;
-        html+=`<tr class="group"><td colspan="14">${cat} (${grp.length})</td></tr>`+grp.map(rowHTML).join('');
+        html+=`<tr class="group"><td colspan="14">❦&nbsp; ${cat} (${grp.length}) &nbsp;❦</td></tr>`+grp.map(rowHTML).join('');
       }
       tb.innerHTML=html;
     }

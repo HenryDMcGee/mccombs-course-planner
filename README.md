@@ -24,3 +24,13 @@ Interactive planning dashboard for the McCombs Full-Time MBA Spring 2027 course 
 - 2027 sections transcribed from the MBA course schedule
 - Bid stats come from the 20242 (Spring 2024) and 20252 (Spring 2025) stats sheets, averaged per course across sections within each year, then across years; a year with n/a is left out of that round's average
 - Fuzzy matches worth knowing about: Envir/Social/Gov Investing → Sustainable Finance, BGS 381M → BGS 381N, STEP Mexico → Global Connections: Mexico, Behaviorl Science For Business ('24, Bryan) → Psych of Pers/Influence
+
+## Releases
+
+Releases are named after fruit, alphabetically.
+
+| Release | Name | Status | Highlights |
+|---|---|---|---|
+| Phase 1 | **Apples** | In review ([PR #2](https://github.com/HenryDMcGee/mccombs-course-planner/pull/2)) | Medieval parchment theme: scroll rollers and unrolling parchment on load, blackletter title, ribbon tabs, wax-seal bid budget, readability-first table, night-scriptorium dark mode. Spec: [docs/specs/phase-1-parchment-theme.md](docs/specs/phase-1-parchment-theme.md) |
+
+Pre-release foundation (unnamed): section table with sorting and filters, plan checkboxes with shared cross-device store, 1,000-point bid budget, category grouping, 2024–25 bid-history averages, RateMyProfessors ratings column.

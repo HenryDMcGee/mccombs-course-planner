@@ -133,9 +133,16 @@ td.num .more{color:var(--accent); font-weight:700}
   </select>
   <select id="sess" aria-label="Session">
     <option value="">Any session</option>
-    <option value="S1">Spring 1</option>
-    <option value="S2">Spring 2</option>
-    <option value="full">Full semester</option>
+    <option value="S1">Meets in Spring 1</option>
+    <option value="S2">Meets in Spring 2</option>
+    <option value="full">Full semester only</option>
+  </select>
+  <select id="cat" aria-label="Category">
+    <option value="">Any category</option>
+    <option>Required core</option>
+    <option>Custom core</option>
+    <option>Electives</option>
+    <option>Abroad</option>
   </select>
   <label class="toggle"><input type="checkbox" id="hide"> Hide restricted &amp; canceled</label>
   <label class="toggle"><input type="checkbox" id="dedupe"> One row per course</label>
@@ -279,8 +286,8 @@ const C=[
 {u:"07475",d:"MKT",c:"MKT 382.49",t:"Sales Mgmt And Strategy",p:"Chung, D",dy:"MW",tm:"11:00a–12:30p",s:660,r:"RRH 3.310",se:"",tg:[],n:""},
 {u:"07480",d:"MKT",c:"MKT 382.58",t:"Product Management",p:"Ditson, M",dy:"MW",tm:"12:30–2:00p",s:750,r:"RRH 3.304",se:"",tg:[],n:""},
 {u:"07490",d:"MKT",c:"MKT 188",t:"AI In Marketing",p:"Meley, C",dy:"W",tm:"5:00–8:00p",s:1020,r:"RRH 3.402",se:"short",tg:[],n:"1-credit. Feb 3–Mar 3."},
-{u:"07494",d:"MKT",c:"MKT 188",t:"AI Ethics In Media And Mktg",p:"Pearson, R",dy:"M",tm:"5:00–8:00p",s:1020,r:"RRH 3.402",se:"short",tg:[],n:"1-credit. Mar 29–Apr 26."},
-{u:"07500",d:"MKT",c:"MKT 188.4",t:"SQL For Busn And Mktg",p:"Stephens, J",dy:"M",tm:"5:00–8:00p",s:1020,r:"RRH 3.402",se:"short",tg:[],n:"1-credit. Jan 11–Feb 15."},
+{u:"07494",d:"MKT",c:"MKT 188",t:"AI Ethics In Media And Mktg",p:"Pearson, R",dy:"M",tm:"5:00–8:00p",s:1020,r:"RRH 3.402",se:"S2",tg:[],n:"1-credit. Mar 29–Apr 26."},
+{u:"07500",d:"MKT",c:"MKT 188.4",t:"SQL For Busn And Mktg",p:"Stephens, J",dy:"M",tm:"5:00–8:00p",s:1020,r:"RRH 3.402",se:"S1",tg:[],n:"1-credit. Jan 11–Feb 15."},
 {u:"07505",d:"MKT",c:"MKT 391S",t:"Independent Study",p:"—",dy:"—",tm:"—",s:9999,r:"—",se:"",tg:["Restricted"],n:"Contact an academic advisor."},
 {u:"05860",d:"O M",c:"O M 386.10",t:"Sustainable Operations",p:"Gilbert, S",dy:"MW",tm:"3:30–5:00p",s:930,r:"RRH 3.402",se:"",tg:[],n:""},
 {u:"05865",d:"O M",c:"O M 386.11",t:"Operations Bootcamp",p:"Stamatopoulos, I",dy:"M",tm:"5:00–8:00p",s:1020,r:"RRH 3.414",se:"",tg:["Restricted"],n:"1st-year Operations Fellows only."},
@@ -399,6 +406,7 @@ const tb=document.getElementById('tb'), q=document.getElementById('q'),
   dept=document.getElementById('dept'), daysSel=document.getElementById('days'),
   sess=document.getElementById('sess'), hide=document.getElementById('hide'),
   count=document.getElementById('count'), dedupe=document.getElementById('dedupe'), budget=document.getElementById('budget'),
+  catSel=document.getElementById('cat'),
   tabAll=document.getElementById('tab-all'), tabPlan=document.getElementById('tab-plan');
 
 // Planned list: shared db when available, localStorage as a local fallback.
@@ -497,7 +505,9 @@ function render(){
     if(dept.value&&x.d!==dept.value)return false;
     if(daysSel.value&&x.dy!==daysSel.value)return false;
     if(sess.value==='full'&&x.se!=='')return false;
-    if((sess.value==='S1'||sess.value==='S2')&&x.se!==sess.value)return false;
+    if(sess.value==='S1'&&!(x.se===''||x.se==='S1'||x.se==='short'))return false;
+    if(sess.value==='S2'&&!(x.se===''||x.se==='S2'||x.se==='short'))return false;
+    if(catSel.value&&catOf(x)!==catSel.value)return false;
     if(hide.checked&&(x.tg.includes('Restricted')||x.tg.includes('Canceled')))return false;
     if(term){
       const hay=(x.u+' '+x.c+' '+x.t+' '+x.p+' '+x.n+' '+x.tg.join(' ')).toLowerCase();
@@ -555,10 +565,11 @@ function render(){
       tb.innerHTML='<tr><td colspan="14" style="text-align:center;color:var(--muted);padding:28px 12px">Nothing planned yet. Switch to All sections and tick the Plan box next to a course.</td></tr>';
     }else{
       let html='';
-      for(const cat of ['Required core','Custom core','Electives','Abroad']){
-        const grp=rows.filter(r=>catOf(r)===cat);
-        if(!grp.length)continue;
-        html+=`<tr class="group"><td colspan="14">❦&nbsp; ${cat} (${grp.length}) &nbsp;❦</td></tr>`+grp.map(rowHTML).join('');
+      for(const cg of ['Required core','Custom core','Electives','Abroad']){
+        if(catSel.value&&cg!==catSel.value)continue;
+        const grp=rows.filter(r=>catOf(r)===cg);
+        html+=`<tr class="group"><td colspan="14">❦&nbsp; ${cg} (${grp.length}) &nbsp;❦</td></tr>`;
+        html+=grp.length?grp.map(rowHTML).join(''):'<tr><td colspan="14" style="text-align:center; color:var(--muted); font-family:var(--font-fell); font-style:italic; padding:14px 10px">nothing planned in this category yet</td></tr>';
       }
       tb.innerHTML=html;
     }
@@ -591,7 +602,7 @@ document.querySelectorAll('th button').forEach(b=>{
     render();
   });
 });
-[q,dept,daysSel,sess,hide,dedupe].forEach(el=>el.addEventListener('input',render));
+[q,dept,daysSel,sess,catSel,hide,dedupe].forEach(el=>el.addEventListener('input',render));
 updateTabs();
 render();
 </script>

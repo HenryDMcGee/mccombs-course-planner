@@ -86,7 +86,7 @@ td.num .more{color:var(--accent); font-weight:700}
 
 <header>
   <h1>McCombs Spring 2027 Courses</h1>
-  <p>121 Spring 2027 sections plus last spring's abroad programs. Click a column header to sort, use the filters to narrow it down, and tick Plan to build your spring list and spread your 1,000 bid points across it. The '26 columns are last spring's course averages — seats awarded and the market-clearing bid in rounds 1 and 2 (0 = seats still open at close, n/a = round not run).</p>
+  <p>121 Spring 2027 sections plus recent years' abroad programs. Click a column header to sort, use the filters to narrow it down, and tick Plan to build your spring list and spread your 1,000 bid points across it. Bid history: '25 Seats is Spring 2025 average seats awarded per course; Rd 1 / Rd 2 avg is the market-clearing bid averaged across Spring 2024 and Spring 2025 (0 = seats still open at close, n/a = no data).</p>
 </header>
 
 <div class="tabs" role="tablist" aria-label="View">
@@ -125,9 +125,9 @@ td.num .more{color:var(--accent); font-weight:700}
     <th><button data-k="days">Days</button></th>
     <th><button data-k="start">Time</button></th>
     <th><button data-k="room">Room</button></th>
-    <th><button data-k="seats">'26 Seats</button></th>
-    <th><button data-k="r1">'26 Rd 1</button></th>
-    <th><button data-k="r2">'26 Rd 2</button></th>
+    <th><button data-k="seats">'25 Seats</button></th>
+    <th><button data-k="r1">Rd 1 avg</button></th>
+    <th><button data-k="r2">Rd 2 avg</button></th>
     <th>Notes</th>
   </tr></thead>
   <tbody id="tb"></tbody>
@@ -258,32 +258,38 @@ const C=[
 {u:"06120",d:"STA",c:"STA 287",t:"Busn Analytics / Decis Modlng",p:"Muthuraman, K",dy:"MW",tm:"10:30a–12:30p",s:630,r:"RRH 5.408",se:"S2",tg:["Custom core"],n:"Mar 1–Apr 26. Exam week of Apr 27–30."},
 {u:"06125",d:"STA",c:"STA 287",t:"Busn Analytics / Decis Modlng",p:"Muthuraman, K",dy:"MW",tm:"1:00–3:00p",s:780,r:"RRH 2.238",se:"S2",tg:["Custom core"],n:"Mar 1–Apr 26. Exam week of Apr 27–30."},
 {u:"06130",d:"STA",c:"STA 287",t:"Busn Analytics / Decis Modlng",p:"Muthuraman, K",dy:"MW",tm:"8:30–10:30a",s:510,r:"RRH 5.408",se:"S2",tg:["Custom core"],n:"Mar 1–Apr 26. Exam week of Apr 27–30."},
-{u:"AB101",d:"I B",c:"I B 385E",t:"Global Connections: Spain",p:"Beach, F ('26)",dy:"—",tm:"—",s:9999,r:"—",se:"",tg:["Abroad"],n:"Spring 2026 program (W 3:00–6:00p). Not on the Spring 2027 schedule — bid history only."},
-{u:"AB102",d:"I B",c:"I B 385E",t:"Global Connections: Argentina & Chile",p:"Mihm, J ('26)",dy:"—",tm:"—",s:9999,r:"—",se:"",tg:["Abroad"],n:"Spring 2026 program (T 3:30–6:30p). Not on the Spring 2027 schedule — bid history only."},
-{u:"AB103",d:"I B",c:"I B 385E",t:"Global Connections: Bali",p:"Peterson, M ('26)",dy:"—",tm:"—",s:9999,r:"—",se:"",tg:["Abroad"],n:"Spring 2026 program (M 3:30–6:30p). Not on the Spring 2027 schedule — bid history only."},
-{u:"AB104",d:"STEP",c:"STEP",t:"STEP: Copenhagen",p:"—",dy:"—",tm:"—",s:9999,r:"—",se:"",tg:["Abroad"],n:"Average of two 2026 programs: Social Entrepreneurship (March, 5 seats) and ESG (May, 23 seats). Not on the Spring 2027 schedule."},
-{u:"AB105",d:"STEP",c:"STEP",t:"STEP: Sweden — Innovation",p:"—",dy:"—",tm:"—",s:9999,r:"—",se:"",tg:["Abroad"],n:"Spring 2026 May program. Not on the Spring 2027 schedule — bid history only."},
-{u:"AB106",d:"STEP",c:"STEP",t:"STEP: Vienna Innovation Program",p:"—",dy:"—",tm:"—",s:9999,r:"—",se:"",tg:["Abroad"],n:"Spring 2026 May program (Austria). Not on the Spring 2027 schedule — bid history only."},
-{u:"AB107",d:"STEP",c:"STEP",t:"STEP: Doing Business in Germany",p:"—",dy:"—",tm:"—",s:9999,r:"—",se:"",tg:["Abroad"],n:"Spring 2026 May program. Not on the Spring 2027 schedule — bid history only."}
+{u:"AB101",d:"I B",c:"I B 385E",t:"Global Connections: Spain",p:"Beach, F ('26)",dy:"—",tm:"—",s:9999,r:"—",se:"",tg:["Abroad"],n:"Spring 2025 program (W 3:00–6:00p). Not on the Spring 2027 schedule — bid history only."},
+{u:"AB102",d:"I B",c:"I B 385E",t:"Global Connections: Argentina & Chile",p:"Mihm, J ('26)",dy:"—",tm:"—",s:9999,r:"—",se:"",tg:["Abroad"],n:"Spring 2025 program (T 3:30–6:30p). Not on the Spring 2027 schedule — bid history only."},
+{u:"AB103",d:"I B",c:"I B 385E",t:"Global Connections: Bali",p:"Peterson, M ('26)",dy:"—",tm:"—",s:9999,r:"—",se:"",tg:["Abroad"],n:"Spring 2025 program (M 3:30–6:30p). Not on the Spring 2027 schedule — bid history only."},
+{u:"AB104",d:"STEP",c:"STEP",t:"STEP: Copenhagen",p:"—",dy:"—",tm:"—",s:9999,r:"—",se:"",tg:["Abroad"],n:"Copenhagen STEP programs averaged across 2024–25 (Sustainability, ESG Investment, ESG Custom, Social Entrepreneurship). Not on the Spring 2027 schedule."},
+{u:"AB105",d:"STEP",c:"STEP",t:"STEP: Sweden — Innovation",p:"—",dy:"—",tm:"—",s:9999,r:"—",se:"",tg:["Abroad"],n:"Spring 2025 May program. Not on the Spring 2027 schedule — bid history only."},
+{u:"AB106",d:"STEP",c:"STEP",t:"STEP: Vienna Innovation Program",p:"—",dy:"—",tm:"—",s:9999,r:"—",se:"",tg:["Abroad"],n:"Spring 2025 May program (Austria). Not on the Spring 2027 schedule — bid history only."},
+{u:"AB107",d:"STEP",c:"STEP",t:"STEP: Doing Business in Germany",p:"—",dy:"—",tm:"—",s:9999,r:"—",se:"",tg:["Abroad"],n:"Spring 2025 May program. Not on the Spring 2027 schedule — bid history only."},
+{u:"AB108",d:"I B",c:"I B 385E",t:"Global Connections: Ghana",p:"Peterson, M ('24)",dy:"—",tm:"—",s:9999,r:"—",se:"",tg:["Abroad"],n:"Spring 2024 program (M 3:30–6:30p). Not on the Spring 2027 schedule — bid history only."},
+{u:"AB109",d:"I B",c:"I B 385E",t:"Global Connections: Thailand",p:"Cobb, A ('24)",dy:"—",tm:"—",s:9999,r:"—",se:"",tg:["Abroad"],n:"Spring 2024 program (T 3:30–6:30p). Not on the Spring 2027 schedule — bid history only."}
 ];
 
-// Spring 2026 bid stats, averaged per course across its 2026 sections: [seats awarded, Rd 1 clear, Rd 2 clear].
-// null = n/a in every 2026 section (round not run). Keyed by one section's unique; spread to all sections of the course below.
+// Bid history per course: [Spring 2025 avg seats awarded, Rd 1 clear avg, Rd 2 clear avg].
+// Rd 1 / Rd 2 are averaged per course across its sections within each year (20242 = Spring 2024, 20252 = Spring 2025),
+// then across the two years; a year with n/a is left out of that round's average. null = no data at all for that slot.
+// Keyed by one section's unique; spread to all sections of the course below.
 const ST={
-"03245":[24,0.5,266.7],"03105":[2.7,0,998.3],"03135":[5,0,0],"03140":[3,0,0],"03040":[22.7,133.3,338],
-"02425":[40.3,0,33.3],"03485":[28,0,400],"03490":[2,750,null],"03500":[24,0,0],"03520":[15,0,0],"03525":[6,0,0],
-"04385":[21.5,0,0.5],"04495":[25,0,0],"04500":[9.5,0,0],"04510":[6,0,0],"04520":[16,0,0],"04530":[31,0,0],
+"03245":[24,0.25,133.3],"03105":[2.7,0,499.7],"03135":[5,0,0],"03140":[3,0,0],"03040":[22.7,171.7,169],
+"02425":[40.3,0.1,91.7],"03485":[28,0,200],"03490":[2,750,null],"03500":[24,0,0],"03520":[15,0,0],"03525":[6,0,0],
+"04385":[21.5,0,0.3],"04495":[25,0,0],"04500":[9.5,0,0],"04510":[6,0,0],"04520":[16,0,0],"04530":[31,0,0],
 "04535":[23,0,0],"04605":[26,0.5,0],"04625":[2,0,0],"04635":[11,0,0],
-"03685":[27,1100,null],"03690":[26,1100,null],"03695":[5,0,700],"03705":[11,0,0],
-"03830":[7,0,0],"03835":[12,0,0],"03840":[6,0,0],
-"06460":[38.5,225,null],"06480":[24.3,0,0.3],"06555":[33.3,0.3,250],"06540":[19,0,0],
-"06675":[5,1,700],"06635":[22,0,0],"06640":[10,0,0],"06625":[30,700,null],"06630":[15,0,0],
-"06665":[39,0,0],"06655":[35,0,325],"06670":[11.5,0,0],"06615":[11,0,0],"06650":[4,0,0],
-"05465":[4,0,0],"05470":[13,0,0],"05440":[16.7,0,0],"05400":[30,0,44],
-"07420":[15,0,0],"07470":[35,0,400],"07480":[34,0,0],"07475":[40,100,null],"07445":[31,0,0],
-"07450":[28,0,0],"07425":[6,0,0],"05860":[18,0,0],"04770":[15,0,0],"04775":[11,0,0],
-"06120":[31,3.3,133.3],"06115":[17,0,0],
-"AB101":[28,0,749],"AB102":[29,1450,null],"AB103":[13,0,0],"AB104":[14,0,1000],"AB105":[5,1,null],"AB106":[5,750,null],"AB107":[5,900,null]
+"03685":[27,550,0],"03690":[26,1296.5,0],"03695":[5,0,350.5],"03705":[11,0,0],
+"03830":[7,0,0],"03835":[12,0,0],"03840":[6,25,0],
+"06460":[38.5,138.3,1000],"06480":[24.3,0,0.2],"06555":[33.3,0.2,125],"06540":[19,0,0],
+"06675":[5,0.5,350],"06635":[22,0,0],"06640":[10,50,0],"06625":[30,700,0],"06630":[15,0,0],
+"06665":[39,0,0],"06655":[35,0,162.5],"06670":[11.5,0,0],"06615":[11,0,0],"06650":[4,0,0],
+"05465":[4,0,0],"05470":[13,0,0],"05440":[16.7,0,5],"05400":[30,0,44],
+"07420":[15,0,0],"07470":[35,0,200],"07480":[34,0,0],"07475":[40,51,0],"07445":[31,0,0],
+"07450":[28,0,0],"07425":[6,0,0],"07435":[null,0,0],"07500":[null,0,0],
+"05860":[18,0,0],"04770":[15,0,0],"04775":[11,0,0],
+"06120":[31,1.8,225.2],"06115":[17,0,0],
+"AB101":[28,0,749],"AB102":[29,925,1500],"AB103":[13,0,0],"AB104":[14,400,1050],"AB105":[5,1,null],"AB106":[5,873,0],"AB107":[5,947.5,0],
+"AB108":[null,0,0],"AB109":[null,0,0]
 };
 const stKey={};
 C.forEach(x=>{if(ST[x.u])stKey[x.c+'|'+x.t]=ST[x.u]});

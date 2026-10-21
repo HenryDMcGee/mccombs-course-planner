@@ -31,6 +31,6 @@ Releases are named after fruit, alphabetically.
 
 | Release | Name | Status | Highlights |
 |---|---|---|---|
-| Phase 1 | **Apples** | In review ([PR #2](https://github.com/HenryDMcGee/mccombs-course-planner/pull/2)) | Medieval parchment theme: scroll rollers and unrolling parchment on load, blackletter title, ribbon tabs, wax-seal bid budget, readability-first table, night-scriptorium dark mode. Spec: [docs/specs/phase-1-parchment-theme.md](docs/specs/phase-1-parchment-theme.md) |
+| Phase 1 | **Apples** | In review ([PR #2](https://github.com/HenryDMcGee/mccombs-course-planner/pull/2)) | Medieval parchment theme: scroll rollers and unrolling parchment on load, blackletter title, ribbon tabs, wax-seal bid budget, readability-first table. Light-only rendering (dark mode removed in follow-up). Spec: [docs/specs/phase-1-parchment-theme.md](docs/specs/phase-1-parchment-theme.md) |
 
 Pre-release foundation (unnamed): section table with sorting and filters, plan checkboxes with shared cross-device store, 1,000-point bid budget, category grouping, 2024–25 bid-history averages, RateMyProfessors ratings column.

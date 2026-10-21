@@ -74,3 +74,11 @@ Dark mode is a "night scriptorium" variant of the same scheme, not an inversion;
 ## Rollout
 
 Single PR against `main` (stacked on PR #1). After merge, republish the live artifact from `index.html`.
+
+## Amendment — 2026-10-21: light-only
+
+Dark mode is removed by decision: the parchment theme is a single committed
+visual world and renders identically regardless of the viewer's OS or app
+theme. The dark column in the palette table above and the dark-mode
+acceptance criterion no longer apply; every color remains explicitly set
+from the light tokens.

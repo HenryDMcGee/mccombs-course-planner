@@ -14,22 +14,9 @@
   --font-black:"UnifrakturMaguntia","Cinzel",serif;
   --font-mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
 }
-@media (prefers-color-scheme: dark){
-  :root:not([data-theme="light"]){
-    --wood:#1C1510; --wood2:#120D08; --parch:#332919; --parch-hi:#3B2F1D; --parch-lo:#28200F;
-    --bg:#332919; --surface:#272013; --fg:#EDE3CC; --muted:#B5A181; --ink:#D9C49A;
-    --line:#55452A; --hairline:#453823;
-    --accent:#DE7A62; --accent-ink:#2A160F; --accent-soft:rgba(222,122,98,.14); --danger:#E0695F; --head:#3A2F1C;
-    color-scheme:dark;
-  }
-}
-:root[data-theme="dark"]{
-  --wood:#1C1510; --wood2:#120D08; --parch:#332919; --parch-hi:#3B2F1D; --parch-lo:#28200F;
-    --bg:#332919; --surface:#272013; --fg:#EDE3CC; --muted:#B5A181; --ink:#D9C49A;
-    --line:#55452A; --hairline:#453823;
-  --accent:#DE7A62; --accent-ink:#2A160F; --accent-soft:rgba(222,122,98,.14); --danger:#E0695F; --head:#3A2F1C;
-  color-scheme:dark;
-}
+/* Light-only by design: the parchment look is one committed visual world.
+   Every color is set explicitly from the tokens above, so the page renders
+   identically whatever the viewer's OS or app theme. */
 body{
   background:linear-gradient(180deg,var(--wood),var(--wood2)) fixed; color:var(--fg); font-family:var(--font-body);
   font-size:14px; line-height:1.45;

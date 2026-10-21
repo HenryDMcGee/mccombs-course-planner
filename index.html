@@ -133,9 +133,9 @@ td.num .more{color:var(--accent); font-weight:700}
   </select>
   <select id="sess" aria-label="Session">
     <option value="">Any session</option>
-    <option value="S1">Spring 1</option>
-    <option value="S2">Spring 2</option>
-    <option value="full">Full semester</option>
+    <option value="S1">Meets in Spring 1</option>
+    <option value="S2">Meets in Spring 2</option>
+    <option value="full">Full semester only</option>
   </select>
   <select id="cat" aria-label="Category">
     <option value="">Any category</option>
@@ -286,8 +286,8 @@ const C=[
 {u:"07475",d:"MKT",c:"MKT 382.49",t:"Sales Mgmt And Strategy",p:"Chung, D",dy:"MW",tm:"11:00a–12:30p",s:660,r:"RRH 3.310",se:"",tg:[],n:""},
 {u:"07480",d:"MKT",c:"MKT 382.58",t:"Product Management",p:"Ditson, M",dy:"MW",tm:"12:30–2:00p",s:750,r:"RRH 3.304",se:"",tg:[],n:""},
 {u:"07490",d:"MKT",c:"MKT 188",t:"AI In Marketing",p:"Meley, C",dy:"W",tm:"5:00–8:00p",s:1020,r:"RRH 3.402",se:"short",tg:[],n:"1-credit. Feb 3–Mar 3."},
-{u:"07494",d:"MKT",c:"MKT 188",t:"AI Ethics In Media And Mktg",p:"Pearson, R",dy:"M",tm:"5:00–8:00p",s:1020,r:"RRH 3.402",se:"short",tg:[],n:"1-credit. Mar 29–Apr 26."},
-{u:"07500",d:"MKT",c:"MKT 188.4",t:"SQL For Busn And Mktg",p:"Stephens, J",dy:"M",tm:"5:00–8:00p",s:1020,r:"RRH 3.402",se:"short",tg:[],n:"1-credit. Jan 11–Feb 15."},
+{u:"07494",d:"MKT",c:"MKT 188",t:"AI Ethics In Media And Mktg",p:"Pearson, R",dy:"M",tm:"5:00–8:00p",s:1020,r:"RRH 3.402",se:"S2",tg:[],n:"1-credit. Mar 29–Apr 26."},
+{u:"07500",d:"MKT",c:"MKT 188.4",t:"SQL For Busn And Mktg",p:"Stephens, J",dy:"M",tm:"5:00–8:00p",s:1020,r:"RRH 3.402",se:"S1",tg:[],n:"1-credit. Jan 11–Feb 15."},
 {u:"07505",d:"MKT",c:"MKT 391S",t:"Independent Study",p:"—",dy:"—",tm:"—",s:9999,r:"—",se:"",tg:["Restricted"],n:"Contact an academic advisor."},
 {u:"05860",d:"O M",c:"O M 386.10",t:"Sustainable Operations",p:"Gilbert, S",dy:"MW",tm:"3:30–5:00p",s:930,r:"RRH 3.402",se:"",tg:[],n:""},
 {u:"05865",d:"O M",c:"O M 386.11",t:"Operations Bootcamp",p:"Stamatopoulos, I",dy:"M",tm:"5:00–8:00p",s:1020,r:"RRH 3.414",se:"",tg:["Restricted"],n:"1st-year Operations Fellows only."},
@@ -505,7 +505,8 @@ function render(){
     if(dept.value&&x.d!==dept.value)return false;
     if(daysSel.value&&x.dy!==daysSel.value)return false;
     if(sess.value==='full'&&x.se!=='')return false;
-    if((sess.value==='S1'||sess.value==='S2')&&x.se!==sess.value)return false;
+    if(sess.value==='S1'&&!(x.se===''||x.se==='S1'||x.se==='short'))return false;
+    if(sess.value==='S2'&&!(x.se===''||x.se==='S2'||x.se==='short'))return false;
     if(catSel.value&&catOf(x)!==catSel.value)return false;
     if(hide.checked&&(x.tg.includes('Restricted')||x.tg.includes('Canceled')))return false;
     if(term){

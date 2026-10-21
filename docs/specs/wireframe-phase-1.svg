@@ -1,0 +1,90 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 980" font-family="monospace" font-size="11" fill="none">
+  <rect width="760" height="980" fill="#FAFAF8"/>
+  <text x="380" y="26" text-anchor="middle" fill="#555" font-size="13" font-weight="bold">Phase 1 — Parchment Theme, page structure (wireframe)</text>
+
+  <!-- top roller -->
+  <rect x="30" y="44" width="700" height="30" rx="15" fill="#E4E4E4" stroke="#999" stroke-width="2"/>
+  <circle cx="44" cy="59" r="9" fill="#D2D2D2" stroke="#999"/>
+  <circle cx="716" cy="59" r="9" fill="#D2D2D2" stroke="#999"/>
+  <text x="380" y="63" text-anchor="middle" fill="#777">TOP SCROLL ROLLER (carved wood, round finials)</text>
+
+  <!-- sheet -->
+  <rect x="50" y="86" width="660" height="820" fill="#F4F4F2" stroke="#888" stroke-width="2"/>
+  <text x="66" y="104" fill="#999" font-size="9">PARCHMENT SHEET — cream ground, aged inset edges · unrolls downward on page load (clip-path, 1.4s, reduced-motion off)</text>
+
+  <!-- title -->
+  <rect x="230" y="118" width="300" height="34" fill="#DDD"/>
+  <text x="380" y="139" text-anchor="middle" fill="#666">H1 — blackletter "The Codex of Courses"</text>
+  <rect x="270" y="158" width="220" height="14" fill="#EAEAEA"/>
+  <text x="380" y="169" text-anchor="middle" fill="#888" font-size="9">subtitle — Cinzel small caps, letterspaced</text>
+  <rect x="180" y="178" width="400" height="14" fill="#F0F0F0"/>
+  <text x="380" y="189" text-anchor="middle" fill="#999" font-size="9">intro paragraph — IM Fell italic, centered, then ornament ——— fleuron ———</text>
+
+  <!-- tabs + seal -->
+  <rect x="70" y="208" width="130" height="34" fill="#C9C9C9" stroke="#888"/>
+  <text x="135" y="229" text-anchor="middle" fill="#555" font-size="10">TAB All Sections (ribbon)</text>
+  <rect x="210" y="208" width="120" height="34" fill="none" stroke="#999"/>
+  <text x="270" y="229" text-anchor="middle" fill="#777" font-size="10">TAB Planned (n)</text>
+  <circle cx="650" cy="236" r="38" fill="#E0E0E0" stroke="#888" stroke-width="2"/>
+  <text x="650" y="232" text-anchor="middle" fill="#666" font-size="9">WAX SEAL</text>
+  <text x="650" y="244" text-anchor="middle" fill="#666" font-size="9">x / 1000 pts</text>
+
+  <!-- filters -->
+  <rect x="70" y="266" width="280" height="28" fill="none" stroke="#999"/>
+  <text x="80" y="284" fill="#999" font-size="9">search</text>
+  <rect x="358" y="266" width="70" height="28" fill="none" stroke="#999"/>
+  <text x="393" y="284" text-anchor="middle" fill="#999" font-size="9">dept ▾</text>
+  <rect x="436" y="266" width="70" height="28" fill="none" stroke="#999"/>
+  <text x="471" y="284" text-anchor="middle" fill="#999" font-size="9">days ▾</text>
+  <rect x="514" y="266" width="76" height="28" fill="none" stroke="#999"/>
+  <text x="552" y="284" text-anchor="middle" fill="#999" font-size="9">session ▾</text>
+  <rect x="598" y="266" width="96" height="28" fill="none" stroke="#AAA" stroke-dasharray="4 3"/>
+  <text x="646" y="284" text-anchor="middle" fill="#999" font-size="8">toggles ×2</text>
+  <text x="70" y="312" fill="#999" font-size="9">count line — "121 of 128 sections" (IM Fell italic, muted ink)</text>
+
+  <!-- table card -->
+  <rect x="70" y="322" width="624" height="528" fill="#FFFFFF" stroke="#777" stroke-width="2"/>
+  <text x="80" y="338" fill="#999" font-size="9">WHITE TABLE CARD — plain sans data text, warm cream chrome (blend layer)</text>
+
+  <!-- table header -->
+  <rect x="72" y="346" width="620" height="26" fill="#EDEDEA"/>
+  <text x="80" y="363" fill="#666" font-size="9">PLAN | PTS | UNIQUE | COURSE | TITLE+chips | PROFESSOR | RMP★ | DAYS·TIME | ROOM | '25 SEATS · RD1 · RD2 | NOTES  (Cinzel caps, sortable)</text>
+
+  <!-- rows -->
+  <g stroke="#CCC">
+    <line x1="72" y1="402" x2="692" y2="402"/>
+    <line x1="72" y1="432" x2="692" y2="432"/>
+    <line x1="72" y1="492" x2="692" y2="492"/>
+    <line x1="72" y1="522" x2="692" y2="522"/>
+    <line x1="72" y1="552" x2="692" y2="552"/>
+  </g>
+  <rect x="80" y="382" width="12" height="12" fill="none" stroke="#888"/>
+  <rect x="100" y="382" width="30" height="12" fill="none" stroke="#999"/>
+  <rect x="140" y="384" width="500" height="8" fill="#E8E8E8"/>
+  <rect x="80" y="412" width="12" height="12" fill="#CCC" stroke="#888"/>
+  <rect x="100" y="412" width="30" height="12" fill="none" stroke="#999"/>
+  <rect x="140" y="414" width="500" height="8" fill="#E8E8E8"/>
+
+  <rect x="72" y="440" width="620" height="22" fill="#E6E6E2"/>
+  <text x="382" y="455" text-anchor="middle" fill="#777" font-size="9">❦  CATEGORY BANNER (Planned tab) — Required core / Custom core / Electives / Abroad  ❦</text>
+
+  <rect x="80" y="470" width="12" height="12" fill="none" stroke="#888"/>
+  <rect x="140" y="472" width="500" height="8" fill="#E8E8E8"/>
+  <rect x="80" y="500" width="12" height="12" fill="none" stroke="#888"/>
+  <rect x="140" y="502" width="500" height="8" fill="#E8E8E8"/>
+  <rect x="140" y="532" width="500" height="8" fill="#F0F0F0"/>
+  <text x="80" y="541" fill="#AAA" font-size="9">☐</text>
+  <text x="80" y="575" fill="#999" font-size="9">row states: restricted = faded + strikethrough + dashed chip · canceled = struck · RMP chip = wax-red ★ x.x (n) linking to profile</text>
+
+  <text x="80" y="620" fill="#999" font-size="9">… 121 section rows + 7 abroad bid-history rows (unchanged behavior: sort, filter, dedupe,</text>
+  <text x="80" y="634" fill="#999" font-size="9">plan checkboxes, pts inputs, shared db persistence) …</text>
+
+  <rect x="72" y="820" width="620" height="28" fill="#F7F7F5"/>
+  <text x="382" y="838" text-anchor="middle" fill="#999" font-size="9">footer line — "here endeth the folio" (IM Fell italic, decorative only)</text>
+
+  <!-- bottom roller -->
+  <rect x="30" y="916" width="700" height="30" rx="15" fill="#E4E4E4" stroke="#999" stroke-width="2"/>
+  <circle cx="44" cy="931" r="9" fill="#D2D2D2" stroke="#999"/>
+  <circle cx="716" cy="931" r="9" fill="#D2D2D2" stroke="#999"/>
+  <text x="380" y="935" text-anchor="middle" fill="#777">BOTTOM SCROLL ROLLER</text>
+</svg>

@@ -137,6 +137,13 @@ td.num .more{color:var(--accent); font-weight:700}
     <option value="S2">Spring 2</option>
     <option value="full">Full semester</option>
   </select>
+  <select id="cat" aria-label="Category">
+    <option value="">Any category</option>
+    <option>Required core</option>
+    <option>Custom core</option>
+    <option>Electives</option>
+    <option>Abroad</option>
+  </select>
   <label class="toggle"><input type="checkbox" id="hide"> Hide restricted &amp; canceled</label>
   <label class="toggle"><input type="checkbox" id="dedupe"> One row per course</label>
 </div>
@@ -399,6 +406,7 @@ const tb=document.getElementById('tb'), q=document.getElementById('q'),
   dept=document.getElementById('dept'), daysSel=document.getElementById('days'),
   sess=document.getElementById('sess'), hide=document.getElementById('hide'),
   count=document.getElementById('count'), dedupe=document.getElementById('dedupe'), budget=document.getElementById('budget'),
+  catSel=document.getElementById('cat'),
   tabAll=document.getElementById('tab-all'), tabPlan=document.getElementById('tab-plan');
 
 // Planned list: shared db when available, localStorage as a local fallback.
@@ -498,6 +506,7 @@ function render(){
     if(daysSel.value&&x.dy!==daysSel.value)return false;
     if(sess.value==='full'&&x.se!=='')return false;
     if((sess.value==='S1'||sess.value==='S2')&&x.se!==sess.value)return false;
+    if(catSel.value&&catOf(x)!==catSel.value)return false;
     if(hide.checked&&(x.tg.includes('Restricted')||x.tg.includes('Canceled')))return false;
     if(term){
       const hay=(x.u+' '+x.c+' '+x.t+' '+x.p+' '+x.n+' '+x.tg.join(' ')).toLowerCase();
@@ -555,10 +564,11 @@ function render(){
       tb.innerHTML='<tr><td colspan="14" style="text-align:center;color:var(--muted);padding:28px 12px">Nothing planned yet. Switch to All sections and tick the Plan box next to a course.</td></tr>';
     }else{
       let html='';
-      for(const cat of ['Required core','Custom core','Electives','Abroad']){
-        const grp=rows.filter(r=>catOf(r)===cat);
-        if(!grp.length)continue;
-        html+=`<tr class="group"><td colspan="14">❦&nbsp; ${cat} (${grp.length}) &nbsp;❦</td></tr>`+grp.map(rowHTML).join('');
+      for(const cg of ['Required core','Custom core','Electives','Abroad']){
+        if(catSel.value&&cg!==catSel.value)continue;
+        const grp=rows.filter(r=>catOf(r)===cg);
+        html+=`<tr class="group"><td colspan="14">❦&nbsp; ${cg} (${grp.length}) &nbsp;❦</td></tr>`;
+        html+=grp.length?grp.map(rowHTML).join(''):'<tr><td colspan="14" style="text-align:center; color:var(--muted); font-family:var(--font-fell); font-style:italic; padding:14px 10px">nothing planned in this category yet</td></tr>';
       }
       tb.innerHTML=html;
     }
@@ -591,7 +601,7 @@ document.querySelectorAll('th button').forEach(b=>{
     render();
   });
 });
-[q,dept,daysSel,sess,hide,dedupe].forEach(el=>el.addEventListener('input',render));
+[q,dept,daysSel,sess,catSel,hide,dedupe].forEach(el=>el.addEventListener('input',render));
 updateTabs();
 render();
 </script>

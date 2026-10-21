@@ -13,6 +13,7 @@ Interactive planning dashboard for the McCombs Full-Time MBA Spring 2027 course 
 - "One row per course" toggle that collapses duplicate time slots
 - Bid history per course: Spring 2025 average seats awarded, plus round 1 / round 2 market-clearing bids averaged across Spring 2024 and Spring 2025
 - Abroad category with prior-year programs (STEP and Global Connections) kept for bid history
+- RateMyProfessors rating, review count, and profile link per instructor (UT Austin, looked up Oct 2026); dashed "no RMP" chip when no profile exists
 
 ## Structure
 

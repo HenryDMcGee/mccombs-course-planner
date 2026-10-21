@@ -39,6 +39,10 @@ td.plan,th.plan{text-align:center}
 td.plan input{width:16px; height:16px; accent-color:var(--accent); cursor:pointer}
 td.pts input{width:64px; font:inherit; font-size:12.5px; font-variant-numeric:tabular-nums; color:var(--fg); background:var(--surface); border:1px solid var(--line); border-radius:6px; padding:4px 6px; text-align:right}
 td.pts input:focus-visible{outline:2px solid var(--accent); outline-offset:1px}
+a.rmp{display:inline-block; font-size:11.5px; font-weight:700; font-variant-numeric:tabular-nums; color:var(--accent); text-decoration:none; border:1px solid var(--accent); border-radius:999px; padding:1px 8px; white-space:nowrap; background:var(--accent-soft)}
+a.rmp:hover{text-decoration:underline}
+a.rmp .n{font-weight:400; color:var(--muted)}
+td.rmpc{white-space:nowrap}
 .budget{margin-left:auto; font-size:12.5px; font-weight:700; font-variant-numeric:tabular-nums; color:var(--muted); border:1px solid var(--line); border-radius:999px; padding:6px 14px; background:var(--surface); white-space:nowrap}
 .budget.over{color:var(--danger); border-color:var(--danger)}
 .toolbar{display:flex; flex-wrap:wrap; gap:8px; align-items:center; margin:12px 0 10px}
@@ -122,6 +126,7 @@ td.num .more{color:var(--accent); font-weight:700}
     <th><button data-k="code">Course</button></th>
     <th><button data-k="title">Title</button></th>
     <th><button data-k="prof">Professor</button></th>
+    <th><button data-k="rmp">RMP</button></th>
     <th><button data-k="days">Days</button></th>
     <th><button data-k="start">Time</button></th>
     <th><button data-k="room">Room</button></th>
@@ -258,9 +263,9 @@ const C=[
 {u:"06120",d:"STA",c:"STA 287",t:"Busn Analytics / Decis Modlng",p:"Muthuraman, K",dy:"MW",tm:"10:30a–12:30p",s:630,r:"RRH 5.408",se:"S2",tg:["Custom core"],n:"Mar 1–Apr 26. Exam week of Apr 27–30."},
 {u:"06125",d:"STA",c:"STA 287",t:"Busn Analytics / Decis Modlng",p:"Muthuraman, K",dy:"MW",tm:"1:00–3:00p",s:780,r:"RRH 2.238",se:"S2",tg:["Custom core"],n:"Mar 1–Apr 26. Exam week of Apr 27–30."},
 {u:"06130",d:"STA",c:"STA 287",t:"Busn Analytics / Decis Modlng",p:"Muthuraman, K",dy:"MW",tm:"8:30–10:30a",s:510,r:"RRH 5.408",se:"S2",tg:["Custom core"],n:"Mar 1–Apr 26. Exam week of Apr 27–30."},
-{u:"AB101",d:"I B",c:"I B 385E",t:"Global Connections: Spain",p:"Beach, F ('26)",dy:"—",tm:"—",s:9999,r:"—",se:"",tg:["Abroad"],n:"Spring 2025 program (W 3:00–6:00p). Not on the Spring 2027 schedule — bid history only."},
-{u:"AB102",d:"I B",c:"I B 385E",t:"Global Connections: Argentina & Chile",p:"Mihm, J ('26)",dy:"—",tm:"—",s:9999,r:"—",se:"",tg:["Abroad"],n:"Spring 2025 program (T 3:30–6:30p). Not on the Spring 2027 schedule — bid history only."},
-{u:"AB103",d:"I B",c:"I B 385E",t:"Global Connections: Bali",p:"Peterson, M ('26)",dy:"—",tm:"—",s:9999,r:"—",se:"",tg:["Abroad"],n:"Spring 2025 program (M 3:30–6:30p). Not on the Spring 2027 schedule — bid history only."},
+{u:"AB101",d:"I B",c:"I B 385E",t:"Global Connections: Spain",p:"Beach, F ('25)",dy:"—",tm:"—",s:9999,r:"—",se:"",tg:["Abroad"],n:"Spring 2025 program (W 3:00–6:00p). Not on the Spring 2027 schedule — bid history only."},
+{u:"AB102",d:"I B",c:"I B 385E",t:"Global Connections: Argentina & Chile",p:"Mihm, J ('25)",dy:"—",tm:"—",s:9999,r:"—",se:"",tg:["Abroad"],n:"Spring 2025 program (T 3:30–6:30p). Not on the Spring 2027 schedule — bid history only."},
+{u:"AB103",d:"I B",c:"I B 385E",t:"Global Connections: Bali",p:"Peterson, M ('25)",dy:"—",tm:"—",s:9999,r:"—",se:"",tg:["Abroad"],n:"Spring 2025 program (M 3:30–6:30p). Not on the Spring 2027 schedule — bid history only."},
 {u:"AB104",d:"STEP",c:"STEP",t:"STEP: Copenhagen",p:"—",dy:"—",tm:"—",s:9999,r:"—",se:"",tg:["Abroad"],n:"Copenhagen STEP programs averaged across 2024–25 (Sustainability, ESG Investment, ESG Custom, Social Entrepreneurship). Not on the Spring 2027 schedule."},
 {u:"AB105",d:"STEP",c:"STEP",t:"STEP: Sweden — Innovation",p:"—",dy:"—",tm:"—",s:9999,r:"—",se:"",tg:["Abroad"],n:"Spring 2025 May program. Not on the Spring 2027 schedule — bid history only."},
 {u:"AB106",d:"STEP",c:"STEP",t:"STEP: Vienna Innovation Program",p:"—",dy:"—",tm:"—",s:9999,r:"—",se:"",tg:["Abroad"],n:"Spring 2025 May program (Austria). Not on the Spring 2027 schedule — bid history only."},
@@ -295,6 +300,73 @@ const stKey={};
 C.forEach(x=>{if(ST[x.u])stKey[x.c+'|'+x.t]=ST[x.u]});
 C.forEach(x=>{x.st=stKey[x.c+'|'+x.t]||null});
 function fmtStat(v){return v==null?'n/a':(Number.isInteger(v)?v:v.toFixed(1))}
+
+// RateMyProfessors (UT Austin, school 1255): professor -> [rating /5 (null = profile exists but no ratings yet), # ratings, profile URL].
+// Read live from ratemyprofessors.com in Oct 2026. Professors absent from the map have no UT Austin RMP profile.
+const RM={
+"Badolato, P":[3.6,51,"https://www.ratemyprofessors.com/professor/1899165"],
+"Holbrook, T":[4.9,7,"https://www.ratemyprofessors.com/professor/1609242"],
+"Brown, T":[3.6,13,"https://www.ratemyprofessors.com/professor/2727309"],
+"Roy Bardhan, A":[3.3,76,"https://www.ratemyprofessors.com/professor/2533539"],
+"Bradshaw, M":[2.5,20,"https://www.ratemyprofessors.com/professor/2654429"],
+"Lendecky, B":[3.7,57,"https://www.ratemyprofessors.com/professor/993606"],
+"Shade, R":[null,0,"https://www.ratemyprofessors.com/professor/2919193"],
+"Cobb, A":[1.8,12,"https://www.ratemyprofessors.com/professor/3005673"],
+"Bryan, C":[4.9,15,"https://www.ratemyprofessors.com/professor/2795789"],
+"Martinez Espinosa":[2.7,16,"https://www.ratemyprofessors.com/professor/3149960"],
+"Bredeson, D":[3.5,86,"https://www.ratemyprofessors.com/professor/137240"],
+"Kang, A":[3.6,9,"https://www.ratemyprofessors.com/professor/2045990"],
+"Shamoun, D":[2.2,50,"https://www.ratemyprofessors.com/professor/2184855"],
+"Wiles, K":[2.8,4,"https://www.ratemyprofessors.com/professor/2648664"],
+"Fracassi, C":[1.5,2,"https://www.ratemyprofessors.com/professor/2664482"],
+"Alexander, J":[2.7,10,"https://www.ratemyprofessors.com/professor/2078201"],
+"Butler, J":[null,0,"https://www.ratemyprofessors.com/professor/3135867"],
+"Almazan, A":[4.8,6,"https://www.ratemyprofessors.com/professor/2963673"],
+"Ronn, E":[3.3,4,"https://www.ratemyprofessors.com/professor/2369872"],
+"Johnson, T":[2.9,8,"https://www.ratemyprofessors.com/professor/1805769"],
+"Brown, K":[4.0,1,"https://www.ratemyprofessors.com/professor/2556599"],
+"Kocher, J":[4.6,17,"https://www.ratemyprofessors.com/professor/2904239"],
+"Starks, L":[null,0,"https://www.ratemyprofessors.com/professor/2725059"],
+"Leblanc, S":[null,0,"https://www.ratemyprofessors.com/professor/2943493"],
+"Peterson, M":[5.0,2,"https://www.ratemyprofessors.com/professor/2328502"],
+"Mihm, J":[5.0,2,"https://www.ratemyprofessors.com/professor/2864296"],
+"Gabbi, A":[4.1,31,"https://www.ratemyprofessors.com/professor/2125585"],
+"Syed, D":[null,0,"https://www.ratemyprofessors.com/professor/3153751"],
+"Bradt, J":[4.8,4,"https://www.ratemyprofessors.com/professor/3098540"],
+"Landolt, K":[3.8,26,"https://www.ratemyprofessors.com/professor/1963368"],
+"Meakin, C":[3.8,40,"https://www.ratemyprofessors.com/professor/23974"],
+"Green, P":[5.0,6,"https://www.ratemyprofessors.com/professor/2384924"],
+"Murphy, M":[3.7,35,"https://www.ratemyprofessors.com/professor/2141253"],
+"Webber, M":[3.7,37,"https://www.ratemyprofessors.com/professor/1244541"],
+"Gray, S":[4.2,17,"https://www.ratemyprofessors.com/professor/2374165"],
+"Pandya, M":[3.4,17,"https://www.ratemyprofessors.com/professor/2938262"],
+"Goldsberry, K":[5.0,5,"https://www.ratemyprofessors.com/professor/2653006"],
+"Polidoro, F":[null,0,"https://www.ratemyprofessors.com/professor/1895612"],
+"Kennard, H":[4.9,7,"https://www.ratemyprofessors.com/professor/3067462"],
+"Bardhan, I":[null,0,"https://www.ratemyprofessors.com/professor/2461497"],
+"Saar-Tsechansky, M":[3.8,2,"https://www.ratemyprofessors.com/professor/2132028"],
+"Tsechansky, M":[3.8,2,"https://www.ratemyprofessors.com/professor/2132028"],
+"Gilbert, S":[4.0,5,"https://www.ratemyprofessors.com/professor/2665760"],
+"Stamatopoulos, I":[3.6,8,"https://www.ratemyprofessors.com/professor/2384501"],
+"Sallis, L":[4.8,15,"https://www.ratemyprofessors.com/professor/2617102"],
+"Bentzin, B":[4.3,4,"https://www.ratemyprofessors.com/professor/2623222"],
+"Du, R":[null,0,"https://www.ratemyprofessors.com/professor/3137579"],
+"Hoyer, W":[null,0,"https://www.ratemyprofessors.com/professor/3041388"],
+"Ward, A":[4.8,6,"https://www.ratemyprofessors.com/professor/2155478"],
+"Raghunathan, R":[4.9,7,"https://www.ratemyprofessors.com/professor/2600784"],
+"Brister, S":[2.6,23,"https://www.ratemyprofessors.com/professor/1952398"],
+"Aarons, C":[4.1,61,"https://www.ratemyprofessors.com/professor/2552377"],
+"Chung, D":[4.2,6,"https://www.ratemyprofessors.com/professor/2905178"],
+"Meley, C":[null,0,"https://www.ratemyprofessors.com/professor/3078320"],
+"Stephens, J":[5.0,1,"https://www.ratemyprofessors.com/professor/2879458"]
+};
+function normP(p){return p.replace(/\s*\('\d\d\)$/,'')}
+function rmpCell(p){
+  const m=RM[normP(p)];
+  if(!m)return '<span class="chip" style="border-style:dashed">no RMP</span>';
+  if(m[0]==null)return `<a class="rmp" href="${m[2]}" target="_blank" rel="noopener" title="${esc(normP(p))} is on RateMyProfessors but has no ratings yet">★ — <span class="n">(0)</span></a>`;
+  return `<a class="rmp" href="${m[2]}" target="_blank" rel="noopener" title="${esc(normP(p))} on RateMyProfessors — ${m[1]} rating${m[1]===1?'':'s'}">★ ${m[0].toFixed(1)} <span class="n">(${m[1]})</span></a>`;
+}
 
 const tb=document.getElementById('tb'), q=document.getElementById('q'),
   dept=document.getElementById('dept'), daysSel=document.getElementById('days'),
@@ -381,7 +453,8 @@ tb.addEventListener('input',e=>{
 
 let sortKey='code', sortDir='asc';
 const keyOf={u:x=>x.u, code:x=>x.c, title:x=>x.t, prof:x=>x.p, days:x=>x.dy, start:x=>x.s, room:x=>x.r,
-  seats:x=>x.st?x.st[0]:-1, r1:x=>x.st&&x.st[1]!=null?x.st[1]:-1, r2:x=>x.st&&x.st[2]!=null?x.st[2]:-1};
+  seats:x=>x.st?x.st[0]:-1, r1:x=>x.st&&x.st[1]!=null?x.st[1]:-1, r2:x=>x.st&&x.st[2]!=null?x.st[2]:-1,
+  rmp:x=>{const m=RM[normP(x.p)]; return m?(m[0]==null?0:m[0]):-1}};
 
 function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
 function chipClass(tag){
@@ -440,6 +513,7 @@ function render(){
       <td class="code">${esc(x.c)}</td>
       <td class="title"><span class="t">${esc(x.t)}</span>${chips?`<span class="chips">${chips}</span>`:''}</td>
       <td>${esc(x.p)}</td>
+      <td class="rmpc">${x.p==='—'?'':rmpCell(x.p)}</td>
       <td class="days">${esc(x.dy)}</td>
       <td class="time">${esc(x.tm)}</td>
       <td class="room">${esc(x.r)}</td>
@@ -451,13 +525,13 @@ function render(){
   }
   if(view==='plan'){
     if(rows.length===0){
-      tb.innerHTML='<tr><td colspan="13" style="text-align:center;color:var(--muted);padding:28px 12px">Nothing planned yet. Switch to All sections and tick the Plan box next to a course.</td></tr>';
+      tb.innerHTML='<tr><td colspan="14" style="text-align:center;color:var(--muted);padding:28px 12px">Nothing planned yet. Switch to All sections and tick the Plan box next to a course.</td></tr>';
     }else{
       let html='';
       for(const cat of ['Required core','Custom core','Electives','Abroad']){
         const grp=rows.filter(r=>catOf(r)===cat);
         if(!grp.length)continue;
-        html+=`<tr class="group"><td colspan="13">${cat} (${grp.length})</td></tr>`+grp.map(rowHTML).join('');
+        html+=`<tr class="group"><td colspan="14">${cat} (${grp.length})</td></tr>`+grp.map(rowHTML).join('');
       }
       tb.innerHTML=html;
     }

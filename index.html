@@ -53,6 +53,17 @@ a.rmp .n{font-weight:400; color:var(--muted)}
 td.rmpc{white-space:nowrap}
 .budget{margin-left:auto; width:92px; height:92px; box-sizing:border-box; border-radius:50%; display:flex; align-items:center; justify-content:center; text-align:center; padding:10px; font-family:var(--font-display); font-size:12.5px; font-weight:700; font-variant-numeric:tabular-nums; line-height:1.25; color:#F2D9B0; background:radial-gradient(circle at 35% 30%,#A8352C,#7A1E18 60%,#5E130F); box-shadow:0 3px 8px rgba(0,0,0,.4), inset 0 0 0 6px rgba(255,235,200,.14); transform:rotate(-6deg); white-space:normal}
 .budget.over{color:#FFD9A0; box-shadow:0 3px 8px rgba(0,0,0,.4), inset 0 0 0 6px rgba(255,120,100,.55)}
+#concview{display:flex; flex-direction:column; gap:12px; margin-top:14px}
+#concview[hidden]{display:none}
+#concview h2{font-family:var(--font-display); font-size:20px; letter-spacing:.06em; margin:0; color:var(--ink)}
+#concview h3{font-family:var(--font-display); font-size:13px; letter-spacing:.08em; text-transform:uppercase; margin:6px 0 0; color:var(--ink)}
+#concview p{margin:0; max-width:85ch}
+.concintro,.concnote{font-family:var(--font-fell); font-style:italic; color:var(--muted); font-size:14px}
+#concprog{font-size:14.5px; background:var(--surface); border:1px solid var(--line); border-radius:6px; padding:12px 14px; box-shadow:0 2px 10px rgba(59,42,23,.12)}
+.opts{display:flex; gap:10px; flex-wrap:wrap}
+.opt{flex:1 1 220px; background:var(--surface); border:1px solid var(--line); border-radius:6px; padding:12px 14px; box-shadow:0 2px 10px rgba(59,42,23,.12); font-size:13.5px}
+.optname{font-family:var(--font-display); font-weight:700; font-size:11.5px; letter-spacing:.1em; text-transform:uppercase; color:var(--accent); margin-bottom:4px}
+.conclist{margin:4px 0 0; padding-left:20px; display:flex; flex-direction:column; gap:6px; max-width:95ch; font-size:13.5px}
 .toolbar{display:flex; flex-wrap:wrap; gap:8px; align-items:center; margin:12px 0 10px}
 .toolbar input[type=search],.toolbar select{
   font:inherit; color:var(--fg); background:var(--surface); border:1px solid var(--line);
@@ -108,7 +119,31 @@ td.num .more{color:var(--accent); font-weight:700}
 <div class="tabs" role="tablist" aria-label="View">
   <button role="tab" id="tab-all" aria-selected="true">All sections</button>
   <button role="tab" id="tab-plan" aria-selected="false">Planned (0)</button>
+  <button role="tab" id="tab-conc" aria-selected="false">Concentration</button>
   <span class="budget" id="budget">0 / 1000 pts</span>
+</div>
+
+<div id="concview" hidden>
+  <h2>Global Business Concentration</h2>
+  <p class="concintro">From the Texas Full-Time MBA concentration sheet (2024–25) — fulfill one of the three options below. Rules may have shifted since that sheet; confirm with your academic advisor.</p>
+  <div class="opts">
+    <div class="opt"><div class="optname">Option A</div><div>12 credit hours of approved courses, at least one carrying the I B prefix</div></div>
+    <div class="opt"><div class="optname">Option B</div><div>9 credit hours plus one Short-Term Exchange Program (STEP)</div></div>
+    <div class="opt"><div class="optname">Option C</div><div>6 credit hours plus one long semester abroad (3+ UT courses while abroad)</div></div>
+  </div>
+  <p id="concprog"></p>
+  <h3>Approved courses — and what the Spring 2027 schedule offers</h3>
+  <ul class="conclist">
+    <li><b>I B — any graduate course</b> — offered: the five Global Connections trips (Portugal, New Zealand, Italy, S Korea, Mexico), Busn/Geopolitics/Diplomacy, Global Net Zero Strategy, and the web-based Studies in Global Mgmt</li>
+    <li><b>BGS 380E Global Political Economy</b> — offered, MW 9:30–11:00a (Martinez Espinosa)</li>
+    <li><b>MAN — Global Management</b> — offered as MAN 385.51, T 3:30–6:30p (Doggett)</li>
+    <li><b>BGS 380 Global Regulatory Policy</b> — not on the Spring 2027 schedule</li>
+    <li><b>MAN 385 Management &amp; Marketing in the Global Arena</b> — not on the Spring 2027 schedule</li>
+    <li><b>MKT 382 Invisible Global Marketing</b> — not on the Spring 2027 schedule</li>
+    <li><b>RM 395 / PA 388K Managing International Risk</b> — not on the Spring 2027 schedule</li>
+    <li><b>UT Foreign Language</b> — any UT foreign-language course counts (not listed on this business schedule)</li>
+  </ul>
+  <p class="concnote">Courses marked <span class="chip core">GB</span> in the table count toward the concentration; STEP rows satisfy Option B's program leg.</p>
 </div>
 
 <div class="toolbar">
@@ -144,6 +179,7 @@ td.num .more{color:var(--accent); font-weight:700}
     <th><button data-k="u">Unique</button></th>
     <th><button data-k="code">Course</button></th>
     <th><button data-k="title">Title</button></th>
+    <th class="plan"><button data-k="gb">Conc</button></th>
     <th><button data-k="prof">Professor</button></th>
     <th><button data-k="rmp">RMP</button></th>
     <th><button data-k="days">Days</button></th>
@@ -320,6 +356,10 @@ const ST={
 const stKey={};
 C.forEach(x=>{if(ST[x.u])stKey[x.c+'|'+x.t]=ST[x.u]});
 C.forEach(x=>{x.st=stKey[x.c+'|'+x.t]||null});
+// Global Business concentration (2024-25 sheet): any I B graduate course, BGS 380E Global Political Economy,
+// MAN Global Management. STEP programs satisfy Option B's program leg rather than counting as hours.
+C.forEach(x=>{x.gb = (x.d==='I B'||x.u==='03520'||x.u==='06635') ? 'course' : x.d==='STEP' ? 'step' : null;});
+function creditsOf(x){const m=x.c.match(/(\d)\d\d/); return m?+m[1]:0;}
 function fmtStat(v){return v==null?'n/a':(Number.isInteger(v)?v:v.toFixed(1))}
 
 // RateMyProfessors (UT Austin, school 1255): professor -> [rating /5 (null = profile exists but no ratings yet), # ratings, profile URL].
@@ -394,7 +434,9 @@ const tb=document.getElementById('tb'), q=document.getElementById('q'),
   sess=document.getElementById('sess'), hide=document.getElementById('hide'),
   count=document.getElementById('count'), dedupe=document.getElementById('dedupe'), budget=document.getElementById('budget'),
   catSel=document.getElementById('cat'),
-  tabAll=document.getElementById('tab-all'), tabPlan=document.getElementById('tab-plan');
+  tabAll=document.getElementById('tab-all'), tabPlan=document.getElementById('tab-plan'),
+  tabConc=document.getElementById('tab-conc'), concView=document.getElementById('concview'),
+  toolbarEl=document.querySelector('.toolbar'), wrapEl=document.querySelector('.tablewrap');
 
 // Planned list: shared db when available, localStorage as a local fallback.
 function loadLocal(){try{return new Set(JSON.parse(localStorage.getItem('plan2027')||'[]'))}catch(e){return new Set()}}
@@ -423,7 +465,18 @@ function planBody(x){return {u:x.u,course:x.c,title:x.t,professor:x.p,days:x.dy,
     planned=remote; points=remotePts; saveLocal(); updateTabs(); render();
   },()=>{});
 })();
-function updateTabs(){tabPlan.textContent=`Planned (${planned.size})`; updateBudget();}
+function updateTabs(){tabPlan.textContent=`Planned (${planned.size})`; updateBudget(); updateConc();}
+function updateConc(){
+  const el=document.getElementById('concprog'); if(!el)return;
+  const gbPlanned=[...planned].map(u=>C.find(c=>c.u===u)).filter(x=>x&&x.gb==='course');
+  const hrs=gbPlanned.reduce((t,x)=>t+creditsOf(x),0);
+  const hasIB=gbPlanned.some(x=>x.d==='I B');
+  const hasStep=[...planned].some(u=>{const x=C.find(c=>c.u===u); return x&&x.gb==='step';});
+  el.innerHTML=`Planned so far: <b>${hrs}</b> concentration hour${hrs===1?'':'s'}`
+    +(gbPlanned.length?` — ${gbPlanned.map(x=>esc(x.c)).join(', ')}`:'')
+    +(hasStep?', plus a STEP program':'')
+    +`. Toward Option A (12 hrs): I B course ${hasIB?'✓':'still needed'}. Option B (9 hrs): STEP ${hasStep?'✓':'not planned'}.`;
+}
 function totalPts(){let t=0; for(const u of planned)t+=points[u]||0; return t}
 function updateBudget(){
   const t=totalPts();
@@ -448,8 +501,13 @@ function setView(v){
   view=v;
   tabAll.setAttribute('aria-selected',String(v==='all'));
   tabPlan.setAttribute('aria-selected',String(v==='plan'));
-  render();
+  tabConc.setAttribute('aria-selected',String(v==='conc'));
+  const c=v==='conc';
+  concView.hidden=!c;
+  toolbarEl.hidden=c; count.hidden=c; wrapEl.hidden=c;
+  if(!c)render();
 }
+tabConc.addEventListener('click',()=>setView('conc'));
 tabAll.addEventListener('click',()=>setView('all'));
 tabPlan.addEventListener('click',()=>setView('plan'));
 tb.addEventListener('change',e=>{
@@ -476,7 +534,8 @@ tb.addEventListener('input',e=>{
 let sortKey='code', sortDir='asc';
 const keyOf={u:x=>x.u, code:x=>x.c, title:x=>x.t, prof:x=>x.p, days:x=>x.dy, start:x=>x.s, room:x=>x.r,
   seats:x=>x.st?x.st[0]:-1, r1:x=>x.st&&x.st[1]!=null?x.st[1]:-1, r2:x=>x.st&&x.st[2]!=null?x.st[2]:-1,
-  rmp:x=>{const m=RM[normP(x.p)]; return m?(m[0]==null?0:m[0]):-1}};
+  rmp:x=>{const m=RM[normP(x.p)]; return m?(m[0]==null?0:m[0]):-1},
+  gb:x=>x.gb==='course'?2:x.gb==='step'?1:0};
 
 function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
 function chipClass(tag){
@@ -536,6 +595,7 @@ function render(){
       <td class="num">${x.us[0]}${n>1?` <span class="more">+${n-1}</span>`:''}</td>
       <td class="code">${esc(x.c)}</td>
       <td class="title"><span class="t">${esc(x.t)}</span>${chips?`<span class="chips">${chips}</span>`:''}</td>
+      <td class="plan">${x.gb==='course'?'<span class="chip core">GB</span>':x.gb==='step'?'<span class="chip">STEP</span>':''}</td>
       <td>${esc(x.p)}</td>
       <td class="rmpc">${x.p==='—'?'':rmpCell(x.p)}</td>
       <td class="days">${esc(x.dy)}</td>
@@ -549,14 +609,15 @@ function render(){
   }
   if(view==='plan'){
     if(rows.length===0){
-      tb.innerHTML='<tr><td colspan="14" style="text-align:center;color:var(--muted);padding:28px 12px">Nothing planned yet. Switch to All sections and tick the Plan box next to a course.</td></tr>';
+      tb.innerHTML='<tr><td colspan="15" style="text-align:center;color:var(--muted);padding:28px 12px">Nothing planned yet. Switch to All sections and tick the Plan box next to a course.</td></tr>';
     }else{
       let html='';
+      const ptsRow=x=>x.us.reduce((t,u)=>t+(planned.has(u)?(points[u]||0):0),0);
       for(const cg of ['Required core','Custom core','Electives','Abroad']){
         if(catSel.value&&cg!==catSel.value)continue;
-        const grp=rows.filter(r=>catOf(r)===cg);
-        html+=`<tr class="group"><td colspan="14">❦&nbsp; ${cg} (${grp.length}) &nbsp;❦</td></tr>`;
-        html+=grp.length?grp.map(rowHTML).join(''):'<tr><td colspan="14" style="text-align:center; color:var(--muted); font-family:var(--font-fell); font-style:italic; padding:14px 10px">nothing planned in this category yet</td></tr>';
+        const grp=rows.filter(r=>catOf(r)===cg).sort((a,b)=>ptsRow(b)-ptsRow(a));
+        html+=`<tr class="group"><td colspan="15">❦&nbsp; ${cg} (${grp.length}) &nbsp;❦</td></tr>`;
+        html+=grp.length?grp.map(rowHTML).join(''):'<tr><td colspan="15" style="text-align:center; color:var(--muted); font-family:var(--font-fell); font-style:italic; padding:14px 10px">nothing planned in this category yet</td></tr>';
       }
       tb.innerHTML=html;
     }

@@ -53,6 +53,11 @@ a.rmp .n{font-weight:400; color:var(--muted)}
 td.rmpc{white-space:nowrap}
 .budget{margin-left:auto; width:92px; height:92px; box-sizing:border-box; border-radius:50%; display:flex; align-items:center; justify-content:center; text-align:center; padding:10px; font-family:var(--font-display); font-size:12.5px; font-weight:700; font-variant-numeric:tabular-nums; line-height:1.25; color:#F2D9B0; background:radial-gradient(circle at 35% 30%,#A8352C,#7A1E18 60%,#5E130F); box-shadow:0 3px 8px rgba(0,0,0,.4), inset 0 0 0 6px rgba(255,235,200,.14); transform:rotate(-6deg); white-space:normal}
 .budget.over{color:#FFD9A0; box-shadow:0 3px 8px rgba(0,0,0,.4), inset 0 0 0 6px rgba(255,120,100,.55)}
+#notesview{display:flex; flex-direction:column; gap:6px; margin-top:12px}
+#notesview[hidden]{display:none}
+#notes{min-height:440px; font:16px/1.8 var(--font-fell); color:var(--fg); background:var(--surface); border:1px solid var(--line); border-radius:6px; padding:18px 20px; resize:vertical; box-shadow:0 2px 10px rgba(59,42,23,.12); min-width:0}
+#notes:focus-visible{outline:2px solid var(--accent); outline-offset:1px}
+#notestate{margin:0; font-family:var(--font-fell); font-style:italic; font-size:12.5px; color:var(--muted); text-align:right}
 #concview{display:flex; flex-direction:column; gap:12px; margin-top:14px}
 #concview[hidden]{display:none}
 #concview h2{font-family:var(--font-display); font-size:20px; letter-spacing:.06em; margin:0; color:var(--ink)}
@@ -119,8 +124,14 @@ td.num .more{color:var(--accent); font-weight:700}
 <div class="tabs" role="tablist" aria-label="View">
   <button role="tab" id="tab-all" aria-selected="true">All sections</button>
   <button role="tab" id="tab-plan" aria-selected="false">Planned (0)</button>
+  <button role="tab" id="tab-notes" aria-selected="false">Notes</button>
   <button role="tab" id="tab-conc" aria-selected="false">Concentration</button>
   <span class="budget" id="budget">0 / 1000 pts</span>
+</div>
+
+<div id="notesview" hidden>
+  <p id="notestate">saved on this device</p>
+  <textarea id="notes" placeholder="Course planning notes — bid strategy, backup sections, questions for your advisor…" aria-label="Planning notes"></textarea>
 </div>
 
 <div id="concview" hidden>
@@ -435,7 +446,9 @@ const tb=document.getElementById('tb'), q=document.getElementById('q'),
   count=document.getElementById('count'), dedupe=document.getElementById('dedupe'), budget=document.getElementById('budget'),
   catSel=document.getElementById('cat'),
   tabAll=document.getElementById('tab-all'), tabPlan=document.getElementById('tab-plan'),
+  tabNotes=document.getElementById('tab-notes'), notesView=document.getElementById('notesview'),
   tabConc=document.getElementById('tab-conc'), concView=document.getElementById('concview'),
+  notesTa=document.getElementById('notes'), noteState=document.getElementById('notestate'),
   toolbarEl=document.querySelector('.toolbar'), wrapEl=document.querySelector('.tablewrap');
 
 // Planned list: shared db when available, localStorage as a local fallback.
@@ -446,12 +459,18 @@ let planned=loadLocal();
 let points=loadLocalPts();
 const BUDGET=1000;
 let view='all';
-let dbCol=null;
+let dbCol=null, notesDoc=null, notesTimer=null;
 function planBody(x){return {u:x.u,course:x.c,title:x.t,professor:x.p,days:x.dy,time:x.tm,room:x.r,notes:x.n,pts:points[x.u]||0,addedAt:new Date().toISOString()}}
 (async()=>{
   const db=await window.claude?.use?.('db');
   if(!db)return;
   dbCol=db.collection('plan');
+  notesDoc=db.doc('notes/main');
+  notesDoc.onSnapshot(snap=>{
+    const t=snap.exists?String((snap.data()||{}).text??''):'';
+    if(document.activeElement!==notesTa&&!snap.metadata.hasPendingWrites){notesTa.value=t; saveLocalNotes();}
+    noteState.textContent=snap.exists?'synced':'a fresh page — syncs when you write';
+  },()=>{});
   let first=true;
   dbCol.onSnapshot(snap=>{
     const remote=new Set(), remotePts={};
@@ -501,15 +520,30 @@ function setView(v){
   view=v;
   tabAll.setAttribute('aria-selected',String(v==='all'));
   tabPlan.setAttribute('aria-selected',String(v==='plan'));
+  tabNotes.setAttribute('aria-selected',String(v==='notes'));
   tabConc.setAttribute('aria-selected',String(v==='conc'));
-  const c=v==='conc';
-  concView.hidden=!c;
-  toolbarEl.hidden=c; count.hidden=c; wrapEl.hidden=c;
-  if(!c)render();
+  const n=v==='notes', c=v==='conc';
+  notesView.hidden=!n; concView.hidden=!c;
+  toolbarEl.hidden=n||c; count.hidden=n||c; wrapEl.hidden=n||c;
+  if(!n&&!c)render();
 }
 tabConc.addEventListener('click',()=>setView('conc'));
 tabAll.addEventListener('click',()=>setView('all'));
 tabPlan.addEventListener('click',()=>setView('plan'));
+tabNotes.addEventListener('click',()=>setView('notes'));
+function loadLocalNotes(){try{return localStorage.getItem('plan2027notes')||''}catch(e){return ''}}
+function saveLocalNotes(){try{localStorage.setItem('plan2027notes',notesTa.value)}catch(e){}}
+notesTa.value=loadLocalNotes();
+notesTa.addEventListener('input',()=>{
+  saveLocalNotes(); noteState.textContent='scribbling…';
+  clearTimeout(notesTimer);
+  notesTimer=setTimeout(()=>{
+    if(!notesDoc){noteState.textContent='saved on this device'; return;}
+    notesDoc.set({text:notesTa.value,updatedAt:new Date().toISOString()})
+      .then(()=>{noteState.textContent='saved'})
+      .catch(()=>{noteState.textContent='saved on this device'});
+  },900);
+});
 tb.addEventListener('change',e=>{
   const cb=e.target.closest('input[type=checkbox]');
   if(cb){

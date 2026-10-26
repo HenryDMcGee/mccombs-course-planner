@@ -47,12 +47,8 @@ a.rmp{display:inline-block; font-size:11.5px; font-weight:700; font-variant-nume
 a.rmp:hover{text-decoration:underline}
 a.rmp .n{font-weight:400; color:var(--muted)}
 td.rmpc{white-space:nowrap}
-.budget{margin-left:auto; display:flex; gap:2px; font-size:12.5px; font-variant-numeric:tabular-nums; white-space:nowrap}
-.budget .seg{color:var(--accent-ink); background:var(--accent); padding:5px 10px; font-weight:600; box-shadow:0 2px 6px rgba(0,0,0,.2)}
-.budget .seg:first-child{border-radius:999px 0 0 999px; padding-left:13px}
-.budget .seg:last-child{border-radius:0 999px 999px 0; padding-right:13px}
-.budget .seg b{font-weight:800}
-.budget .seg.over{background:var(--danger); color:#FFFFFF}
+.budget{margin-left:auto; font-size:13px; font-weight:800; font-variant-numeric:tabular-nums; color:var(--accent-ink); background:var(--accent); border-radius:999px; padding:6px 14px; white-space:nowrap; box-shadow:0 2px 6px rgba(0,0,0,.25)}
+.budget.over{background:var(--danger); color:#FFFFFF}
 #notesview{display:flex; flex-direction:column; gap:6px; margin-top:12px}
 #notesview[hidden]{display:none}
 #notes{min-height:440px; font:15px/1.7 var(--font-body); color:var(--fg); background:var(--surface); border:1px solid var(--line); border-radius:6px; padding:18px 20px; resize:vertical; box-shadow:0 2px 10px rgba(59,42,23,.12); min-width:0}
@@ -620,7 +616,11 @@ function availTerms(x){
 }
 // Bid budgets per semester (each auction is separate).
 const BUDGETS={SP27:1000,FA27:1500,SP28:1500};
-const BUDGET_LABEL={SP27:"Sp '27",FA27:"Fa '27",SP28:"Sp '28"};
+const BUDGET_LABEL={SP27:"Spring '27",FA27:"Fall '27",SP28:"Spring '28"};
+// The badge shows one semester: whichever you last made a change in (or the part tab you're viewing).
+// Both parts of a semester share its budget; semesters never share points.
+let activeSem='SP27';
+const baseOfCode=c=>(c||'SP27').startsWith('H:')?'SP27':(c||'SP27').split('-')[0];
 let view='all';
 let dbCol=null, notesDoc=null, notesTimer=null;
 function planBody(x){return {u:x.u,course:x.c,title:x.t,professor:x.p,days:x.dy,time:x.tm,room:x.r,notes:x.n,pts:points[x.u]||0,sem:sems[x.u]||'SP27',addedAt:new Date().toISOString()}}
@@ -673,16 +673,14 @@ function setSem(u,v){
   if(dbCol&&planned.has(u))dbCol.doc(u).update({sem:v}).catch(()=>{});
 }
 function updateBudget(){
-  let any=false;
-  budget.innerHTML=Object.keys(BUDGETS).map(b=>{
-    const t=totalPts(b), cap=BUDGETS[b], over=t>cap; if(over)any=true;
-    return `<span class="seg${over?' over':''}" title="${over?`Over by ${t-cap} points`:`${cap-t} points left`}">${BUDGET_LABEL[b]} <b>${t}</b>/${cap}</span>`;
-  }).join('');
-  budget.classList.toggle('over',any);
+  const b=activeSem, t=totalPts(b), cap=BUDGETS[b], over=t>cap;
+  budget.textContent=`${BUDGET_LABEL[b]} · ${t} / ${cap} pts`;
+  budget.title=over?`Over by ${t-cap} points`:`${cap-t} points left in ${BUDGET_LABEL[b]}`;
+  budget.classList.toggle('over',over);
 }
 function setPoints(u,v){
   v=Math.max(0,Math.round(Number(v)||0));
-  points[u]=v; saveLocal(); updateBudget();
+  points[u]=v; activeSem=baseOfCode(sems[u]); saveLocal(); updateBudget();
   if(dbCol&&planned.has(u))dbCol.doc(u).update({pts:v}).catch(()=>{});
 }
 function setPlanned(u,on){
@@ -729,7 +727,8 @@ tb.addEventListener('change',e=>{
   const ps=e.target.closest('select.plan-sel');
   if(ps){
     const us=ps.dataset.us.split(','), v=ps.value;
-    if(!v){us.forEach(u=>{if(planned.has(u))setPlanned(u,false)}); return;}
+    if(!v){const was=us.find(u=>planned.has(u)); if(was)activeSem=baseOfCode(sems[was]); us.forEach(u=>{if(planned.has(u))setPlanned(u,false)}); return;}
+    activeSem=baseOfCode(v);
     if(v.startsWith('H:')){
       const half=v.slice(2), key=ps.dataset.key;
       const secs=C.filter(c=>c.c+'|'+c.t===key);
@@ -872,10 +871,11 @@ function render(){
       return `<button type="button" role="tab" data-part="${k}" class="${h==='S2'?'p2':'p1'}" aria-selected="${planPart===k}">${l} <span class="n">${n}</span></button>`;
     }).join('');
     const [pb,ph]=planPart.split('-'), plab=PARTS.find(p=>p[0]+'-'+p[1]===planPart)[2];
+    if(activeSem!==pb){activeSem=pb; updateBudget();}
     const sub=rows.filter(r=>r.s!==9999&&codeOf(r).split('-')[0]===pb&&partsOf(r).includes(ph));
     const nosched=rows.filter(r=>r.s===9999&&codeOf(r).split('-')[0]===pb);
-    const hrs=sub.reduce((t,x)=>t+creditsOf(x),0), hp=sub.reduce((t,x)=>t+ptsRow(x),0);
-    let html=`<tr class="group half${ph==='S2'?' s2':''}"><td colspan="9">${plab} plan — ${sub.length} course${sub.length===1?'':'s'} · ${hrs} hrs · ${hp} pts (${totalPts(pb)} of ${BUDGETS[pb]} used this semester)${pb!=='SP27'?" · sections shown are this spring's listings":''}</td></tr>`;
+    const hrs=sub.reduce((t,x)=>t+creditsOf(x),0);
+    let html=`<tr class="group half${ph==='S2'?' s2':''}"><td colspan="9">${plab} plan — ${sub.length} course${sub.length===1?'':'s'} · ${hrs} hrs${pb!=='SP27'?" · sections shown are this spring's listings":''}</td></tr>`;
     if(!sub.length&&!nosched.length){
       html+=`<tr><td colspan="9" style="text-align:center;color:var(--muted);padding:28px 12px">Nothing planned for ${plab} yet. Switch to All sections and pick it in the Plan column next to a course.</td></tr>`;
     }

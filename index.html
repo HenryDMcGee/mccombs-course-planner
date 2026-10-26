@@ -132,8 +132,9 @@ a.rmp.hi{color:#166534; border-color:#166534; background:rgba(22,101,52,.07)}
 a.rmp.mid{color:#92610C; border-color:#92610C; background:rgba(146,97,12,.07)}
 a.rmp.lo{color:#B3261E; border-color:#B3261E; background:rgba(179,38,30,.07)}
 td.pts input.on{background:rgba(168,53,44,.08); border-color:var(--accent); color:#7A1E18; font-weight:700}
-select.term-sel{font:inherit; font-size:12px; color:var(--fg); background:var(--surface); border:1px solid var(--line); border-radius:4px; padding:1px 2px; max-width:72px}
-select.term-sel:focus-visible{outline:2px solid var(--accent); outline-offset:1px}
+select.plan-sel{font:inherit; font-size:12px; color:var(--fg); background:var(--surface); border:1px solid var(--line); border-radius:4px; padding:1px 2px; max-width:74px}
+select.plan-sel.on{background:rgba(168,53,44,.08); border-color:var(--accent); color:#7A1E18; font-weight:700}
+select.plan-sel:focus-visible{outline:2px solid var(--accent); outline-offset:1px}
 tr.group.semh td{background:var(--head); color:var(--ink); font-size:13px; letter-spacing:.06em; padding:8px 10px; border-top:3px double var(--line)}
 .chip.gb{border-color:#1D4ED8; color:#1D4ED8; background:rgba(29,78,216,.06)}
 td.num .more{color:var(--accent); font-weight:700}
@@ -301,9 +302,8 @@ td.num .more{color:var(--accent); font-weight:700}
 <div class="tablewrap">
 <table>
   <thead><tr>
-    <th class="plan">Plan</th>
+    <th class="plan" title="Pick the semester plan to add the course to; — removes it">Plan</th>
     <th class="plan">Pts</th>
-    <th class="plan">Term</th>
     <th><button data-k="code">Course</button></th>
     <th><button data-k="title">Title</button></th>
     <th class="plan"><button data-k="gb">Conc</button></th>
@@ -677,15 +677,15 @@ notesTa.addEventListener('input',()=>{
   },900);
 });
 tb.addEventListener('change',e=>{
-  const cb=e.target.closest('input[type=checkbox]');
-  if(cb){
-    const us=cb.dataset.us.split(',');
-    if(cb.checked)setPlanned(us[0],true);
-    else us.forEach(u=>{if(planned.has(u))setPlanned(u,false)});
+  const ps=e.target.closest('select.plan-sel');
+  if(ps){
+    const us=ps.dataset.us.split(','), v=ps.value;
+    if(!v){us.forEach(u=>{if(planned.has(u))setPlanned(u,false)}); return;}
+    const cur=us.find(u=>planned.has(u));
+    if(cur){if((sems[cur]||'SP27')!==v)setSem(cur,v);}
+    else{sems[us[0]]=v; setPlanned(us[0],true);}
     return;
   }
-  const ts=e.target.closest('select.term-sel');
-  if(ts){setSem(ts.dataset.u,ts.value); return;}
   const pt=e.target.closest('input[type=number]');
   if(pt)setPoints(pt.dataset.u,pt.value);
 });
@@ -765,9 +765,8 @@ function render(){
     const n=x.us.length, checked=x.us.some(u=>planned.has(u)), u0=x.us.find(u=>planned.has(u));
     const tip=esc(`Section ${x.us.join(', ')}${x.r&&x.r!=='—'?` · Room ${x.r}`:''}${x.st?` · '25 avg seats ${fmtStat(x.st[0])}`:''}${x.n?` · ${x.n}`:''}`).replace(/"/g,'&quot;');
     return `<tr${cls?` class="${cls}"`:''} title="${tip}">
-      <td class="plan"><input type="checkbox" data-us="${x.us.join(',')}"${checked?' checked':''}${n>1?' title="Checking plans the earliest section. Unchecking removes every section of this course."':''} aria-label="Plan ${esc(x.c)}"></td>
+      <td class="plan"><select class="plan-sel${checked?' on':''}" data-us="${x.us.join(',')}"${n>1?' title="Choosing a term plans the earliest section; — removes every section of this course."':''} aria-label="Plan ${esc(x.c)}"><option value="">—</option>${SEMS.map(s=>`<option value="${s[0]}"${checked&&(sems[u0]||'SP27')===s[0]?' selected':''}>${s[1]}</option>`).join('')}</select></td>
       <td class="pts">${checked?`<input type="number" class="${(points[u0]||0)>0?'on':''}" min="0" max="${BUDGET}" step="10" value="${points[u0]||0}" data-u="${u0}" aria-label="Bid points for ${esc(x.c)}">`:''}</td>
-      <td class="plan">${checked?`<select class="term-sel" data-u="${u0}" aria-label="Semester for ${esc(x.c)}">${SEMS.map(s=>`<option value="${s[0]}"${(sems[u0]||'SP27')===s[0]?' selected':''}>${s[1]}</option>`).join('')}</select>`:''}</td>
       <td class="code">${esc(x.c)}${n>1?` <span class="more">+${n-1}</span>`:''}</td>
       <td class="title"><span class="t">${esc(x.t)}</span>${chips?`<span class="chips">${chips}</span>`:''}</td>
       <td class="plan">${x.gb==='course'?'<span class="chip gb">GB</span>':x.gb==='step'?'<span class="chip">STEP</span>':''}</td>
@@ -779,38 +778,38 @@ function render(){
   }
   if(view==='plan'){
     if(rows.length===0){
-      tb.innerHTML='<tr><td colspan="10" style="text-align:center;color:var(--muted);padding:28px 12px">Nothing planned yet. Switch to All sections and tick the Plan box next to a course.</td></tr>';
+      tb.innerHTML='<tr><td colspan="9" style="text-align:center;color:var(--muted);padding:28px 12px">Nothing planned yet. Switch to All sections and pick a semester in the Plan column next to a course.</td></tr>';
     }else{
       let html='';
       const ptsRow=x=>x.us.reduce((t,u)=>t+(planned.has(u)?(points[u]||0):0),0);
       const catOrder=['Required core','Custom core','Electives','Abroad'];
       const semOf=r=>sems[r.us.find(u=>planned.has(u))]||'SP27';
       const sp=rows.filter(r=>semOf(r)==='SP27');
-      html+=`<tr class="group semh"><td colspan="10">Spring 2027 — ${sp.length} planned</td></tr>`;
+      html+=`<tr class="group semh"><td colspan="9">Spring 2027 — ${sp.length} planned</td></tr>`;
       // Two plans: one per half-semester. Full-term and straddling courses appear in both.
       for(const [half,label] of [['S1','Spring 1 plan'],['S2','Spring 2 plan']]){
         const sub=sp.filter(r=>r.s!==9999&&r.sess.some(s=>s===''||s===half||s==='short'));
         const hrs=sub.reduce((t,x)=>t+creditsOf(x),0), hp=sub.reduce((t,x)=>t+ptsRow(x),0);
-        html+=`<tr class="group half${half==='S2'?' s2':''}"><td colspan="10">${label} — ${sub.length} course${sub.length===1?'':'s'} · ${hrs} hrs · ${hp} pts</td></tr>`;
-        if(!sub.length){html+='<tr><td colspan="10" style="text-align:center; color:var(--muted); font-family:var(--font-fell); padding:14px 10px">nothing planned for this half yet</td></tr>'; continue;}
+        html+=`<tr class="group half${half==='S2'?' s2':''}"><td colspan="9">${label} — ${sub.length} course${sub.length===1?'':'s'} · ${hrs} hrs · ${hp} pts</td></tr>`;
+        if(!sub.length){html+='<tr><td colspan="9" style="text-align:center; color:var(--muted); font-family:var(--font-fell); padding:14px 10px">nothing planned for this half yet</td></tr>'; continue;}
         for(const cg of catOrder){
           const grp=sub.filter(r=>catOf(r)===cg).sort((a,b)=>ptsRow(b)-ptsRow(a));
           if(!grp.length)continue;
           const sc={'Required core':'core','Custom core':'cust','Electives':'elec','Abroad':'abr'}[cg];
-          html+=`<tr class="group sub ${sc}"><td colspan="10">${cg} (${grp.length})</td></tr>`+grp.map((x,i)=>rowHTML(x,i%2===1)).join('');
+          html+=`<tr class="group sub ${sc}"><td colspan="9">${cg} (${grp.length})</td></tr>`+grp.map((x,i)=>rowHTML(x,i%2===1)).join('');
         }
       }
       const nosched=sp.filter(r=>r.s===9999);
-      if(nosched.length)html+=`<tr class="group half plain"><td colspan="10">No set schedule</td></tr>`+nosched.map((x,i)=>rowHTML(x,i%2===1)).join('');
+      if(nosched.length)html+=`<tr class="group half plain"><td colspan="9">No set schedule</td></tr>`+nosched.map((x,i)=>rowHTML(x,i%2===1)).join('');
       for(const [code,,label] of SEMS.slice(1)){
         const fr=rows.filter(r=>semOf(r)===code);
         if(!fr.length)continue;
-        html+=`<tr class="group semh"><td colspan="10">${label} — ${fr.length} planned · sections shown are this spring's listings</td></tr>`;
+        html+=`<tr class="group semh"><td colspan="9">${label} — ${fr.length} planned · sections shown are this spring's listings</td></tr>`;
         for(const cg of catOrder){
           const grp=fr.filter(r=>catOf(r)===cg).sort((a,b)=>ptsRow(b)-ptsRow(a));
           if(!grp.length)continue;
           const sc={'Required core':'core','Custom core':'cust','Electives':'elec','Abroad':'abr'}[cg];
-          html+=`<tr class="group sub ${sc}"><td colspan="10">${cg} (${grp.length})</td></tr>`+grp.map((x,i)=>rowHTML(x,i%2===1)).join('');
+          html+=`<tr class="group sub ${sc}"><td colspan="9">${cg} (${grp.length})</td></tr>`+grp.map((x,i)=>rowHTML(x,i%2===1)).join('');
         }
       }
       tb.innerHTML=html;

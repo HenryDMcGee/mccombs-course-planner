@@ -66,6 +66,9 @@ td.rmpc{white-space:nowrap}
 .sem{background:var(--surface); border:1px solid var(--line); border-radius:6px; padding:12px 14px; box-shadow:0 2px 8px rgba(59,42,23,.1); font-size:13.5px; min-width:0}
 .semname{font-family:var(--font-display); font-weight:700; font-size:12px; letter-spacing:.04em; text-transform:uppercase; color:var(--accent); margin-bottom:6px; display:flex; gap:8px; align-items:center; flex-wrap:wrap}
 .sem ul{margin:0; padding-left:18px; display:flex; flex-direction:column; gap:5px}
+.hb{display:inline-block; font-family:var(--font-display); font-weight:700; font-size:10.5px; letter-spacing:.04em; text-transform:uppercase; padding:2px 8px; border-radius:4px; margin:8px 0 4px; background:#F9E8E0; color:#8C1D14}
+.hb.s2{background:#E9EFFC; color:#1D4ED8}
+.hb.both{background:var(--head); color:var(--muted)}
 #roadprog{margin:8px 0 0; font-size:13px; background:rgba(168,53,44,.06); border:1px solid var(--line); border-radius:6px; padding:8px 10px}
 #concview h2{font-family:var(--font-display); font-weight:800; font-size:20px; letter-spacing:.01em; margin:0; color:var(--ink)}
 #concview h3{font-family:var(--font-display); font-size:13px; letter-spacing:.04em; text-transform:uppercase; margin:6px 0 0; color:var(--ink)}
@@ -181,10 +184,20 @@ td.num .more{color:var(--accent); font-weight:700}
     </div>
     <div class="sem">
       <div class="semname">Spring 2027 · Semester 2 <span class="chip gb">planning now</span></div>
+      <div class="hb s1">Spring 1 · Jan 12 – Feb 26</div>
       <ul>
-        <li><b>Strategic Management (B A 288T)</b> — required, cohort-locked section</li>
-        <li><b>Custom Core #2–#4</b> — pick three: Valuation I, Performance Mgmt &amp; Control, Leading People &amp; Orgs, AI in Business &amp; Society, Managerial Macro, Managing Human Capital, Corporate Strategy, Business Analytics</li>
-        <li><b>≈2 electives</b> — where the bid points matter</li>
+        <li><b>Strategic Management (B A 288T)</b> — 1 class · 2 hrs, required, cohort-locked</li>
+        <li><b>Custom core</b> — 1–2 classes · 2 hrs each from the Spring 1 menu: Valuation I, Performance Mgmt &amp; Control, Leading People &amp; Orgs, AI in Business &amp; Society</li>
+      </ul>
+      <div class="hb s2">Spring 2 · Mar 1 – Apr 30</div>
+      <ul>
+        <li><b>Custom core</b> — 1–2 classes · 2 hrs each from the Spring 2 menu: Managerial Macro, Managing Human Capital, Corporate Strategy, Business Analytics, Performance Mgmt &amp; Control</li>
+      </ul>
+      <div class="hb both">Both halves · full term</div>
+      <ul>
+        <li><b>Custom core total</b> — 3 classes · 6 hrs across the two menus, any mix of halves</li>
+        <li><b>≈2 electives</b> — 3 hrs each, full-term, meet in both halves — where the bid points matter</li>
+        <li><b>Semester total</b> — ≈6 classes · ≈14 hrs (2 + 6 + ≈6)</li>
       </ul>
       <p id="roadprog"></p>
     </div>

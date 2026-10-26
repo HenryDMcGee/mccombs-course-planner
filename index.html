@@ -132,6 +132,9 @@ a.rmp.hi{color:#166534; border-color:#166534; background:rgba(22,101,52,.07)}
 a.rmp.mid{color:#92610C; border-color:#92610C; background:rgba(146,97,12,.07)}
 a.rmp.lo{color:#B3261E; border-color:#B3261E; background:rgba(179,38,30,.07)}
 td.pts input.on{background:rgba(168,53,44,.08); border-color:var(--accent); color:#7A1E18; font-weight:700}
+select.term-sel{font:inherit; font-size:12px; color:var(--fg); background:var(--surface); border:1px solid var(--line); border-radius:4px; padding:1px 2px; max-width:72px}
+select.term-sel:focus-visible{outline:2px solid var(--accent); outline-offset:1px}
+tr.group.semh td{background:var(--head); color:var(--ink); font-size:13px; letter-spacing:.06em; padding:8px 10px; border-top:3px double var(--line)}
 .chip.gb{border-color:#1D4ED8; color:#1D4ED8; background:rgba(29,78,216,.06)}
 td.num .more{color:var(--accent); font-weight:700}
 @media (max-width:640px){ header h1{font-size:19px} }
@@ -300,6 +303,7 @@ td.num .more{color:var(--accent); font-weight:700}
   <thead><tr>
     <th class="plan">Plan</th>
     <th class="plan">Pts</th>
+    <th class="plan">Term</th>
     <th><button data-k="code">Course</button></th>
     <th><button data-k="title">Title</button></th>
     <th class="plan"><button data-k="gb">Conc</button></th>
@@ -564,13 +568,16 @@ const tb=document.getElementById('tb'), q=document.getElementById('q'),
 // Planned list: shared db when available, localStorage as a local fallback.
 function loadLocal(){try{return new Set(JSON.parse(localStorage.getItem('plan2027')||'[]'))}catch(e){return new Set()}}
 function loadLocalPts(){try{return JSON.parse(localStorage.getItem('plan2027pts')||'{}')}catch(e){return {}}}
-function saveLocal(){try{localStorage.setItem('plan2027',JSON.stringify([...planned])); localStorage.setItem('plan2027pts',JSON.stringify(points))}catch(e){}}
+function loadLocalSems(){try{return JSON.parse(localStorage.getItem('plan2027sems')||'{}')}catch(e){return {}}}
+function saveLocal(){try{localStorage.setItem('plan2027',JSON.stringify([...planned])); localStorage.setItem('plan2027pts',JSON.stringify(points)); localStorage.setItem('plan2027sems',JSON.stringify(sems))}catch(e){}}
 let planned=loadLocal();
 let points=loadLocalPts();
+let sems=loadLocalSems();
+const SEMS=[['SP27',"Sp '27",'Spring 2027'],['FA27',"Fa '27",'Fall 2027'],['SP28',"Sp '28",'Spring 2028']];
 const BUDGET=1000;
 let view='all';
 let dbCol=null, notesDoc=null, notesTimer=null;
-function planBody(x){return {u:x.u,course:x.c,title:x.t,professor:x.p,days:x.dy,time:x.tm,room:x.r,notes:x.n,pts:points[x.u]||0,addedAt:new Date().toISOString()}}
+function planBody(x){return {u:x.u,course:x.c,title:x.t,professor:x.p,days:x.dy,time:x.tm,room:x.r,notes:x.n,pts:points[x.u]||0,sem:sems[x.u]||'SP27',addedAt:new Date().toISOString()}}
 (async()=>{
   const db=await window.claude?.use?.('db');
   if(!db)return;
@@ -583,15 +590,15 @@ function planBody(x){return {u:x.u,course:x.c,title:x.t,professor:x.p,days:x.dy,
   },()=>{});
   let first=true;
   dbCol.onSnapshot(snap=>{
-    const remote=new Set(), remotePts={};
-    snap.docs.filter(d=>d.exists).forEach(d=>{remote.add(d.id); const p=Number(d.data().pts); remotePts[d.id]=isFinite(p)?p:0;});
+    const remote=new Set(), remotePts={}, remoteSems={};
+    snap.docs.filter(d=>d.exists).forEach(d=>{remote.add(d.id); const dd=d.data()||{}; const p=Number(dd.pts); remotePts[d.id]=isFinite(p)?p:0; remoteSems[d.id]=SEMS.some(s=>s[0]===dd.sem)?dd.sem:'SP27';});
     if(first){
       first=false;
       for(const u of planned){
-        if(!remote.has(u)){const x=C.find(c=>c.u===u); if(x){dbCol.doc(u).set(planBody(x)).catch(()=>{}); remote.add(u); remotePts[u]=points[u]||0;}}
+        if(!remote.has(u)){const x=C.find(c=>c.u===u); if(x){dbCol.doc(u).set(planBody(x)).catch(()=>{}); remote.add(u); remotePts[u]=points[u]||0; remoteSems[u]=sems[u]||'SP27';}}
       }
     }
-    planned=remote; points=remotePts; saveLocal(); updateTabs(); render();
+    planned=remote; points=remotePts; sems=remoteSems; saveLocal(); updateTabs(); render();
   },()=>{});
 })();
 function updateTabs(){tabPlan.textContent=`Planned (${planned.size})`; updateBudget(); updateConc(); updateRoad();}
@@ -612,7 +619,13 @@ function updateConc(){
     +(hasStep?', plus a STEP program':'')
     +`. Toward Option A (12 hrs): I B course ${hasIB?'✓':'still needed'}. Option B (9 hrs): STEP ${hasStep?'✓':'not planned'}.`;
 }
-function totalPts(){let t=0; for(const u of planned)t+=points[u]||0; return t}
+function totalPts(){let t=0; for(const u of planned){if((sems[u]||'SP27')!=='SP27')continue; t+=points[u]||0;} return t}
+function setSem(u,v){
+  if(!SEMS.some(s=>s[0]===v))return;
+  sems[u]=v; saveLocal(); updateBudget();
+  if(view==='plan')render();
+  if(dbCol&&planned.has(u))dbCol.doc(u).update({sem:v}).catch(()=>{});
+}
 function updateBudget(){
   const t=totalPts();
   budget.textContent=`${t} / ${BUDGET} pts${t>BUDGET?' — over by '+(t-BUDGET):''}`;
@@ -624,7 +637,7 @@ function setPoints(u,v){
   if(dbCol&&planned.has(u))dbCol.doc(u).update({pts:v}).catch(()=>{});
 }
 function setPlanned(u,on){
-  if(on)planned.add(u); else {planned.delete(u); delete points[u];}
+  if(on){planned.add(u); if(!sems[u])sems[u]='SP27';} else {planned.delete(u); delete points[u]; delete sems[u];}
   saveLocal(); updateTabs();
   render();
   if(dbCol){
@@ -671,6 +684,8 @@ tb.addEventListener('change',e=>{
     else us.forEach(u=>{if(planned.has(u))setPlanned(u,false)});
     return;
   }
+  const ts=e.target.closest('select.term-sel');
+  if(ts){setSem(ts.dataset.u,ts.value); return;}
   const pt=e.target.closest('input[type=number]');
   if(pt)setPoints(pt.dataset.u,pt.value);
 });
@@ -752,6 +767,7 @@ function render(){
     return `<tr${cls?` class="${cls}"`:''} title="${tip}">
       <td class="plan"><input type="checkbox" data-us="${x.us.join(',')}"${checked?' checked':''}${n>1?' title="Checking plans the earliest section. Unchecking removes every section of this course."':''} aria-label="Plan ${esc(x.c)}"></td>
       <td class="pts">${checked?`<input type="number" class="${(points[u0]||0)>0?'on':''}" min="0" max="${BUDGET}" step="10" value="${points[u0]||0}" data-u="${u0}" aria-label="Bid points for ${esc(x.c)}">`:''}</td>
+      <td class="plan">${checked?`<select class="term-sel" data-u="${u0}" aria-label="Semester for ${esc(x.c)}">${SEMS.map(s=>`<option value="${s[0]}"${(sems[u0]||'SP27')===s[0]?' selected':''}>${s[1]}</option>`).join('')}</select>`:''}</td>
       <td class="code">${esc(x.c)}${n>1?` <span class="more">+${n-1}</span>`:''}</td>
       <td class="title"><span class="t">${esc(x.t)}</span>${chips?`<span class="chips">${chips}</span>`:''}</td>
       <td class="plan">${x.gb==='course'?'<span class="chip gb">GB</span>':x.gb==='step'?'<span class="chip">STEP</span>':''}</td>
@@ -763,26 +779,40 @@ function render(){
   }
   if(view==='plan'){
     if(rows.length===0){
-      tb.innerHTML='<tr><td colspan="9" style="text-align:center;color:var(--muted);padding:28px 12px">Nothing planned yet. Switch to All sections and tick the Plan box next to a course.</td></tr>';
+      tb.innerHTML='<tr><td colspan="10" style="text-align:center;color:var(--muted);padding:28px 12px">Nothing planned yet. Switch to All sections and tick the Plan box next to a course.</td></tr>';
     }else{
       let html='';
       const ptsRow=x=>x.us.reduce((t,u)=>t+(planned.has(u)?(points[u]||0):0),0);
       const catOrder=['Required core','Custom core','Electives','Abroad'];
+      const semOf=r=>sems[r.us.find(u=>planned.has(u))]||'SP27';
+      const sp=rows.filter(r=>semOf(r)==='SP27');
+      html+=`<tr class="group semh"><td colspan="10">Spring 2027 — ${sp.length} planned</td></tr>`;
       // Two plans: one per half-semester. Full-term and straddling courses appear in both.
       for(const [half,label] of [['S1','Spring 1 plan'],['S2','Spring 2 plan']]){
-        const sub=rows.filter(r=>r.s!==9999&&r.sess.some(s=>s===''||s===half||s==='short'));
+        const sub=sp.filter(r=>r.s!==9999&&r.sess.some(s=>s===''||s===half||s==='short'));
         const hrs=sub.reduce((t,x)=>t+creditsOf(x),0), hp=sub.reduce((t,x)=>t+ptsRow(x),0);
-        html+=`<tr class="group half${half==='S2'?' s2':''}"><td colspan="9">${label} — ${sub.length} course${sub.length===1?'':'s'} · ${hrs} hrs · ${hp} pts</td></tr>`;
-        if(!sub.length){html+='<tr><td colspan="9" style="text-align:center; color:var(--muted); font-family:var(--font-fell); padding:14px 10px">nothing planned for this half yet</td></tr>'; continue;}
+        html+=`<tr class="group half${half==='S2'?' s2':''}"><td colspan="10">${label} — ${sub.length} course${sub.length===1?'':'s'} · ${hrs} hrs · ${hp} pts</td></tr>`;
+        if(!sub.length){html+='<tr><td colspan="10" style="text-align:center; color:var(--muted); font-family:var(--font-fell); padding:14px 10px">nothing planned for this half yet</td></tr>'; continue;}
         for(const cg of catOrder){
           const grp=sub.filter(r=>catOf(r)===cg).sort((a,b)=>ptsRow(b)-ptsRow(a));
           if(!grp.length)continue;
           const sc={'Required core':'core','Custom core':'cust','Electives':'elec','Abroad':'abr'}[cg];
-          html+=`<tr class="group sub ${sc}"><td colspan="9">${cg} (${grp.length})</td></tr>`+grp.map((x,i)=>rowHTML(x,i%2===1)).join('');
+          html+=`<tr class="group sub ${sc}"><td colspan="10">${cg} (${grp.length})</td></tr>`+grp.map((x,i)=>rowHTML(x,i%2===1)).join('');
         }
       }
-      const nosched=rows.filter(r=>r.s===9999);
-      if(nosched.length)html+=`<tr class="group half plain"><td colspan="9">No set schedule</td></tr>`+nosched.map((x,i)=>rowHTML(x,i%2===1)).join('');
+      const nosched=sp.filter(r=>r.s===9999);
+      if(nosched.length)html+=`<tr class="group half plain"><td colspan="10">No set schedule</td></tr>`+nosched.map((x,i)=>rowHTML(x,i%2===1)).join('');
+      for(const [code,,label] of SEMS.slice(1)){
+        const fr=rows.filter(r=>semOf(r)===code);
+        if(!fr.length)continue;
+        html+=`<tr class="group semh"><td colspan="10">${label} — ${fr.length} planned · sections shown are this spring's listings</td></tr>`;
+        for(const cg of catOrder){
+          const grp=fr.filter(r=>catOf(r)===cg).sort((a,b)=>ptsRow(b)-ptsRow(a));
+          if(!grp.length)continue;
+          const sc={'Required core':'core','Custom core':'cust','Electives':'elec','Abroad':'abr'}[cg];
+          html+=`<tr class="group sub ${sc}"><td colspan="10">${cg} (${grp.length})</td></tr>`+grp.map((x,i)=>rowHTML(x,i%2===1)).join('');
+        }
+      }
       tb.innerHTML=html;
     }
     const nReq=rows.filter(r=>catOf(r)==='Required core').length,

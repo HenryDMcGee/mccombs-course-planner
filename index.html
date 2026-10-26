@@ -4,14 +4,14 @@
 /* Layout: one full-width filter bar over a single dense registrar-style table; burnt-orange UT accent on warm paper */
 :root{
   --wood:#413327; --wood2:#2E2317; --parch:#F8F1DE; --parch-hi:#FBF7EA; --parch-lo:#F0E5C8;
-  --bg:#F8F1DE; --surface:#FFFEF9; --fg:#2A2117; --muted:#7A6647; --ink:#5A4226;
+  --bg:#F8F1DE; --surface:#FFFEF9; --fg:#2A2117; --muted:#6B5637; --ink:#5A4226;
   --line:#E2D5B4; --hairline:#EFE7D2;
   --accent:#A8352C; --accent-ink:#F7EBD4; --accent-soft:rgba(168,53,44,.08); --danger:#8C2B23; --head:#F7F0DD;
   --roller:linear-gradient(180deg,#7A4E27,#4A2D14 55%,#6B4423);
   --font-body:"Libre Franklin",-apple-system,"Segoe UI",Helvetica,Arial,sans-serif;
-  --font-display:"Cinzel",serif;
-  --font-fell:"IM Fell English",Georgia,serif;
-  --font-black:"UnifrakturMaguntia","Cinzel",serif;
+  --font-display:"Libre Franklin",-apple-system,"Segoe UI",Helvetica,Arial,sans-serif;
+  --font-fell:"Libre Franklin",-apple-system,"Segoe UI",Helvetica,Arial,sans-serif;
+  --font-black:"Cinzel",serif;
   --font-mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
 }
 /* Light-only by design: the parchment look is one committed visual world.
@@ -19,30 +19,26 @@
    identically whatever the viewer's OS or app theme. */
 body{
   background:linear-gradient(180deg,var(--wood),var(--wood2)) fixed; color:var(--fg); font-family:var(--font-body);
-  font-size:14px; line-height:1.45;
+  font-size:15px; line-height:1.5;
   padding-left:max(16px,env(safe-area-inset-left,0px));
   padding-right:max(16px,env(safe-area-inset-right,0px));
-  padding-block:20px 48px;
+  padding-block:10px 24px;
 }
-.roller{height:38px; border-radius:19px; background:var(--roller); max-width:1248px; margin:0 auto; position:relative; box-shadow:0 3px 8px rgba(0,0,0,.45)}
-.roller::before,.roller::after{content:""; position:absolute; top:6px; width:26px; height:26px; border-radius:50%; background:radial-gradient(circle at 35% 35%,#8C5A2E,#3A2210)}
-.roller::before{left:10px}
-.roller::after{right:10px}
-.sheet{max-width:1200px; margin:0 auto; background:radial-gradient(ellipse at 20% 10%,var(--parch-hi),var(--parch) 55%,var(--parch-lo)); box-shadow:0 10px 26px rgba(0,0,0,.45), inset 0 0 70px rgba(122,78,39,.16); padding:34px 34px 26px}
+.roller{height:16px; border-radius:8px; background:var(--roller); max-width:1232px; margin:0 auto; box-shadow:0 2px 6px rgba(0,0,0,.4)}
+.sheet{max-width:1200px; margin:6px auto; background:radial-gradient(ellipse at 20% 10%,var(--parch-hi),var(--parch) 55%,var(--parch-lo)); box-shadow:0 8px 20px rgba(0,0,0,.4), inset 0 0 50px rgba(122,78,39,.12); padding:14px 16px}
 @keyframes unroll{from{clip-path:inset(0 0 100% 0)}to{clip-path:inset(0 0 -40px 0)}}
-.sheet{animation:unroll 1.4s cubic-bezier(.22,.61,.36,1) .2s both}
+.sheet{animation:unroll .5s ease-out both}
 @media (prefers-reduced-motion: reduce){.sheet{animation:none}}
-.subtitle{font-family:var(--font-display); font-size:13px; letter-spacing:.2em; text-align:center; color:var(--ink); margin:6px 0 0}
-.fleuron{text-align:center; color:var(--muted); letter-spacing:.4em; font-size:16px; margin-top:8px}
-header{text-align:center}
-header h1{font-family:var(--font-black); font-size:42px; font-weight:400; letter-spacing:.01em; margin:0; text-wrap:balance}
-header p{margin:10px auto 0; color:var(--muted); max-width:72ch; font-family:var(--font-fell); font-style:italic; font-size:15px}
-.tabs{display:flex; gap:10px; margin-top:18px; align-items:center}
-.tabs button{all:unset; cursor:pointer; font-family:var(--font-display); font-weight:700; font-size:13px; letter-spacing:.06em; padding:8px 20px; border:1.5px solid var(--ink); color:var(--ink); background:transparent; font-variant-numeric:tabular-nums}
+#legend{margin:6px 0 0; font-size:11.5px; color:var(--muted)}
+header.bar{display:flex; align-items:center; gap:10px; flex-wrap:wrap}
+header h1{font-family:var(--font-black); font-size:17px; font-weight:700; letter-spacing:.03em; margin:0; white-space:nowrap}
+.term{font-size:11px; font-weight:600; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); margin-right:2px}
+.tabs{display:flex; gap:8px; align-items:center}
+.tabs button{all:unset; cursor:pointer; font-family:var(--font-display); font-weight:700; font-size:12.5px; letter-spacing:.02em; padding:5px 12px; border:1.5px solid var(--ink); border-radius:6px; color:var(--ink); background:transparent; font-variant-numeric:tabular-nums}
 .tabs button:hover{color:var(--accent); border-color:var(--accent)}
 .tabs button:focus-visible{outline:2px solid var(--accent); outline-offset:1px}
-.tabs button[aria-selected="true"]{background:#6E1F1A; border-color:#6E1F1A; color:#F2E3BF; clip-path:polygon(0 0,100% 0,94% 50%,100% 100%,0 100%); padding-right:28px}
-th.plan{font-family:var(--font-display); font-weight:700; font-size:11.5px; text-transform:uppercase; letter-spacing:.08em; color:var(--ink)}
+.tabs button[aria-selected="true"]{background:var(--accent); border-color:var(--accent); color:var(--accent-ink)}
+th.plan{font-family:var(--font-display); font-weight:700; font-size:12px; text-transform:uppercase; letter-spacing:.04em; color:var(--ink)}
 td.plan,th.plan{text-align:center}
 td.plan input{width:16px; height:16px; accent-color:var(--accent); cursor:pointer}
 td.pts input{width:64px; font:inherit; font-size:12.5px; font-variant-numeric:tabular-nums; color:var(--fg); background:var(--surface); border:1px solid var(--line); border-radius:6px; padding:4px 6px; text-align:right}
@@ -51,25 +47,25 @@ a.rmp{display:inline-block; font-size:11.5px; font-weight:700; font-variant-nume
 a.rmp:hover{text-decoration:underline}
 a.rmp .n{font-weight:400; color:var(--muted)}
 td.rmpc{white-space:nowrap}
-.budget{margin-left:auto; width:92px; height:92px; box-sizing:border-box; border-radius:50%; display:flex; align-items:center; justify-content:center; text-align:center; padding:10px; font-family:var(--font-display); font-size:12.5px; font-weight:700; font-variant-numeric:tabular-nums; line-height:1.25; color:#F2D9B0; background:radial-gradient(circle at 35% 30%,#A8352C,#7A1E18 60%,#5E130F); box-shadow:0 3px 8px rgba(0,0,0,.4), inset 0 0 0 6px rgba(255,235,200,.14); transform:rotate(-6deg); white-space:normal}
-.budget.over{color:#FFD9A0; box-shadow:0 3px 8px rgba(0,0,0,.4), inset 0 0 0 6px rgba(255,120,100,.55)}
+.budget{margin-left:auto; font-size:13px; font-weight:800; font-variant-numeric:tabular-nums; color:var(--accent-ink); background:var(--accent); border-radius:999px; padding:6px 14px; white-space:nowrap; box-shadow:0 2px 6px rgba(0,0,0,.25)}
+.budget.over{background:var(--danger); color:#FFFFFF}
 #notesview{display:flex; flex-direction:column; gap:6px; margin-top:12px}
 #notesview[hidden]{display:none}
-#notes{min-height:440px; font:16px/1.8 var(--font-fell); color:var(--fg); background:var(--surface); border:1px solid var(--line); border-radius:6px; padding:18px 20px; resize:vertical; box-shadow:0 2px 10px rgba(59,42,23,.12); min-width:0}
+#notes{min-height:440px; font:15px/1.7 var(--font-body); color:var(--fg); background:var(--surface); border:1px solid var(--line); border-radius:6px; padding:18px 20px; resize:vertical; box-shadow:0 2px 10px rgba(59,42,23,.12); min-width:0}
 #notes:focus-visible{outline:2px solid var(--accent); outline-offset:1px}
-#notestate{margin:0; font-family:var(--font-fell); font-style:italic; font-size:12.5px; color:var(--muted); text-align:right}
+#notestate{margin:0; font-family:var(--font-fell); font-size:12.5px; color:var(--muted); text-align:right}
 #concview{display:flex; flex-direction:column; gap:12px; margin-top:14px}
 #concview[hidden]{display:none}
-#concview h2{font-family:var(--font-display); font-size:20px; letter-spacing:.06em; margin:0; color:var(--ink)}
-#concview h3{font-family:var(--font-display); font-size:13px; letter-spacing:.08em; text-transform:uppercase; margin:6px 0 0; color:var(--ink)}
+#concview h2{font-family:var(--font-display); font-weight:800; font-size:20px; letter-spacing:.01em; margin:0; color:var(--ink)}
+#concview h3{font-family:var(--font-display); font-size:13px; letter-spacing:.04em; text-transform:uppercase; margin:6px 0 0; color:var(--ink)}
 #concview p{margin:0; max-width:85ch}
-.concintro,.concnote{font-family:var(--font-fell); font-style:italic; color:var(--muted); font-size:14px}
+.concintro,.concnote{font-family:var(--font-fell); color:var(--muted); font-size:14px}
 #concprog{font-size:14.5px; background:var(--surface); border:1px solid var(--line); border-radius:6px; padding:12px 14px; box-shadow:0 2px 10px rgba(59,42,23,.12)}
 .opts{display:flex; gap:10px; flex-wrap:wrap}
 .opt{flex:1 1 220px; background:var(--surface); border:1px solid var(--line); border-radius:6px; padding:12px 14px; box-shadow:0 2px 10px rgba(59,42,23,.12); font-size:13.5px}
 .optname{font-family:var(--font-display); font-weight:700; font-size:11.5px; letter-spacing:.1em; text-transform:uppercase; color:var(--accent); margin-bottom:4px}
 .conclist{margin:4px 0 0; padding-left:20px; display:flex; flex-direction:column; gap:6px; max-width:95ch; font-size:13.5px}
-.toolbar{display:flex; flex-wrap:wrap; gap:8px; align-items:center; margin:12px 0 10px}
+.toolbar{display:flex; flex-wrap:wrap; gap:8px; align-items:center; margin:10px 0 6px}
 .toolbar input[type=search],.toolbar select{
   font:inherit; color:var(--fg); background:var(--surface); border:1px solid var(--line);
   border-radius:6px; padding:7px 10px; min-width:0;
@@ -78,15 +74,15 @@ td.rmpc{white-space:nowrap}
 .toolbar select{flex:0 1 auto}
 .toolbar label.toggle{display:flex; gap:6px; align-items:center; color:var(--muted); cursor:pointer; white-space:nowrap}
 .toolbar input[type=search]:focus-visible,.toolbar select:focus-visible,th button:focus-visible{outline:2px solid var(--accent); outline-offset:1px}
-#count{color:var(--muted); font-size:13px; margin:0 0 8px; font-variant-numeric:tabular-nums; font-family:var(--font-fell); font-style:italic}
+#count{color:var(--muted); font-size:13px; margin:0 0 8px; font-variant-numeric:tabular-nums; font-family:var(--font-fell)}
 .tablewrap{overflow-x:auto; border:1px solid var(--line); border-radius:6px; background:var(--surface); box-shadow:0 2px 10px rgba(59,42,23,.12)}
-table{border-collapse:collapse; width:100%; min-width:1100px}
-th,td{text-align:left; padding:8px 10px; border-bottom:1px solid var(--hairline); vertical-align:top}
+table{border-collapse:collapse; width:100%; min-width:980px; font-size:13.5px; line-height:1.35}
+th,td{text-align:left; padding:5px 8px; border-bottom:1px solid var(--hairline); vertical-align:top}
 tbody tr:last-child td{border-bottom:none}
 thead th{position:sticky; top:env(safe-area-inset-top,0px); background:var(--head); z-index:2; border-bottom:2px solid var(--line)}
 th button{
-  all:unset; cursor:pointer; font-family:var(--font-display); font-weight:700; font-size:11.5px; text-transform:uppercase;
-  letter-spacing:.08em; color:var(--ink); display:inline-flex; gap:4px; align-items:center;
+  all:unset; cursor:pointer; font-family:var(--font-display); font-weight:700; font-size:12px; text-transform:uppercase;
+  letter-spacing:.04em; color:var(--ink); display:inline-flex; gap:4px; align-items:center;
 }
 th button:hover,th button[data-dir]{color:var(--accent)}
 th button[data-dir]::after{content:"↑"; font-size:10px}
@@ -106,30 +102,41 @@ td.notes{color:var(--muted); font-size:12.5px; max-width:34ch}
 .chip.req{border-color:currentColor}
 tr.dim td{opacity:.55}
 tr.cancel td .t{text-decoration:line-through}
-tr.group td{background:var(--head); color:var(--ink); font-family:var(--font-display); font-weight:700; font-size:11px; text-transform:uppercase; letter-spacing:.1em; padding:7px 10px; text-align:center}
-tr.group.half td{color:var(--accent); font-size:12px; letter-spacing:.12em; padding:10px; border-top:2px solid var(--line)}
-tr.group.sub td{background:var(--surface); color:var(--muted); font-size:10.5px; letter-spacing:.08em; text-align:left; padding:5px 10px}
+tr.group td{background:var(--head); color:var(--ink); font-family:var(--font-display); font-weight:700; font-size:11.5px; text-transform:uppercase; letter-spacing:.05em; padding:5px 10px; text-align:center}
+tr.group.half td{background:#F9E8E0; color:#8C1D14; font-size:12px; letter-spacing:.05em; padding:6px 10px; border-top:2px solid var(--line)}
+tr.group.half.s2 td{background:#E9EFFC; color:#1D4ED8}
+tr.group.half.plain td{background:var(--head); color:var(--muted)}
+tr.group.sub td{background:var(--surface); color:var(--muted); font-size:10.5px; letter-spacing:.04em; text-align:left; padding:3px 10px; border-left:3px solid transparent}
+tr.group.sub.core td{color:#8C1D14; border-left-color:#A8352C; background:rgba(168,53,44,.05)}
+tr.group.sub.cust td{color:#4338CA; border-left-color:#4338CA; background:rgba(67,56,202,.05)}
+tr.group.sub.elec td{color:#0F766E; border-left-color:#0F766E; background:rgba(15,118,110,.05)}
+tr.group.sub.abr td{color:#1D4ED8; border-left-color:#1D4ED8; background:rgba(29,78,216,.05)}
+tr.alt td{background:#FAF5E9}
+.bid{background:#FBEAC8; color:#7A4E12; border-radius:4px; padding:0 5px; font-weight:600; font-variant-numeric:tabular-nums}
+.bid.hot{background:#F6D9D5; color:#8C1D14}
+a.rmp.hi{color:#166534; border-color:#166534; background:rgba(22,101,52,.07)}
+a.rmp.mid{color:#92610C; border-color:#92610C; background:rgba(146,97,12,.07)}
+a.rmp.lo{color:#B3261E; border-color:#B3261E; background:rgba(179,38,30,.07)}
+td.pts input.on{background:rgba(168,53,44,.08); border-color:var(--accent); color:#7A1E18; font-weight:700}
+.chip.gb{border-color:#1D4ED8; color:#1D4ED8; background:rgba(29,78,216,.06)}
 td.num .more{color:var(--accent); font-weight:700}
 @media (max-width:640px){ header h1{font-size:19px} }
 </style>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=IM+Fell+English:ital@0;1&family=Libre+Franklin:wght@400;600;700;800&family=UnifrakturMaguntia&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Libre+Franklin:wght@400;600;700;800&display=swap">
 
 <div class="roller" aria-hidden="true"></div>
 <div class="sheet">
-<header>
+<header class="bar">
   <h1>The Codex of Courses</h1>
-  <div class="subtitle">McCOMBS SCHOOL · SPRING TERM · MMXXVII</div>
-  <p>121 Spring 2027 sections plus recent years' abroad programs. Click a column header to sort, use the filters to narrow it down, and tick Plan to build your spring list and spread your 1,000 bid points across it. Bid history: '25 Seats is Spring 2025 average seats awarded per course; Rd 1 / Rd 2 avg is the market-clearing bid averaged across Spring 2024 and Spring 2025 (0 = seats still open at close, n/a = no data).</p>
-  <div class="fleuron" aria-hidden="true">———&nbsp;❦&nbsp;———</div>
-</header>
-
-<div class="tabs" role="tablist" aria-label="View">
-  <button role="tab" id="tab-all" aria-selected="true">All sections</button>
-  <button role="tab" id="tab-plan" aria-selected="false">Planned (0)</button>
-  <button role="tab" id="tab-notes" aria-selected="false">Notes</button>
-  <button role="tab" id="tab-conc" aria-selected="false">Concentration</button>
+  <span class="term">Spring 2027</span>
+  <div class="tabs" role="tablist" aria-label="View">
+    <button role="tab" id="tab-all" aria-selected="true">All sections</button>
+    <button role="tab" id="tab-plan" aria-selected="false">Planned (0)</button>
+    <button role="tab" id="tab-notes" aria-selected="false">Notes</button>
+    <button role="tab" id="tab-conc" aria-selected="false">Concentration</button>
+  </div>
   <span class="budget" id="budget">0 / 1000 pts</span>
-</div>
+</header>
 
 <div id="notesview" hidden>
   <p id="notestate">saved on this device</p>
@@ -156,7 +163,7 @@ td.num .more{color:var(--accent); font-weight:700}
     <li><b>RM 395 / PA 388K Managing International Risk</b> — not on the Spring 2027 schedule</li>
     <li><b>UT Foreign Language</b> — any UT foreign-language course counts (not listed on this business schedule)</li>
   </ul>
-  <p class="concnote">Courses marked <span class="chip core">GB</span> in the table count toward the concentration; STEP rows satisfy Option B's program leg.</p>
+  <p class="concnote">Courses marked <span class="chip gb">GB</span> in the table count toward the concentration; STEP rows satisfy Option B's program leg.</p>
 </div>
 
 <div class="toolbar">
@@ -183,25 +190,20 @@ td.num .more{color:var(--accent); font-weight:700}
   <label class="toggle"><input type="checkbox" id="dedupe"> One row per course</label>
 </div>
 <p id="count"></p>
+<p id="legend">★ green ≥4.0 · amber 3.0–3.9 · red below 3.0 — bid pills: amber = cleared above 0, red = 500+ — hover any row for section number, room, '25 seats, and notes</p>
 
 <div class="tablewrap">
 <table>
   <thead><tr>
     <th class="plan">Plan</th>
     <th class="plan">Pts</th>
-    <th><button data-k="u">Unique</button></th>
     <th><button data-k="code">Course</button></th>
     <th><button data-k="title">Title</button></th>
     <th class="plan"><button data-k="gb">Conc</button></th>
     <th><button data-k="prof">Professor</button></th>
     <th><button data-k="rmp">RMP</button></th>
-    <th><button data-k="days">Days</button></th>
-    <th><button data-k="start">Time</button></th>
-    <th><button data-k="room">Room</button></th>
-    <th><button data-k="seats">'25 Seats</button></th>
-    <th><button data-k="r1">Rd 1 avg</button></th>
-    <th><button data-k="r2">Rd 2 avg</button></th>
-    <th>Notes</th>
+    <th><button data-k="start">Days · Time</button></th>
+    <th style="text-align:right" title="2024–25 average market-clearing bid per course. 0 = seats still open at close, n/a = no data. Hover a row for section number, room, '25 seats, and notes."><button data-k="r1">Rd 1</button> · <button data-k="r2">Rd 2</button></th>
   </tr></thead>
   <tbody id="tb"></tbody>
 </table>
@@ -439,7 +441,8 @@ function rmpCell(p){
   const m=RM[normP(p)];
   if(!m)return '<span class="chip" style="border-style:dashed">no RMP</span>';
   if(m[0]==null)return `<a class="rmp" href="${m[2]}" target="_blank" rel="noopener" title="${esc(normP(p))} is on RateMyProfessors but has no ratings yet">★ — <span class="n">(0)</span></a>`;
-  return `<a class="rmp" href="${m[2]}" target="_blank" rel="noopener" title="${esc(normP(p))} on RateMyProfessors — ${m[1]} rating${m[1]===1?'':'s'}">★ ${m[0].toFixed(1)} <span class="n">(${m[1]})</span></a>`;
+  const tier=m[0]>=4?' hi':m[0]>=3?' mid':' lo';
+  return `<a class="rmp${tier}" href="${m[2]}" target="_blank" rel="noopener" title="${esc(normP(p))} on RateMyProfessors — ${m[1]} rating${m[1]===1?'':'s'}">★ ${m[0].toFixed(1)} <span class="n">(${m[1]})</span></a>`;
 }
 
 const tb=document.getElementById('tb'), q=document.getElementById('q'),
@@ -451,7 +454,8 @@ const tb=document.getElementById('tb'), q=document.getElementById('q'),
   tabNotes=document.getElementById('tab-notes'), notesView=document.getElementById('notesview'),
   tabConc=document.getElementById('tab-conc'), concView=document.getElementById('concview'),
   notesTa=document.getElementById('notes'), noteState=document.getElementById('notestate'),
-  toolbarEl=document.querySelector('.toolbar'), wrapEl=document.querySelector('.tablewrap');
+  toolbarEl=document.querySelector('.toolbar'), wrapEl=document.querySelector('.tablewrap'),
+  legendEl=document.getElementById('legend');
 
 // Planned list: shared db when available, localStorage as a local fallback.
 function loadLocal(){try{return new Set(JSON.parse(localStorage.getItem('plan2027')||'[]'))}catch(e){return new Set()}}
@@ -526,7 +530,7 @@ function setView(v){
   tabConc.setAttribute('aria-selected',String(v==='conc'));
   const n=v==='notes', c=v==='conc';
   notesView.hidden=!n; concView.hidden=!c;
-  toolbarEl.hidden=n||c; count.hidden=n||c; wrapEl.hidden=n||c;
+  toolbarEl.hidden=n||c; count.hidden=n||c; wrapEl.hidden=n||c; legendEl.hidden=n||c;
   if(!n&&!c)render();
 }
 tabConc.addEventListener('click',()=>setView('conc'));
@@ -620,32 +624,33 @@ function render(){
   }
   const k=keyOf[sortKey], dir=sortDir==='asc'?1:-1;
   rows.sort((a,b)=>{const A=k(a),B=k(b); return (A<B?-1:A>B?1:0)*dir || (a.c<b.c?-1:1);});
-  function rowHTML(x){
+  function bidHTML(v){
+    if(v==null)return '<span style="color:var(--muted)">n/a</span>';
+    if(!v)return '<span style="color:var(--muted)">0</span>';
+    return `<span class="bid${v>=500?' hot':''}">${fmtStat(v)}</span>`;
+  }
+  function rowHTML(x,alt){
     const chips=[...x.sess.filter(s=>s==='S1'||s==='S2').map(s=>s==='S1'?'Spring 1':'Spring 2'),...x.tg]
       .map(t=>`<span class="${t==='Spring 1'||t==='Spring 2'?'chip':chipClass(t)}">${esc(t)}</span>`).join('');
-    const dim=x.tg.includes('Restricted')||x.tg.includes('Canceled')?' class="dim'+(x.tg.includes('Canceled')?' cancel':'')+'"':'';
+    let cls=alt?'alt':'';
+    if(x.tg.includes('Restricted')||x.tg.includes('Canceled'))cls+=(cls?' ':'')+'dim'+(x.tg.includes('Canceled')?' cancel':'');
     const n=x.us.length, checked=x.us.some(u=>planned.has(u)), u0=x.us.find(u=>planned.has(u));
-    return `<tr${dim}>
+    const tip=esc(`Section ${x.us.join(', ')}${x.r&&x.r!=='—'?` · Room ${x.r}`:''}${x.st?` · '25 avg seats ${fmtStat(x.st[0])}`:''}${x.n?` · ${x.n}`:''}`).replace(/"/g,'&quot;');
+    return `<tr${cls?` class="${cls}"`:''} title="${tip}">
       <td class="plan"><input type="checkbox" data-us="${x.us.join(',')}"${checked?' checked':''}${n>1?' title="Checking plans the earliest section. Unchecking removes every section of this course."':''} aria-label="Plan ${esc(x.c)}"></td>
-      <td class="pts">${checked?`<input type="number" min="0" max="${BUDGET}" step="10" value="${points[u0]||0}" data-u="${u0}" aria-label="Bid points for ${esc(x.c)}">`:''}</td>
-      <td class="num">${x.us[0]}${n>1?` <span class="more">+${n-1}</span>`:''}</td>
-      <td class="code">${esc(x.c)}</td>
+      <td class="pts">${checked?`<input type="number" class="${(points[u0]||0)>0?'on':''}" min="0" max="${BUDGET}" step="10" value="${points[u0]||0}" data-u="${u0}" aria-label="Bid points for ${esc(x.c)}">`:''}</td>
+      <td class="code">${esc(x.c)}${n>1?` <span class="more">+${n-1}</span>`:''}</td>
       <td class="title"><span class="t">${esc(x.t)}</span>${chips?`<span class="chips">${chips}</span>`:''}</td>
-      <td class="plan">${x.gb==='course'?'<span class="chip core">GB</span>':x.gb==='step'?'<span class="chip">STEP</span>':''}</td>
+      <td class="plan">${x.gb==='course'?'<span class="chip gb">GB</span>':x.gb==='step'?'<span class="chip">STEP</span>':''}</td>
       <td>${esc(x.p)}</td>
       <td class="rmpc">${x.p==='—'?'':rmpCell(x.p)}</td>
-      <td class="days">${esc(x.dy)}</td>
-      <td class="time">${esc(x.tm)}</td>
-      <td class="room">${esc(x.r)}</td>
-      <td class="num">${x.st?fmtStat(x.st[0]):'—'}</td>
-      <td class="num">${x.st?fmtStat(x.st[1]):'—'}</td>
-      <td class="num">${x.st?fmtStat(x.st[2]):'—'}</td>
-      <td class="notes">${esc(x.n)}</td>
+      <td class="days">${esc(x.dy)}${x.tm&&x.tm!=='—'?' · '+esc(x.tm):''}</td>
+      <td class="num" style="text-align:right">${x.st?`${bidHTML(x.st[1])} · ${bidHTML(x.st[2])}`:'<span style="color:var(--muted)">— · —</span>'}</td>
     </tr>`;
   }
   if(view==='plan'){
     if(rows.length===0){
-      tb.innerHTML='<tr><td colspan="15" style="text-align:center;color:var(--muted);padding:28px 12px">Nothing planned yet. Switch to All sections and tick the Plan box next to a course.</td></tr>';
+      tb.innerHTML='<tr><td colspan="9" style="text-align:center;color:var(--muted);padding:28px 12px">Nothing planned yet. Switch to All sections and tick the Plan box next to a course.</td></tr>';
     }else{
       let html='';
       const ptsRow=x=>x.us.reduce((t,u)=>t+(planned.has(u)?(points[u]||0):0),0);
@@ -654,16 +659,17 @@ function render(){
       for(const [half,label] of [['S1','Spring 1 plan'],['S2','Spring 2 plan']]){
         const sub=rows.filter(r=>r.s!==9999&&r.sess.some(s=>s===''||s===half||s==='short'));
         const hrs=sub.reduce((t,x)=>t+creditsOf(x),0), hp=sub.reduce((t,x)=>t+ptsRow(x),0);
-        html+=`<tr class="group half"><td colspan="15">❦&nbsp; ${label} — ${sub.length} course${sub.length===1?'':'s'} · ${hrs} hrs · ${hp} pts &nbsp;❦</td></tr>`;
-        if(!sub.length){html+='<tr><td colspan="15" style="text-align:center; color:var(--muted); font-family:var(--font-fell); font-style:italic; padding:14px 10px">nothing planned for this half yet</td></tr>'; continue;}
+        html+=`<tr class="group half${half==='S2'?' s2':''}"><td colspan="9">${label} — ${sub.length} course${sub.length===1?'':'s'} · ${hrs} hrs · ${hp} pts</td></tr>`;
+        if(!sub.length){html+='<tr><td colspan="9" style="text-align:center; color:var(--muted); font-family:var(--font-fell); padding:14px 10px">nothing planned for this half yet</td></tr>'; continue;}
         for(const cg of catOrder){
           const grp=sub.filter(r=>catOf(r)===cg).sort((a,b)=>ptsRow(b)-ptsRow(a));
           if(!grp.length)continue;
-          html+=`<tr class="group sub"><td colspan="15">${cg} (${grp.length})</td></tr>`+grp.map(rowHTML).join('');
+          const sc={'Required core':'core','Custom core':'cust','Electives':'elec','Abroad':'abr'}[cg];
+          html+=`<tr class="group sub ${sc}"><td colspan="9">${cg} (${grp.length})</td></tr>`+grp.map((x,i)=>rowHTML(x,i%2===1)).join('');
         }
       }
       const nosched=rows.filter(r=>r.s===9999);
-      if(nosched.length)html+=`<tr class="group half"><td colspan="15">❦&nbsp; No set schedule &nbsp;❦</td></tr>`+nosched.map(rowHTML).join('');
+      if(nosched.length)html+=`<tr class="group half plain"><td colspan="9">No set schedule</td></tr>`+nosched.map((x,i)=>rowHTML(x,i%2===1)).join('');
       tb.innerHTML=html;
     }
     const nReq=rows.filter(r=>catOf(r)==='Required core').length,
@@ -674,7 +680,7 @@ function render(){
       ?`${rows.length} planned — ${nReq} required core · ${nCC} custom core · ${nEl} elective${nEl===1?'':'s'}${nAb?` · ${nAb} abroad`:''}`
       :'0 planned sections';
   }else{
-    tb.innerHTML=rows.map(rowHTML).join('');
+    tb.innerHTML=rows.map((x,i)=>rowHTML(x,i%2===1)).join('');
     count.textContent=dedupe.checked
       ?`${rows.length} courses (of ${C.length} sections)`
       :`${rows.length} of ${C.length} sections`;

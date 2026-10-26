@@ -58,6 +58,11 @@ td.rmpc{white-space:nowrap}
 #concview[hidden],#roadview[hidden]{display:none}
 #roadview h2{font-family:var(--font-display); font-weight:800; font-size:20px; letter-spacing:.01em; margin:0; color:var(--ink)}
 .sems{display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:10px}
+.typegrid{display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:10px}
+.type{background:var(--surface); border:1px solid var(--line); border-radius:6px; padding:10px 12px; box-shadow:0 2px 8px rgba(59,42,23,.1); min-width:0}
+.tn{font-family:var(--font-display); font-weight:700; font-size:11px; letter-spacing:.04em; text-transform:uppercase; color:var(--accent)}
+.tv{font-size:16px; font-weight:800; font-variant-numeric:tabular-nums; margin:2px 0}
+.td2{font-size:12px; color:var(--muted)}
 .sem{background:var(--surface); border:1px solid var(--line); border-radius:6px; padding:12px 14px; box-shadow:0 2px 8px rgba(59,42,23,.1); font-size:13.5px; min-width:0}
 .semname{font-family:var(--font-display); font-weight:700; font-size:12px; letter-spacing:.04em; text-transform:uppercase; color:var(--accent); margin-bottom:6px; display:flex; gap:8px; align-items:center; flex-wrap:wrap}
 .sem ul{margin:0; padding-left:18px; display:flex; flex-direction:column; gap:5px}
@@ -153,6 +158,13 @@ td.num .more{color:var(--accent); font-weight:700}
 <div id="roadview" hidden>
   <h2>MBA Roadmap — required classes by semester</h2>
   <p class="concintro">Texas Full-Time MBA structure per the published curriculum — core is front-loaded in year one, year two is electives plus the two program requirements. Confirm hour totals and custom-core menus with your academic advisor.</p>
+  <div class="typegrid">
+    <div class="type"><div class="tn">Required core</div><div class="tv">8 classes · ≈16 hrs</div><div class="td2">7 in fall plus Strategic Management in spring — core classes run 2 hrs each (course numbers 28x)</div></div>
+    <div class="type"><div class="tn">Custom core</div><div class="tv">4 classes · 8 hrs</div><div class="td2">2 hrs each, chosen from the core menu: #1 in fall, #2–#4 in spring</div></div>
+    <div class="type"><div class="tn">Electives</div><div class="tv">≈12 classes · ≈36 hrs</div><div class="td2">Typically 3 hrs each (38x/39x numbers); the Worldview and R&amp;I requirement courses count within these</div></div>
+    <div class="type"><div class="tn">Concentration — Global Business</div><div class="tv">within electives</div><div class="td2">12 hrs incl. one I B course (Option A) · 9 hrs + STEP (Option B) · 6 hrs + semester abroad (Option C)</div></div>
+  </div>
+  <p class="concnote">Class counts assume the commonly cited 60-hour full-time MBA; the public curriculum page doesn't publish per-type hour totals, so treat the ≈ figures as planning estimates and confirm the exact split with your advisor.</p>
   <div class="sems">
     <div class="sem">
       <div class="semname">Fall 2026 · Semester 1 <span class="chip">in progress</span></div>

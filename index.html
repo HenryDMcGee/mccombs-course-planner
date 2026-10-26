@@ -54,8 +54,14 @@ td.rmpc{white-space:nowrap}
 #notes{min-height:440px; font:15px/1.7 var(--font-body); color:var(--fg); background:var(--surface); border:1px solid var(--line); border-radius:6px; padding:18px 20px; resize:vertical; box-shadow:0 2px 10px rgba(59,42,23,.12); min-width:0}
 #notes:focus-visible{outline:2px solid var(--accent); outline-offset:1px}
 #notestate{margin:0; font-family:var(--font-fell); font-size:12.5px; color:var(--muted); text-align:right}
-#concview{display:flex; flex-direction:column; gap:12px; margin-top:14px}
-#concview[hidden]{display:none}
+#concview,#roadview{display:flex; flex-direction:column; gap:12px; margin-top:14px}
+#concview[hidden],#roadview[hidden]{display:none}
+#roadview h2{font-family:var(--font-display); font-weight:800; font-size:20px; letter-spacing:.01em; margin:0; color:var(--ink)}
+.sems{display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:10px}
+.sem{background:var(--surface); border:1px solid var(--line); border-radius:6px; padding:12px 14px; box-shadow:0 2px 8px rgba(59,42,23,.1); font-size:13.5px; min-width:0}
+.semname{font-family:var(--font-display); font-weight:700; font-size:12px; letter-spacing:.04em; text-transform:uppercase; color:var(--accent); margin-bottom:6px; display:flex; gap:8px; align-items:center; flex-wrap:wrap}
+.sem ul{margin:0; padding-left:18px; display:flex; flex-direction:column; gap:5px}
+#roadprog{margin:8px 0 0; font-size:13px; background:rgba(168,53,44,.06); border:1px solid var(--line); border-radius:6px; padding:8px 10px}
 #concview h2{font-family:var(--font-display); font-weight:800; font-size:20px; letter-spacing:.01em; margin:0; color:var(--ink)}
 #concview h3{font-family:var(--font-display); font-size:13px; letter-spacing:.04em; text-transform:uppercase; margin:6px 0 0; color:var(--ink)}
 #concview p{margin:0; max-width:85ch}
@@ -134,6 +140,7 @@ td.num .more{color:var(--accent); font-weight:700}
     <button role="tab" id="tab-plan" aria-selected="false">Planned (0)</button>
     <button role="tab" id="tab-notes" aria-selected="false">Notes</button>
     <button role="tab" id="tab-conc" aria-selected="false">Concentration</button>
+    <button role="tab" id="tab-road" aria-selected="false">Roadmap</button>
   </div>
   <span class="budget" id="budget">0 / 1000 pts</span>
 </header>
@@ -141,6 +148,53 @@ td.num .more{color:var(--accent); font-weight:700}
 <div id="notesview" hidden>
   <p id="notestate">saved on this device</p>
   <textarea id="notes" placeholder="Course planning notes — bid strategy, backup sections, questions for your advisor…" aria-label="Planning notes"></textarea>
+</div>
+
+<div id="roadview" hidden>
+  <h2>MBA Roadmap — required classes by semester</h2>
+  <p class="concintro">Texas Full-Time MBA structure per the published curriculum — core is front-loaded in year one, year two is electives plus the two program requirements. Confirm hour totals and custom-core menus with your academic advisor.</p>
+  <div class="sems">
+    <div class="sem">
+      <div class="semname">Fall 2026 · Semester 1 <span class="chip">in progress</span></div>
+      <ul>
+        <li><b>Financial Accounting</b> — required core</li>
+        <li><b>Financial Management</b> — required core</li>
+        <li><b>Statistics</b> — required core</li>
+        <li><b>Microeconomics</b> — required core</li>
+        <li><b>Marketing Management</b> — required core</li>
+        <li><b>Operations Management</b> — required core</li>
+        <li><b>Strategic Career Planning</b> — required core</li>
+        <li><b>Custom Core #1</b> — your choice from the core menu</li>
+      </ul>
+    </div>
+    <div class="sem">
+      <div class="semname">Spring 2027 · Semester 2 <span class="chip gb">planning now</span></div>
+      <ul>
+        <li><b>Strategic Management (B A 288T)</b> — required, cohort-locked section</li>
+        <li><b>Custom Core #2–#4</b> — pick three: Valuation I, Performance Mgmt &amp; Control, Leading People &amp; Orgs, AI in Business &amp; Society, Managerial Macro, Managing Human Capital, Corporate Strategy, Business Analytics</li>
+        <li><b>≈2 electives</b> — where the bid points matter</li>
+      </ul>
+      <p id="roadprog"></p>
+    </div>
+    <div class="sem">
+      <div class="semname">Fall 2027 · Semester 3</div>
+      <ul>
+        <li><b>No required core</b> — all electives</li>
+        <li><b>Worldview of Business &amp; Society</b> requirement, if not yet met (any Global Connections trip or Worldview-tagged course counts)</li>
+        <li>Global Business concentration hours</li>
+        <li>Board Fellows &amp; fellows-program applications open in September</li>
+      </ul>
+    </div>
+    <div class="sem">
+      <div class="semname">Spring 2028 · Semester 4</div>
+      <ul>
+        <li><b>Electives</b> to complete hour requirements</li>
+        <li><b>Responsibility &amp; Integrity</b> requirement, if not yet met (Investing in Philanthropy, Social/Ethical Resp, Managing Diverse Workforce all qualify)</li>
+        <li>Finish Global Business: 12 hrs incl. one I B course (Option A), or 9 hrs + a STEP (Option B)</li>
+      </ul>
+    </div>
+  </div>
+  <p class="concnote">The Worldview and R&amp;I program requirements can be satisfied in any semester their courses are offered — the year-two placement above is just the usual pattern.</p>
 </div>
 
 <div id="concview" hidden>
@@ -453,6 +507,7 @@ const tb=document.getElementById('tb'), q=document.getElementById('q'),
   tabAll=document.getElementById('tab-all'), tabPlan=document.getElementById('tab-plan'),
   tabNotes=document.getElementById('tab-notes'), notesView=document.getElementById('notesview'),
   tabConc=document.getElementById('tab-conc'), concView=document.getElementById('concview'),
+  tabRoad=document.getElementById('tab-road'), roadView=document.getElementById('roadview'),
   notesTa=document.getElementById('notes'), noteState=document.getElementById('notestate'),
   toolbarEl=document.querySelector('.toolbar'), wrapEl=document.querySelector('.tablewrap'),
   legendEl=document.getElementById('legend');
@@ -490,7 +545,13 @@ function planBody(x){return {u:x.u,course:x.c,title:x.t,professor:x.p,days:x.dy,
     planned=remote; points=remotePts; saveLocal(); updateTabs(); render();
   },()=>{});
 })();
-function updateTabs(){tabPlan.textContent=`Planned (${planned.size})`; updateBudget(); updateConc();}
+function updateTabs(){tabPlan.textContent=`Planned (${planned.size})`; updateBudget(); updateConc(); updateRoad();}
+function updateRoad(){
+  const el=document.getElementById('roadprog'); if(!el)return;
+  const cats={'Required core':0,'Custom core':0,'Electives':0,'Abroad':0};
+  for(const u of planned){const x=C.find(c=>c.u===u); if(x)cats[catOf(x)]++;}
+  el.innerHTML=`Your Planned tab so far: <b>${cats['Required core']}</b> of 1 required core · <b>${cats['Custom core']}</b> of 3 custom core · <b>${cats['Electives']+cats['Abroad']}</b> elective/abroad pick${cats['Electives']+cats['Abroad']===1?'':'s'}`;
+}
 function updateConc(){
   const el=document.getElementById('concprog'); if(!el)return;
   const gbPlanned=[...planned].map(u=>C.find(c=>c.u===u)).filter(x=>x&&x.gb==='course');
@@ -528,12 +589,15 @@ function setView(v){
   tabPlan.setAttribute('aria-selected',String(v==='plan'));
   tabNotes.setAttribute('aria-selected',String(v==='notes'));
   tabConc.setAttribute('aria-selected',String(v==='conc'));
-  const n=v==='notes', c=v==='conc';
-  notesView.hidden=!n; concView.hidden=!c;
-  toolbarEl.hidden=n||c; count.hidden=n||c; wrapEl.hidden=n||c; legendEl.hidden=n||c;
-  if(!n&&!c)render();
+  tabRoad.setAttribute('aria-selected',String(v==='road'));
+  const n=v==='notes', c=v==='conc', r=v==='road';
+  notesView.hidden=!n; concView.hidden=!c; roadView.hidden=!r;
+  const off=n||c||r;
+  toolbarEl.hidden=off; count.hidden=off; wrapEl.hidden=off; legendEl.hidden=off;
+  if(!off)render();
 }
 tabConc.addEventListener('click',()=>setView('conc'));
+tabRoad.addEventListener('click',()=>setView('road'));
 tabAll.addEventListener('click',()=>setView('all'));
 tabPlan.addEventListener('click',()=>setView('plan'));
 tabNotes.addEventListener('click',()=>setView('notes'));

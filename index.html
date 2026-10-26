@@ -132,6 +132,15 @@ a.rmp.hi{color:#166534; border-color:#166534; background:rgba(22,101,52,.07)}
 a.rmp.mid{color:#92610C; border-color:#92610C; background:rgba(146,97,12,.07)}
 a.rmp.lo{color:#B3261E; border-color:#B3261E; background:rgba(179,38,30,.07)}
 td.pts input.on{background:rgba(168,53,44,.08); border-color:var(--accent); color:#7A1E18; font-weight:700}
+.parttabs{display:flex; flex-wrap:wrap; gap:6px; margin:0 0 6px}
+.parttabs[hidden]{display:none}
+.parttabs button{all:unset; cursor:pointer; font-size:12.5px; font-weight:700; padding:5px 12px; border-radius:6px; border:1px solid var(--line); background:var(--surface); color:var(--ink); font-variant-numeric:tabular-nums}
+.parttabs button .n{font-weight:400; color:var(--muted); margin-left:2px}
+.parttabs button:hover{border-color:var(--accent)}
+.parttabs button:focus-visible{outline:2px solid var(--accent); outline-offset:1px}
+.parttabs button.p1[aria-selected="true"]{background:#F9E8E0; border-color:#A8352C; color:#8C1D14}
+.parttabs button.p2[aria-selected="true"]{background:#E9EFFC; border-color:#1D4ED8; color:#1D4ED8}
+.parttabs button[aria-selected="true"] .n{color:inherit}
 select.plan-sel{font:inherit; font-size:12px; color:var(--fg); background:var(--surface); border:1px solid var(--line); border-radius:4px; padding:1px 2px; max-width:100px}
 select.plan-sel.on{background:rgba(168,53,44,.08); border-color:var(--accent); color:#7A1E18; font-weight:700}
 select.plan-sel:focus-visible{outline:2px solid var(--accent); outline-offset:1px}
@@ -299,6 +308,7 @@ td.num .more{color:var(--accent); font-weight:700}
 <p id="count"></p>
 <p id="legend">★ green ≥4.0 · amber 3.0–3.9 · red below 3.0 — bid pills: amber = cleared above 0, red = 500+ — hover any row for section number, room, '25 seats, and notes</p>
 
+<div id="parttabs" class="parttabs" role="tablist" aria-label="Semester part" hidden></div>
 <div class="tablewrap">
 <table>
   <thead><tr>
@@ -563,7 +573,17 @@ const tb=document.getElementById('tb'), q=document.getElementById('q'),
   tabRoad=document.getElementById('tab-road'), roadView=document.getElementById('roadview'),
   notesTa=document.getElementById('notes'), noteState=document.getElementById('notestate'),
   toolbarEl=document.querySelector('.toolbar'), wrapEl=document.querySelector('.tablewrap'),
-  legendEl=document.getElementById('legend');
+  legendEl=document.getElementById('legend'), partTabs=document.getElementById('parttabs');
+// Planned-tab sub-tabs: one per semester part, Spring 2027 through Spring 2028.
+const PARTS=[['SP27','S1',"Spring 1 '27"],['SP27','S2',"Spring 2 '27"],['FA27','S1',"Fall 1 '27"],['FA27','S2',"Fall 2 '27"],['SP28','S1',"Spring 1 '28"],['SP28','S2',"Spring 2 '28"]];
+let planPart='SP27-S1';
+try{const p=localStorage.getItem('plan2027part'); if(PARTS.some(x=>x[0]+'-'+x[1]===p))planPart=p;}catch(e){}
+partTabs.addEventListener('click',e=>{
+  const b=e.target.closest('button[data-part]'); if(!b)return;
+  planPart=b.dataset.part;
+  try{localStorage.setItem('plan2027part',planPart)}catch(err){}
+  render();
+});
 
 // Planned list: shared db when available, localStorage as a local fallback.
 function loadLocal(){try{return new Set(JSON.parse(localStorage.getItem('plan2027')||'[]'))}catch(e){return new Set()}}
@@ -675,7 +695,7 @@ function setView(v){
   const n=v==='notes', c=v==='conc', r=v==='road';
   notesView.hidden=!n; concView.hidden=!c; roadView.hidden=!r;
   const off=n||c||r;
-  toolbarEl.hidden=off; count.hidden=off; wrapEl.hidden=off; legendEl.hidden=off;
+  toolbarEl.hidden=off; count.hidden=off; wrapEl.hidden=off; legendEl.hidden=off; partTabs.hidden=off||v!=='plan';
   if(!off)render();
 }
 tabConc.addEventListener('click',()=>setView('conc'));
@@ -823,45 +843,41 @@ function render(){
       <td class="num" style="text-align:right">${x.st?`${bidHTML(x.st[1])} · ${bidHTML(x.st[2])}`:'<span style="color:var(--muted)">— · —</span>'}</td>
     </tr>`;
   }
+  partTabs.hidden=view!=='plan';
   if(view==='plan'){
-    if(rows.length===0){
-      tb.innerHTML='<tr><td colspan="9" style="text-align:center;color:var(--muted);padding:28px 12px">Nothing planned yet. Switch to All sections and pick a semester in the Plan column next to a course.</td></tr>';
-    }else{
-      let html='';
-      const ptsRow=x=>x.us.reduce((t,u)=>t+(planned.has(u)?(points[u]||0):0),0);
-      const catOrder=['Required core','Custom core','Electives','Abroad'];
-      const codeOf=r=>sems[r.us.find(u=>planned.has(u))]||'SP27';
-      // Which parts of its semester a planned row occupies: an explicit part code (-1/-2),
-      // the 2027 section's half, or both parts for full-term courses.
-      const partsOf=r=>{
-        const c=codeOf(r);
-        if(c.endsWith('-1'))return ['S1'];
-        if(c.endsWith('-2'))return ['S2'];
-        if(c!=='SP27')return ['S1','S2'];
-        const h=new Set(); r.sess.forEach(s=>{if(s==='S1'||s==='S2')h.add(s); else{h.add('S1');h.add('S2');}}); return [...h];
-      };
-      const sc={'Required core':'core','Custom core':'cust','Electives':'elec','Abroad':'abr'};
-      for(const [base,label,season] of [['SP27','Spring 2027','Spring'],['FA27','Fall 2027','Fall'],['SP28','Spring 2028','Spring']]){
-        const tr=rows.filter(r=>codeOf(r).split('-')[0]===base);
-        if(!tr.length&&base!=='SP27')continue;
-        html+=`<tr class="group semh"><td colspan="9">${label} — ${tr.length} planned${base!=='SP27'?" · sections shown are this spring's listings":''}</td></tr>`;
-        // Two plans per semester, one per part. Full-term courses appear in both.
-        for(const [half,pn] of [['S1',1],['S2',2]]){
-          const sub=tr.filter(r=>r.s!==9999&&partsOf(r).includes(half));
-          const hrs=sub.reduce((t,x)=>t+creditsOf(x),0), hp=sub.reduce((t,x)=>t+ptsRow(x),0);
-          html+=`<tr class="group half${half==='S2'?' s2':''}"><td colspan="9">${season} ${pn} plan — ${sub.length} course${sub.length===1?'':'s'} · ${hrs} hrs${base==='SP27'?` · ${hp} pts`:''}</td></tr>`;
-          if(!sub.length){html+='<tr><td colspan="9" style="text-align:center; color:var(--muted); font-family:var(--font-fell); padding:14px 10px">nothing planned for this part yet</td></tr>'; continue;}
-          for(const cg of catOrder){
-            const grp=sub.filter(r=>catOf(r)===cg).sort((a,b)=>ptsRow(b)-ptsRow(a));
-            if(!grp.length)continue;
-            html+=`<tr class="group sub ${sc[cg]}"><td colspan="9">${cg} (${grp.length})</td></tr>`+grp.map((x,i)=>rowHTML(x,i%2===1)).join('');
-          }
-        }
-        const nosched=tr.filter(r=>r.s===9999);
-        if(nosched.length)html+=`<tr class="group half plain"><td colspan="9">No set schedule</td></tr>`+nosched.map((x,i)=>rowHTML(x,i%2===1)).join('');
-      }
-      tb.innerHTML=html;
+    const ptsRow=x=>x.us.reduce((t,u)=>t+(planned.has(u)?(points[u]||0):0),0);
+    const catOrder=['Required core','Custom core','Electives','Abroad'];
+    const codeOf=r=>sems[r.us.find(u=>planned.has(u))]||'SP27';
+    // Which parts of its semester a planned row occupies: an explicit part code (-1/-2),
+    // the 2027 section's half, or both parts for full-term courses.
+    const partsOf=r=>{
+      const c=codeOf(r);
+      if(c.endsWith('-1'))return ['S1'];
+      if(c.endsWith('-2'))return ['S2'];
+      if(c!=='SP27')return ['S1','S2'];
+      const h=new Set(); r.sess.forEach(s=>{if(s==='S1'||s==='S2')h.add(s); else{h.add('S1');h.add('S2');}}); return [...h];
+    };
+    const inPart=(r,b,h)=>codeOf(r).split('-')[0]===b&&(r.s===9999||partsOf(r).includes(h));
+    partTabs.innerHTML=PARTS.map(([b,h,l])=>{
+      const k=b+'-'+h, n=rows.filter(r=>inPart(r,b,h)).length;
+      return `<button type="button" role="tab" data-part="${k}" class="${h==='S2'?'p2':'p1'}" aria-selected="${planPart===k}">${l} <span class="n">${n}</span></button>`;
+    }).join('');
+    const [pb,ph]=planPart.split('-'), plab=PARTS.find(p=>p[0]+'-'+p[1]===planPart)[2];
+    const sub=rows.filter(r=>r.s!==9999&&codeOf(r).split('-')[0]===pb&&partsOf(r).includes(ph));
+    const nosched=rows.filter(r=>r.s===9999&&codeOf(r).split('-')[0]===pb);
+    const hrs=sub.reduce((t,x)=>t+creditsOf(x),0), hp=sub.reduce((t,x)=>t+ptsRow(x),0);
+    let html=`<tr class="group half${ph==='S2'?' s2':''}"><td colspan="9">${plab} plan — ${sub.length} course${sub.length===1?'':'s'} · ${hrs} hrs${pb==='SP27'?` · ${hp} pts`:" · sections shown are this spring's listings"}</td></tr>`;
+    if(!sub.length&&!nosched.length){
+      html+=`<tr><td colspan="9" style="text-align:center;color:var(--muted);padding:28px 12px">Nothing planned for ${plab} yet. Switch to All sections and pick it in the Plan column next to a course.</td></tr>`;
     }
+    const sc={'Required core':'core','Custom core':'cust','Electives':'elec','Abroad':'abr'};
+    for(const cg of catOrder){
+      const grp=sub.filter(r=>catOf(r)===cg).sort((a,b)=>ptsRow(b)-ptsRow(a));
+      if(!grp.length)continue;
+      html+=`<tr class="group sub ${sc[cg]}"><td colspan="9">${cg} (${grp.length})</td></tr>`+grp.map((x,i)=>rowHTML(x,i%2===1)).join('');
+    }
+    if(nosched.length)html+=`<tr class="group half plain"><td colspan="9">No set schedule</td></tr>`+nosched.map((x,i)=>rowHTML(x,i%2===1)).join('');
+    tb.innerHTML=html;
     const nReq=rows.filter(r=>catOf(r)==='Required core').length,
       nCC=rows.filter(r=>catOf(r)==='Custom core').length,
       nEl=rows.filter(r=>catOf(r)==='Electives').length,

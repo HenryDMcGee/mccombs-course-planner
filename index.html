@@ -681,6 +681,19 @@ tb.addEventListener('change',e=>{
   if(ps){
     const us=ps.dataset.us.split(','), v=ps.value;
     if(!v){us.forEach(u=>{if(planned.has(u))setPlanned(u,false)}); return;}
+    if(v.startsWith('H:')){
+      const half=v.slice(2), key=ps.dataset.key;
+      const secs=C.filter(c=>c.c+'|'+c.t===key);
+      const target=us.map(u=>C.find(c=>c.u===u)).find(c=>c&&c.se===half)||secs.find(c=>c.se===half);
+      if(!target||planned.has(target.u))return;
+      const prev=secs.find(c=>planned.has(c.u));
+      const carry=prev?(points[prev.u]||0):0;
+      if(prev)setPlanned(prev.u,false);
+      sems[target.u]='SP27';
+      setPlanned(target.u,true);
+      if(carry)setPoints(target.u,carry);
+      return;
+    }
     const cur=us.find(u=>planned.has(u));
     if(cur){if((sems[cur]||'SP27')!==v)setSem(cur,v);}
     else{sems[us[0]]=v; setPlanned(us[0],true);}
@@ -757,6 +770,21 @@ function render(){
     if(!v)return '<span style="color:var(--muted)">0</span>';
     return `<span class="bid${v>=500?' hot':''}">${fmtStat(v)}</span>`;
   }
+  function planSel(x,checked,u0,n){
+    // Core and custom core are half-term classes: their dropdown picks the HALF (Spring 1 / Spring 2)
+    // and plans a section in that half. Electives and abroad keep the semester options.
+    const isCore=x.tg.includes('MBA core')||x.tg.includes('Custom core');
+    const key=x.c+'|'+x.t;
+    let opts;
+    if(isCore){
+      const halves=[...new Set(C.filter(c=>c.c+'|'+c.t===key).map(c=>c.se))].filter(s=>s==='S1'||s==='S2');
+      const cu=checked?C.find(c=>c.u===u0):null;
+      opts=halves.map(h=>`<option value="H:${h}"${cu&&cu.se===h?' selected':''}>${h==='S1'?'Spring 1':'Spring 2'}</option>`).join('');
+    }else{
+      opts=SEMS.map(s=>`<option value="${s[0]}"${checked&&(sems[u0]||'SP27')===s[0]?' selected':''}>${s[1]}</option>`).join('');
+    }
+    return `<select class="plan-sel${checked?' on':''}" data-us="${x.us.join(',')}" data-key="${esc(key)}"${n>1?' title="Choosing a term plans the earliest matching section; — removes every section of this course."':''} aria-label="Plan ${esc(x.c)}"><option value="">—</option>${opts}</select>`;
+  }
   function rowHTML(x,alt){
     const chips=[...x.sess.filter(s=>s==='S1'||s==='S2').map(s=>s==='S1'?'Spring 1':'Spring 2'),...x.tg]
       .map(t=>`<span class="${t==='Spring 1'||t==='Spring 2'?'chip':chipClass(t)}">${esc(t)}</span>`).join('');
@@ -765,7 +793,7 @@ function render(){
     const n=x.us.length, checked=x.us.some(u=>planned.has(u)), u0=x.us.find(u=>planned.has(u));
     const tip=esc(`Section ${x.us.join(', ')}${x.r&&x.r!=='—'?` · Room ${x.r}`:''}${x.st?` · '25 avg seats ${fmtStat(x.st[0])}`:''}${x.n?` · ${x.n}`:''}`).replace(/"/g,'&quot;');
     return `<tr${cls?` class="${cls}"`:''} title="${tip}">
-      <td class="plan"><select class="plan-sel${checked?' on':''}" data-us="${x.us.join(',')}"${n>1?' title="Choosing a term plans the earliest section; — removes every section of this course."':''} aria-label="Plan ${esc(x.c)}"><option value="">—</option>${SEMS.map(s=>`<option value="${s[0]}"${checked&&(sems[u0]||'SP27')===s[0]?' selected':''}>${s[1]}</option>`).join('')}</select></td>
+      <td class="plan">${planSel(x,checked,u0,n)}</td>
       <td class="pts">${checked?`<input type="number" class="${(points[u0]||0)>0?'on':''}" min="0" max="${BUDGET}" step="10" value="${points[u0]||0}" data-u="${u0}" aria-label="Bid points for ${esc(x.c)}">`:''}</td>
       <td class="code">${esc(x.c)}${n>1?` <span class="more">+${n-1}</span>`:''}</td>
       <td class="title"><span class="t">${esc(x.t)}</span>${chips?`<span class="chips">${chips}</span>`:''}</td>

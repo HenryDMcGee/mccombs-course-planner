@@ -47,8 +47,12 @@ a.rmp{display:inline-block; font-size:11.5px; font-weight:700; font-variant-nume
 a.rmp:hover{text-decoration:underline}
 a.rmp .n{font-weight:400; color:var(--muted)}
 td.rmpc{white-space:nowrap}
-.budget{margin-left:auto; font-size:13px; font-weight:800; font-variant-numeric:tabular-nums; color:var(--accent-ink); background:var(--accent); border-radius:999px; padding:6px 14px; white-space:nowrap; box-shadow:0 2px 6px rgba(0,0,0,.25)}
-.budget.over{background:var(--danger); color:#FFFFFF}
+.budget{margin-left:auto; display:flex; gap:2px; font-size:12.5px; font-variant-numeric:tabular-nums; white-space:nowrap}
+.budget .seg{color:var(--accent-ink); background:var(--accent); padding:5px 10px; font-weight:600; box-shadow:0 2px 6px rgba(0,0,0,.2)}
+.budget .seg:first-child{border-radius:999px 0 0 999px; padding-left:13px}
+.budget .seg:last-child{border-radius:0 999px 999px 0; padding-right:13px}
+.budget .seg b{font-weight:800}
+.budget .seg.over{background:var(--danger); color:#FFFFFF}
 #notesview{display:flex; flex-direction:column; gap:6px; margin-top:12px}
 #notesview[hidden]{display:none}
 #notes{min-height:440px; font:15px/1.7 var(--font-body); color:var(--fg); background:var(--surface); border:1px solid var(--line); border-radius:6px; padding:18px 20px; resize:vertical; box-shadow:0 2px 10px rgba(59,42,23,.12); min-width:0}
@@ -614,7 +618,9 @@ function availTerms(x){
   if(!yr1){ if(half)halves.forEach(h=>out.push(['SP28-'+pn(h),SEML['SP28-'+pn(h)]])); else out.push(['SP28',"Sp '28"]); }
   return out;
 }
-const BUDGET=1000;
+// Bid budgets per semester (each auction is separate).
+const BUDGETS={SP27:1000,FA27:1500,SP28:1500};
+const BUDGET_LABEL={SP27:"Sp '27",FA27:"Fa '27",SP28:"Sp '28"};
 let view='all';
 let dbCol=null, notesDoc=null, notesTimer=null;
 function planBody(x){return {u:x.u,course:x.c,title:x.t,professor:x.p,days:x.dy,time:x.tm,room:x.r,notes:x.n,pts:points[x.u]||0,sem:sems[x.u]||'SP27',addedAt:new Date().toISOString()}}
@@ -659,7 +665,7 @@ function updateConc(){
     +(hasStep?', plus a STEP program':'')
     +`. Toward Option A (12 hrs): I B course ${hasIB?'✓':'still needed'}. Option B (9 hrs): STEP ${hasStep?'✓':'not planned'}.`;
 }
-function totalPts(){let t=0; for(const u of planned){if((sems[u]||'SP27').split('-')[0]!=='SP27')continue; t+=points[u]||0;} return t}
+function totalPts(base){let t=0; for(const u of planned){if((sems[u]||'SP27').split('-')[0]!==base)continue; t+=points[u]||0;} return t}
 function setSem(u,v){
   if(!VALID_SEMS.includes(v))return;
   sems[u]=v; saveLocal(); updateBudget();
@@ -667,9 +673,12 @@ function setSem(u,v){
   if(dbCol&&planned.has(u))dbCol.doc(u).update({sem:v}).catch(()=>{});
 }
 function updateBudget(){
-  const t=totalPts();
-  budget.textContent=`${t} / ${BUDGET} pts${t>BUDGET?' — over by '+(t-BUDGET):''}`;
-  budget.classList.toggle('over',t>BUDGET);
+  let any=false;
+  budget.innerHTML=Object.keys(BUDGETS).map(b=>{
+    const t=totalPts(b), cap=BUDGETS[b], over=t>cap; if(over)any=true;
+    return `<span class="seg${over?' over':''}" title="${over?`Over by ${t-cap} points`:`${cap-t} points left`}">${BUDGET_LABEL[b]} <b>${t}</b>/${cap}</span>`;
+  }).join('');
+  budget.classList.toggle('over',any);
 }
 function setPoints(u,v){
   v=Math.max(0,Math.round(Number(v)||0));
@@ -833,7 +842,7 @@ function render(){
     const tip=esc(`Section ${x.us.join(', ')}${x.r&&x.r!=='—'?` · Room ${x.r}`:''}${x.st?` · '25 avg seats ${fmtStat(x.st[0])}`:''}${x.n?` · ${x.n}`:''}`).replace(/"/g,'&quot;');
     return `<tr${cls?` class="${cls}"`:''} title="${tip}">
       <td class="plan">${planSel(x,checked,u0,n)}</td>
-      <td class="pts">${checked?`<input type="number" class="${(points[u0]||0)>0?'on':''}" min="0" max="${BUDGET}" step="10" value="${points[u0]||0}" data-u="${u0}" aria-label="Bid points for ${esc(x.c)}">`:''}</td>
+      <td class="pts">${checked?`<input type="number" class="${(points[u0]||0)>0?'on':''}" min="0" max="${BUDGETS[(sems[u0]||'SP27').split('-')[0]]}" step="10" value="${points[u0]||0}" data-u="${u0}" aria-label="Bid points for ${esc(x.c)}">`:''}</td>
       <td class="code">${esc(x.c)}${n>1?` <span class="more">+${n-1}</span>`:''}</td>
       <td class="title"><span class="t">${esc(x.t)}</span>${chips?`<span class="chips">${chips}</span>`:''}</td>
       <td class="plan">${x.gb==='course'?'<span class="chip gb">GB</span>':x.gb==='step'?'<span class="chip">STEP</span>':''}</td>
@@ -866,7 +875,7 @@ function render(){
     const sub=rows.filter(r=>r.s!==9999&&codeOf(r).split('-')[0]===pb&&partsOf(r).includes(ph));
     const nosched=rows.filter(r=>r.s===9999&&codeOf(r).split('-')[0]===pb);
     const hrs=sub.reduce((t,x)=>t+creditsOf(x),0), hp=sub.reduce((t,x)=>t+ptsRow(x),0);
-    let html=`<tr class="group half${ph==='S2'?' s2':''}"><td colspan="9">${plab} plan — ${sub.length} course${sub.length===1?'':'s'} · ${hrs} hrs${pb==='SP27'?` · ${hp} pts`:" · sections shown are this spring's listings"}</td></tr>`;
+    let html=`<tr class="group half${ph==='S2'?' s2':''}"><td colspan="9">${plab} plan — ${sub.length} course${sub.length===1?'':'s'} · ${hrs} hrs · ${hp} pts (${totalPts(pb)} of ${BUDGETS[pb]} used this semester)${pb!=='SP27'?" · sections shown are this spring's listings":''}</td></tr>`;
     if(!sub.length&&!nosched.length){
       html+=`<tr><td colspan="9" style="text-align:center;color:var(--muted);padding:28px 12px">Nothing planned for ${plab} yet. Switch to All sections and pick it in the Plan column next to a course.</td></tr>`;
     }

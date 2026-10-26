@@ -107,6 +107,8 @@ td.notes{color:var(--muted); font-size:12.5px; max-width:34ch}
 tr.dim td{opacity:.55}
 tr.cancel td .t{text-decoration:line-through}
 tr.group td{background:var(--head); color:var(--ink); font-family:var(--font-display); font-weight:700; font-size:11px; text-transform:uppercase; letter-spacing:.1em; padding:7px 10px; text-align:center}
+tr.group.half td{color:var(--accent); font-size:12px; letter-spacing:.12em; padding:10px; border-top:2px solid var(--line)}
+tr.group.sub td{background:var(--surface); color:var(--muted); font-size:10.5px; letter-spacing:.08em; text-align:left; padding:5px 10px}
 td.num .more{color:var(--accent); font-weight:700}
 @media (max-width:640px){ header h1{font-size:19px} }
 </style>
@@ -647,12 +649,21 @@ function render(){
     }else{
       let html='';
       const ptsRow=x=>x.us.reduce((t,u)=>t+(planned.has(u)?(points[u]||0):0),0);
-      for(const cg of ['Required core','Custom core','Electives','Abroad']){
-        if(catSel.value&&cg!==catSel.value)continue;
-        const grp=rows.filter(r=>catOf(r)===cg).sort((a,b)=>ptsRow(b)-ptsRow(a));
-        html+=`<tr class="group"><td colspan="15">❦&nbsp; ${cg} (${grp.length}) &nbsp;❦</td></tr>`;
-        html+=grp.length?grp.map(rowHTML).join(''):'<tr><td colspan="15" style="text-align:center; color:var(--muted); font-family:var(--font-fell); font-style:italic; padding:14px 10px">nothing planned in this category yet</td></tr>';
+      const catOrder=['Required core','Custom core','Electives','Abroad'];
+      // Two plans: one per half-semester. Full-term and straddling courses appear in both.
+      for(const [half,label] of [['S1','Spring 1 plan'],['S2','Spring 2 plan']]){
+        const sub=rows.filter(r=>r.s!==9999&&r.sess.some(s=>s===''||s===half||s==='short'));
+        const hrs=sub.reduce((t,x)=>t+creditsOf(x),0), hp=sub.reduce((t,x)=>t+ptsRow(x),0);
+        html+=`<tr class="group half"><td colspan="15">❦&nbsp; ${label} — ${sub.length} course${sub.length===1?'':'s'} · ${hrs} hrs · ${hp} pts &nbsp;❦</td></tr>`;
+        if(!sub.length){html+='<tr><td colspan="15" style="text-align:center; color:var(--muted); font-family:var(--font-fell); font-style:italic; padding:14px 10px">nothing planned for this half yet</td></tr>'; continue;}
+        for(const cg of catOrder){
+          const grp=sub.filter(r=>catOf(r)===cg).sort((a,b)=>ptsRow(b)-ptsRow(a));
+          if(!grp.length)continue;
+          html+=`<tr class="group sub"><td colspan="15">${cg} (${grp.length})</td></tr>`+grp.map(rowHTML).join('');
+        }
       }
+      const nosched=rows.filter(r=>r.s===9999);
+      if(nosched.length)html+=`<tr class="group half"><td colspan="15">❦&nbsp; No set schedule &nbsp;❦</td></tr>`+nosched.map(rowHTML).join('');
       tb.innerHTML=html;
     }
     const nReq=rows.filter(r=>catOf(r)==='Required core').length,

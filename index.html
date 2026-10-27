@@ -54,9 +54,14 @@ td.rmpc{white-space:nowrap}
 #notes{min-height:440px; font:15px/1.7 var(--font-body); color:var(--fg); background:var(--surface); border:1px solid var(--line); border-radius:6px; padding:18px 20px; resize:vertical; box-shadow:0 2px 10px rgba(59,42,23,.12); min-width:0}
 #notes:focus-visible{outline:2px solid var(--accent); outline-offset:1px}
 #notestate{margin:0; font-family:var(--font-fell); font-size:12.5px; color:var(--muted); text-align:right}
-#concview,#roadview{display:flex; flex-direction:column; gap:12px; margin-top:14px}
-#concview[hidden],#roadview[hidden]{display:none}
-#roadview h2{font-family:var(--font-display); font-weight:800; font-size:20px; letter-spacing:.01em; margin:0; color:var(--ink)}
+#concview,#roadview,#srcview{display:flex; flex-direction:column; gap:12px; margin-top:14px}
+#concview[hidden],#roadview[hidden],#srcview[hidden]{display:none}
+.srctable{width:100%; min-width:0; border-collapse:collapse; background:var(--surface); border:1px solid var(--line); border-radius:6px; font-size:13px}
+.srctable th,.srctable td{padding:7px 10px; border-bottom:1px solid var(--hairline); vertical-align:top; text-align:left}
+.srctable th{background:var(--head); font-size:11.5px; text-transform:uppercase; letter-spacing:.04em; color:var(--ink)}
+.srctable td:first-child{font-weight:600; white-space:nowrap}
+.srctable a{color:var(--accent)}
+#srcview h2,#roadview h2{font-family:var(--font-display); font-weight:800; font-size:20px; letter-spacing:.01em; margin:0; color:var(--ink)}
 .sems{display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:10px}
 .typegrid{display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:10px}
 .type{background:var(--surface); border:1px solid var(--line); border-radius:6px; padding:10px 12px; box-shadow:0 2px 8px rgba(59,42,23,.1); min-width:0}
@@ -163,6 +168,7 @@ td.num .more{color:var(--accent); font-weight:700}
     <button role="tab" id="tab-notes" aria-selected="false">Notes</button>
     <button role="tab" id="tab-conc" aria-selected="false">Concentration</button>
     <button role="tab" id="tab-road" aria-selected="false">Roadmap</button>
+    <button role="tab" id="tab-src" aria-selected="false">Sources</button>
   </div>
   <span class="budget" id="budget">0 / 1000 pts</span>
 </header>
@@ -258,6 +264,39 @@ td.num .more{color:var(--accent); font-weight:700}
     </div>
   </div>
   <p class="concnote">The Worldview and R&amp;I program requirements can be satisfied in any semester their courses are offered — the year-two placement above is just the usual pattern. Fall half-term sequencing is shown as typical; your own section schedule governs which half each core class lands in.</p>
+</div>
+
+<div id="srcview" hidden>
+  <h2>Sources</h2>
+  <p class="concintro">Where each part of this dashboard comes from. Items you supplied are marked "from Henry"; web sources link out; estimates are listed separately so they're easy to recheck.</p>
+  <div style="overflow-x:auto">
+  <table class="srctable">
+    <thead><tr><th>Area</th><th>Source</th><th>Used for</th></tr></thead>
+    <tbody>
+      <tr><td>Course schedule</td><td>McCombs MBA Spring 2027 course schedule — from Henry (Oct 18, 2026)</td><td>Sections, unique numbers, professors, days and times, rooms, session (Spring 1 / Spring 2), section notes, restrictions, core tags</td></tr>
+      <tr><td>Registration list</td><td>Spring 2027 registration list — from Henry (Oct 27, 2026)</td><td>2027 STEP and Washington Campus sections and seats; MIS 281N moved to Spring 2; the "Not in the Oct 27 registration list" notes</td></tr>
+      <tr><td>Bid history</td><td>20242 (Spring 2024) and 20252 (Spring 2025) bid stats sheets — from Henry</td><td>'25 seats awarded and the Round 1 / Round 2 clearing-bid averages; prior-year abroad programs</td></tr>
+      <tr><td>Bid budgets</td><td>From Henry</td><td>1,000 pts Spring 2027; 1,500 pts each for Fall 2027 and Spring 2028</td></tr>
+      <tr><td>Professor ratings</td><td><a href="https://www.ratemyprofessors.com/school/1255" target="_blank" rel="noopener">RateMyProfessors, UT Austin</a> — read Oct 21 (MBA faculty) and Oct 27 (Japanese faculty), 2026</td><td>RMP column: rating, number of ratings, profile link</td></tr>
+      <tr><td>Concentration</td><td>Global Business — Texas Full-Time MBA Concentrations sheet, 2024–25 — from Henry</td><td>Options A/B/C, approved course list, GB column, Concentration progress</td></tr>
+      <tr><td>Curriculum</td><td><a href="https://www.mccombs.utexas.edu/graduate/mba/full-time-mba/academics/curriculum" target="_blank" rel="noopener">McCombs Full-Time MBA curriculum</a></td><td>Year-one required core, custom core slots, electives (Roadmap)</td></tr>
+      <tr><td>Credit hours</td><td><a href="https://catalog.utexas.edu/archive/2019-20/general-information/academic-policies-and-procedures/credit-value-and-course-numbers/" target="_blank" rel="noopener">UT catalog — Credit Value and Course Numbers</a></td><td>Hours from the first digit of the course number; lower/upper-division/graduate rank</td></tr>
+      <tr><td>Course descriptions</td><td><a href="https://catalog.utexas.edu/archive/2020-21/graduate/fields-of-study/business/management/graduate-courses/" target="_blank" rel="noopener">UT graduate catalog — Management courses</a></td><td>MAN 283 format and topic descriptions</td></tr>
+      <tr><td>Japanese courses</td><td>Spring 2027 Japanese course list — from Henry (Oct 27, 2026); <a href="https://catalog.utexas.edu/courses/jpn/" target="_blank" rel="noopener">UT catalog — JPN courses</a>; <a href="https://laits.utexas.edu/japanese/program/major.php" target="_blank" rel="noopener">UT Japanese program pages</a></td><td>JPN sections and times, prerequisites, First-/Second-Year equivalences, 330 as fourth-year</td></tr>
+      <tr><td>Class year (611D)</td><td>From Henry</td><td>JPN 611D = Sophomore, the anchor for the other Japanese years</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <h3>Estimates and inferences</h3>
+  <ul class="conclist">
+    <li><b>60-hour degree total</b> and the ≈12 electives / ≈36 hrs on the Roadmap — commonly cited, not published by type; confirm with your advisor</li>
+    <li><b>Fall 2026 half-term sequencing</b> on the Roadmap — shown as typical; your section schedule governs</li>
+    <li><b>Fall 2027 availability</b> — only courses whose notes say "fall and spring" offer Fa '27; others may still run in fall</li>
+    <li><b>Spring 2028 availability</b> — assumed from this spring's schedule and past springs' bid sheets</li>
+    <li><b>Japanese years marked "?"</b> — inferred one step per prerequisite from 611D</li>
+    <li><b>Fuzzy matches in bid history</b> — e.g. Envir/Social/Gov Investing → Sustainable Finance, BGS 381M → 381N, Behaviorl Science for Business → Psych of Persuasion/Influence, Copenhagen history split March → AI for Social Ent, May → ESG</li>
+    <li><b>RMP matches</b> — some ratings come mostly from undergraduate sections; a few matches are probable rather than certain (e.g. Murphy for Negotiation)</li>
+  </ul>
 </div>
 
 <div id="concview" hidden>
@@ -612,6 +651,7 @@ const tb=document.getElementById('tb'), q=document.getElementById('q'),
   tabNotes=document.getElementById('tab-notes'), notesView=document.getElementById('notesview'),
   tabConc=document.getElementById('tab-conc'), concView=document.getElementById('concview'),
   tabRoad=document.getElementById('tab-road'), roadView=document.getElementById('roadview'),
+  tabSrc=document.getElementById('tab-src'), srcView=document.getElementById('srcview'),
   notesTa=document.getElementById('notes'), noteState=document.getElementById('notestate'),
   toolbarEl=document.querySelector('.toolbar'), wrapEl=document.querySelector('.tablewrap'),
   legendEl=document.getElementById('legend'), partTabs=document.getElementById('parttabs');
@@ -760,14 +800,16 @@ function setView(v){
   tabNotes.setAttribute('aria-selected',String(v==='notes'));
   tabConc.setAttribute('aria-selected',String(v==='conc'));
   tabRoad.setAttribute('aria-selected',String(v==='road'));
-  const n=v==='notes', c=v==='conc', r=v==='road';
-  notesView.hidden=!n; concView.hidden=!c; roadView.hidden=!r;
-  const off=n||c||r;
+  tabSrc.setAttribute('aria-selected',String(v==='src'));
+  const n=v==='notes', c=v==='conc', r=v==='road', sr=v==='src';
+  notesView.hidden=!n; concView.hidden=!c; roadView.hidden=!r; srcView.hidden=!sr;
+  const off=n||c||r||sr;
   toolbarEl.hidden=off; count.hidden=off; wrapEl.hidden=off; legendEl.hidden=off; partTabs.hidden=off||v!=='plan';
   if(!off)render();
 }
 tabConc.addEventListener('click',()=>setView('conc'));
 tabRoad.addEventListener('click',()=>setView('road'));
+tabSrc.addEventListener('click',()=>setView('src'));
 tabAll.addEventListener('click',()=>setView('all'));
 tabPlan.addEventListener('click',()=>setView('plan'));
 tabNotes.addEventListener('click',()=>setView('notes'));

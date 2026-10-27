@@ -125,6 +125,7 @@ tr.group.sub.core td{color:#8C1D14; border-left-color:#A8352C; background:rgba(1
 tr.group.sub.cust td{color:#4338CA; border-left-color:#4338CA; background:rgba(67,56,202,.05)}
 tr.group.sub.elec td{color:#0F766E; border-left-color:#0F766E; background:rgba(15,118,110,.05)}
 tr.group.sub.abr td{color:#1D4ED8; border-left-color:#1D4ED8; background:rgba(29,78,216,.05)}
+tr.group.sub.jpn td{color:#9D174D; border-left-color:#BE185D; background:rgba(190,24,93,.05)}
 tr.alt td{background:#FAF5E9}
 .bid{background:#FBEAC8; color:#7A4E12; border-radius:4px; padding:0 5px; font-weight:600; font-variant-numeric:tabular-nums}
 .bid.hot{background:#F6D9D5; color:#8C1D14}
@@ -277,7 +278,7 @@ td.num .more{color:var(--accent); font-weight:700}
     <li><b>MAN 385 Management &amp; Marketing in the Global Arena</b> — not on the Spring 2027 schedule</li>
     <li><b>MKT 382 Invisible Global Marketing</b> — not on the Spring 2027 schedule</li>
     <li><b>RM 395 / PA 388K Managing International Risk</b> — not on the Spring 2027 schedule</li>
-    <li><b>UT Foreign Language</b> — any UT foreign-language course counts (not listed on this business schedule)</li>
+    <li><b>UT Foreign Language</b> — any UT foreign-language course counts; Spring 2027 Japanese sections (JPN 601D–330) are in the table under the Japanese language category</li>
   </ul>
   <p class="concnote">Courses marked <span class="chip gb">GB</span> in the table count toward the concentration; STEP rows satisfy Option B's program leg.</p>
 </div>
@@ -300,6 +301,7 @@ td.num .more{color:var(--accent); font-weight:700}
     <option>Required core</option>
     <option>Custom core</option>
     <option>Electives</option>
+    <option>Japanese language</option>
     <option>Abroad</option>
   </select>
   <label class="toggle"><input type="checkbox" id="hide"> Hide restricted &amp; canceled</label>
@@ -460,7 +462,25 @@ const C=[
 {u:"AB106",d:"STEP",c:"STEP",t:"STEP: Vienna Innovation Program",p:"—",dy:"—",tm:"—",s:9999,r:"—",se:"",tg:["Abroad"],n:"Spring 2025 May program (Austria). Not on the Spring 2027 schedule — bid history only."},
 {u:"AB107",d:"STEP",c:"STEP",t:"STEP: Doing Business in Germany",p:"—",dy:"—",tm:"—",s:9999,r:"—",se:"",tg:["Abroad"],n:"Spring 2025 May program. Not on the Spring 2027 schedule — bid history only."},
 {u:"AB108",d:"I B",c:"I B 385E",t:"Global Connections: Ghana",p:"Peterson, M ('24)",dy:"—",tm:"—",s:9999,r:"—",se:"",tg:["Abroad"],n:"Spring 2024 program (M 3:30–6:30p). Not on the Spring 2027 schedule — bid history only."},
-{u:"AB109",d:"I B",c:"I B 385E",t:"Global Connections: Thailand",p:"Cobb, A ('24)",dy:"—",tm:"—",s:9999,r:"—",se:"",tg:["Abroad"],n:"Spring 2024 program (T 3:30–6:30p). Not on the Spring 2027 schedule — bid history only."}
+{u:"AB109",d:"I B",c:"I B 385E",t:"Global Connections: Thailand",p:"Cobb, A ('24)",dy:"—",tm:"—",s:9999,r:"—",se:"",tg:["Abroad"],n:"Spring 2024 program (T 3:30–6:30p). Not on the Spring 2027 schedule — bid history only."},
+// UT Department of Asian Studies — Japanese language, Spring 2027. Full-term (Spring 1 + 2). Undergraduate-numbered;
+// "UT Foreign Language" counts toward the Global Business concentration.
+{u:"32965",d:"JPN",c:"JPN 601D",t:"Japanese I",p:"Tanaka, Midori",dy:"MWF",tm:"11:00a–12:00p",s:660,r:"—",se:"",tg:["Japanese"],n:"No prior Japanese required; not open to native speakers. Six lecture hours a week."},
+{u:"32970",d:"JPN",c:"JPN 601D",t:"Japanese I",p:"Cooke, Chikako",dy:"MWF",tm:"1:00–2:00p",s:780,r:"—",se:"",tg:["Japanese"],n:"No prior Japanese required; not open to native speakers. Six lecture hours a week."},
+{u:"32975",d:"JPN",c:"JPN 601D",t:"Japanese I",p:"Suto, Saori",dy:"MWF",tm:"2:00–3:00p",s:840,r:"—",se:"",tg:["Japanese"],n:"No prior Japanese required; not open to native speakers. Six lecture hours a week."},
+{u:"32955",d:"JPN",c:"JPN 601D",t:"Japanese I",p:"Hatanaka, Junko",dy:"TTH",tm:"9:30–11:00a",s:570,r:"—",se:"",tg:["Japanese"],n:"Linked sections 32955–32960. No prior Japanese required; not open to native speakers. Six lecture hours a week."},
+{u:"32995",d:"JPN",c:"JPN 610D",t:"Japanese II",p:"Okada, Yukie",dy:"MWF",tm:"1:00–2:00p",s:780,r:"—",se:"",tg:["Japanese"],n:"Prereq: JPN 601D or 506 (C or better). Six lecture hours a week."},
+{u:"32980",d:"JPN",c:"JPN 610D",t:"Japanese II",p:"Sano, Ryosuke",dy:"MWF",tm:"9:00–10:00a",s:540,r:"—",se:"",tg:["Japanese"],n:"Prereq: JPN 601D or 506 (C or better). Six lecture hours a week."},
+{u:"32985",d:"JPN",c:"JPN 610D",t:"Japanese II",p:"Duffey, Kaori",dy:"TTH",tm:"9:30–11:00a",s:570,r:"—",se:"",tg:["Japanese"],n:"Linked sections 32985–32990. Prereq: JPN 601D or 506 (C or better). Six lecture hours a week."},
+{u:"33000",d:"JPN",c:"JPN 611D",t:"Intermediate Japanese",p:"Yanagisawa, Shohko",dy:"TTH",tm:"11:00a–12:30p",s:660,r:"—",se:"",tg:["Japanese"],n:"Linked sections 33000–33005. Prereq: JPN 507 or 610D (C or better). Real-life intermediate competency. Six lecture hours a week."},
+{u:"33015",d:"JPN",c:"JPN 317C",t:"Japanese Gram/Comp/Conversatn",p:"Cooke, Chikako",dy:"MWF",tm:"2:00–3:00p",s:840,r:"—",se:"",tg:["Japanese"],n:"Prereq: JPN 611D (C or better). Prepares for advanced Japanese courses."},
+{u:"33010",d:"JPN",c:"JPN 317C",t:"Japanese Gram/Comp/Conversatn",p:"Yanagisawa, Shohko",dy:"MWF",tm:"12:00–1:00p",s:720,r:"—",se:"",tg:["Japanese"],n:"Prereq: JPN 611D (C or better). Prepares for advanced Japanese courses."},
+{u:"33020",d:"JPN",c:"JPN 320K",t:"Readings In Modern Japanese I",p:"Hatanaka, Junko",dy:"MWF",tm:"12:00–1:00p",s:720,r:"—",se:"",tg:["Japanese"],n:"Prereq: JPN 412L or 317C (C or better). Intermediate expository prose."},
+{u:"33025",d:"JPN",c:"JPN 320L",t:"Readings In Modern Japanese II",p:"Duffey, Kaori",dy:"MWF",tm:"9:00–10:00a",s:540,r:"—",se:"",tg:["Japanese"],n:"Prereq: JPN 320K (C or better)."},
+{u:"33030",d:"JPN",c:"JPN 325K",t:"Advanced Conversation I",p:"Suto, Saori",dy:"MWF",tm:"1:00–2:00p",s:780,r:"—",se:"",tg:["Japanese"],n:"Prereq: JPN 412L or 317C (C or better). Conversation on more complex situations and topics."},
+{u:"33035",d:"JPN",c:"JPN 326",t:"Business Japanese",p:"Okada, Yukie",dy:"MWF",tm:"11:00a–12:00p",s:660,r:"—",se:"",tg:["Japanese"],n:""},
+{u:"33040",d:"JPN",c:"JPN 327",t:"Adv Rdng/Writ Kanji Characters",p:"Tanaka, Midori",dy:"TTH",tm:"9:30–11:00a",s:570,r:"—",se:"",tg:["Japanese"],n:""},
+{u:"33045",d:"JPN",c:"JPN 330",t:"Practical Reading In Adv Jpn",p:"Sano, Ryosuke",dy:"TTH",tm:"12:30–2:00p",s:750,r:"—",se:"",tg:["Japanese"],n:""}
 ];
 
 // Bid history per course: [Spring 2025 avg seats awarded, Rd 1 clear avg, Rd 2 clear avg].
@@ -490,7 +510,7 @@ C.forEach(x=>{if(ST[x.u])stKey[x.c+'|'+x.t]=ST[x.u]});
 C.forEach(x=>{x.st=stKey[x.c+'|'+x.t]||null});
 // Global Business concentration (2024-25 sheet): any I B graduate course, BGS 380E Global Political Economy,
 // MAN Global Management. STEP programs satisfy Option B's program leg rather than counting as hours.
-C.forEach(x=>{x.gb = (x.d==='I B'||x.u==='03520'||x.u==='06635') ? 'course' : x.d==='STEP' ? 'step' : null;});
+C.forEach(x=>{x.gb = (x.d==='I B'||x.d==='JPN'||x.u==='03520'||x.u==='06635') ? 'course' : x.d==='STEP' ? 'step' : null;});
 function creditsOf(x){const m=x.c.match(/(\d)\d\d/); return m?+m[1]:0;}
 function fmtStat(v){return v==null?'n/a':(Number.isInteger(v)?v:v.toFixed(1))}
 
@@ -650,9 +670,9 @@ function planBody(x){return {u:x.u,course:x.c,title:x.t,professor:x.p,days:x.dy,
 function updateTabs(){tabPlan.textContent=`Planned (${planned.size})`; updateBudget(); updateConc(); updateRoad();}
 function updateRoad(){
   const el=document.getElementById('roadprog'); if(!el)return;
-  const cats={'Required core':0,'Custom core':0,'Electives':0,'Abroad':0};
+  const cats={'Required core':0,'Custom core':0,'Electives':0,'Japanese language':0,'Abroad':0};
   for(const u of planned){const x=C.find(c=>c.u===u); if(x)cats[catOf(x)]++;}
-  el.innerHTML=`Your Planned tab so far: <b>${cats['Required core']}</b> of 1 required core · <b>${cats['Custom core']}</b> of 3 custom core · <b>${cats['Electives']+cats['Abroad']}</b> elective/abroad pick${cats['Electives']+cats['Abroad']===1?'':'s'}`;
+  el.innerHTML=`Your Planned tab so far: <b>${cats['Required core']}</b> of 1 required core · <b>${cats['Custom core']}</b> of 3 custom core · <b>${cats['Electives']+cats['Abroad']}</b> elective/abroad pick${cats['Electives']+cats['Abroad']===1?'':'s'}${cats['Japanese language']?` · <b>${cats['Japanese language']}</b> Japanese`:''}`;
 }
 function updateConc(){
   const el=document.getElementById('concprog'); if(!el)return;
@@ -854,7 +874,7 @@ function render(){
   partTabs.hidden=view!=='plan';
   if(view==='plan'){
     const ptsRow=x=>x.us.reduce((t,u)=>t+(planned.has(u)?(points[u]||0):0),0);
-    const catOrder=['Required core','Custom core','Electives','Abroad'];
+    const catOrder=['Required core','Custom core','Electives','Japanese language','Abroad'];
     const codeOf=r=>sems[r.us.find(u=>planned.has(u))]||'SP27';
     // Which parts of its semester a planned row occupies: an explicit part code (-1/-2),
     // the 2027 section's half, or both parts for full-term courses.
@@ -879,7 +899,7 @@ function render(){
     if(!sub.length&&!nosched.length){
       html+=`<tr><td colspan="9" style="text-align:center;color:var(--muted);padding:28px 12px">Nothing planned for ${plab} yet. Switch to All sections and pick it in the Plan column next to a course.</td></tr>`;
     }
-    const sc={'Required core':'core','Custom core':'cust','Electives':'elec','Abroad':'abr'};
+    const sc={'Required core':'core','Custom core':'cust','Electives':'elec','Japanese language':'jpn','Abroad':'abr'};
     for(const cg of catOrder){
       const grp=sub.filter(r=>catOf(r)===cg).sort((a,b)=>ptsRow(b)-ptsRow(a));
       if(!grp.length)continue;
@@ -890,9 +910,10 @@ function render(){
     const nReq=rows.filter(r=>catOf(r)==='Required core').length,
       nCC=rows.filter(r=>catOf(r)==='Custom core').length,
       nEl=rows.filter(r=>catOf(r)==='Electives').length,
-      nAb=rows.filter(r=>catOf(r)==='Abroad').length;
+      nAb=rows.filter(r=>catOf(r)==='Abroad').length,
+      nJp=rows.filter(r=>catOf(r)==='Japanese language').length;
     count.textContent=rows.length
-      ?`${rows.length} planned — ${nReq} required core · ${nCC} custom core · ${nEl} elective${nEl===1?'':'s'}${nAb?` · ${nAb} abroad`:''}`
+      ?`${rows.length} planned — ${nReq} required core · ${nCC} custom core · ${nEl} elective${nEl===1?'':'s'}${nJp?` · ${nJp} Japanese`:''}${nAb?` · ${nAb} abroad`:''}`
       :'0 planned sections';
   }else{
     tb.innerHTML=rows.map((x,i)=>rowHTML(x,i%2===1)).join('');
@@ -902,7 +923,8 @@ function render(){
   }
 }
 function catOf(x){
-  return x.tg.includes('Abroad')?'Abroad'
+  return x.d==='JPN'?'Japanese language'
+    :x.tg.includes('Abroad')?'Abroad'
     :x.tg.includes('MBA core')?'Required core'
     :x.tg.includes('Custom core')?'Custom core'
     :'Electives';

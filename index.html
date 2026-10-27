@@ -283,7 +283,7 @@ td.num .more{color:var(--accent); font-weight:700}
       <tr><td>Credit hours</td><td><a href="https://catalog.utexas.edu/archive/2019-20/general-information/academic-policies-and-procedures/credit-value-and-course-numbers/" target="_blank" rel="noopener">UT catalog — Credit Value and Course Numbers</a></td><td>Hours from the first digit of the course number; lower/upper-division/graduate rank</td></tr>
       <tr><td>Course descriptions</td><td><a href="https://catalog.utexas.edu/archive/2020-21/graduate/fields-of-study/business/management/graduate-courses/" target="_blank" rel="noopener">UT graduate catalog — Management courses</a></td><td>MAN 283 format and topic descriptions</td></tr>
       <tr><td>Japanese courses</td><td>Spring 2027 Japanese course list — from Henry (Oct 27, 2026); <a href="https://catalog.utexas.edu/courses/jpn/" target="_blank" rel="noopener">UT catalog — JPN courses</a>; <a href="https://laits.utexas.edu/japanese/program/major.php" target="_blank" rel="noopener">UT Japanese program pages</a></td><td>JPN sections and times, prerequisites, First-/Second-Year equivalences, 330 as fourth-year</td></tr>
-      <tr><td>Locations</td><td>Room fields from the schedule and Oct 27 list; building addresses from <a href="https://mccombs.utexas.edu/graduate/specialized-masters/ms-technology-commercialization/connect-with-us" target="_blank" rel="noopener">McCombs</a>, <a href="https://tarlton.law.utexas.edu/visiting-the-library/location-and-parking" target="_blank" rel="noopener">Texas Law</a> and <a href="https://cockrell.utexas.edu/contact" target="_blank" rel="noopener">Cockrell School</a> pages; coordinates from Google Places</td><td>Location column and walk time from Rowling Hall</td></tr>
+      <tr><td>Locations</td><td>Room fields from the schedule and Oct 27 list; Japanese classes in the Will C. Hogg Building (from Henry); building addresses from <a href="https://mccombs.utexas.edu/graduate/specialized-masters/ms-technology-commercialization/connect-with-us" target="_blank" rel="noopener">McCombs</a>, <a href="https://tarlton.law.utexas.edu/visiting-the-library/location-and-parking" target="_blank" rel="noopener">Texas Law</a> and <a href="https://cockrell.utexas.edu/contact" target="_blank" rel="noopener">Cockrell School</a> pages; coordinates from Google Places</td><td>Location column and walk time from Rowling Hall</td></tr>
       <tr><td>Class year (611D)</td><td>From Henry</td><td>JPN 611D = Sophomore, the anchor for the other Japanese years</td></tr>
     </tbody>
   </table>
@@ -294,7 +294,7 @@ td.num .more{color:var(--accent); font-weight:700}
     <li><b>Fall 2026 half-term sequencing</b> on the Roadmap — shown as typical; your section schedule governs</li>
     <li><b>Fall 2027 availability</b> — only courses whose notes say "fall and spring" offer Fa '27; others may still run in fall</li>
     <li><b>Spring 2028 availability</b> — assumed from this spring's schedule and past springs' bid sheets</li>
-    <li><b>Walk times from Rowling Hall</b> — estimated from building coordinates by street-grid distance at ~80 m/min (≈8 min to the McCombs CBA/GSB complex, ≈17 min to ECJ, ≈22 min to the law school); Japanese and program rooms are TBD</li>
+    <li><b>Walk times from Rowling Hall</b> — estimated from building coordinates by street-grid distance at ~80 m/min (≈8 min to the McCombs CBA/GSB complex, ≈10 min to Will C. Hogg, ≈17 min to ECJ, ≈22 min to the law school); Japanese room numbers and STEP / Washington Campus locations are TBD</li>
     <li><b>Japanese years marked "?"</b> — inferred one step per prerequisite from 611D</li>
     <li><b>Fuzzy matches in bid history</b> — e.g. Envir/Social/Gov Investing → Sustainable Finance, BGS 381M → 381N, Behaviorl Science for Business → Psych of Persuasion/Influence, Copenhagen history split March → AI for Social Ent, May → ESG</li>
     <li><b>RMP matches</b> — some ratings come mostly from undergraduate sections; a few matches are probable rather than certain (e.g. Murphy for Negotiation)</li>
@@ -508,22 +508,22 @@ const C=[
 //   Second-Year Japanese 412K/412L), 611D Sophomore (Henry; follows 610D), 330 Senior (catalog: "fourth-year Japanese").
 //   "?" — inferred from prerequisites: 317C requires 611D or Second-Year II (412L) → Junior?; 320K, 325K, 326, 327
 //   require 317C → Junior?; 320L follows 320K and precedes fourth-year 330 → Junior?.
-{u:"32965",d:"JPN",c:"JPN 601D",t:"Japanese I (Freshman)",p:"Tanaka, Midori",dy:"MWF",tm:"11:00a–12:00p",s:660,r:"—",se:"",tg:["Japanese"],n:"No prior Japanese required; not open to native speakers. Six lecture hours a week."},
-{u:"32970",d:"JPN",c:"JPN 601D",t:"Japanese I (Freshman)",p:"Cooke, Chikako",dy:"MWF",tm:"1:00–2:00p",s:780,r:"—",se:"",tg:["Japanese"],n:"No prior Japanese required; not open to native speakers. Six lecture hours a week."},
-{u:"32975",d:"JPN",c:"JPN 601D",t:"Japanese I (Freshman)",p:"Suto, Saori",dy:"MWF",tm:"2:00–3:00p",s:840,r:"—",se:"",tg:["Japanese"],n:"No prior Japanese required; not open to native speakers. Six lecture hours a week."},
-{u:"32955",d:"JPN",c:"JPN 601D",t:"Japanese I (Freshman)",p:"Hatanaka, Junko",dy:"TTH",tm:"9:30–11:00a",s:570,r:"—",se:"",tg:["Japanese"],n:"Linked sections 32955–32960. No prior Japanese required; not open to native speakers. Six lecture hours a week."},
-{u:"32995",d:"JPN",c:"JPN 610D",t:"Japanese II (Sophomore)",p:"Okada, Yukie",dy:"MWF",tm:"1:00–2:00p",s:780,r:"—",se:"",tg:["Japanese"],n:"Prereq: JPN 601D or 506 (C or better). Six lecture hours a week."},
-{u:"32980",d:"JPN",c:"JPN 610D",t:"Japanese II (Sophomore)",p:"Sano, Ryosuke",dy:"MWF",tm:"9:00–10:00a",s:540,r:"—",se:"",tg:["Japanese"],n:"Prereq: JPN 601D or 506 (C or better). Six lecture hours a week."},
-{u:"32985",d:"JPN",c:"JPN 610D",t:"Japanese II (Sophomore)",p:"Duffey, Kaori",dy:"TTH",tm:"9:30–11:00a",s:570,r:"—",se:"",tg:["Japanese"],n:"Linked sections 32985–32990. Prereq: JPN 601D or 506 (C or better). Six lecture hours a week."},
-{u:"33000",d:"JPN",c:"JPN 611D",t:"Intermediate Japanese (Sophomore)",p:"Yanagisawa, Shohko",dy:"TTH",tm:"11:00a–12:30p",s:660,r:"—",se:"",tg:["Japanese"],n:"Linked sections 33000–33005. Prereq: JPN 507 or 610D (C or better). Real-life intermediate competency. Six lecture hours a week."},
-{u:"33015",d:"JPN",c:"JPN 317C",t:"Japanese Gram/Comp/Conversatn (Junior?)",p:"Cooke, Chikako",dy:"MWF",tm:"2:00–3:00p",s:840,r:"—",se:"",tg:["Japanese"],n:"Prereq: JPN 611D (C or better). Prepares for advanced Japanese courses."},
-{u:"33010",d:"JPN",c:"JPN 317C",t:"Japanese Gram/Comp/Conversatn (Junior?)",p:"Yanagisawa, Shohko",dy:"MWF",tm:"12:00–1:00p",s:720,r:"—",se:"",tg:["Japanese"],n:"Prereq: JPN 611D (C or better). Prepares for advanced Japanese courses."},
-{u:"33020",d:"JPN",c:"JPN 320K",t:"Readings In Modern Japanese I (Junior?)",p:"Hatanaka, Junko",dy:"MWF",tm:"12:00–1:00p",s:720,r:"—",se:"",tg:["Japanese"],n:"Prereq: JPN 412L or 317C (C or better). Intermediate expository prose."},
-{u:"33025",d:"JPN",c:"JPN 320L",t:"Readings In Modern Japanese II (Junior?)",p:"Duffey, Kaori",dy:"MWF",tm:"9:00–10:00a",s:540,r:"—",se:"",tg:["Japanese"],n:"Prereq: JPN 320K (C or better)."},
-{u:"33030",d:"JPN",c:"JPN 325K",t:"Advanced Conversation I (Junior?)",p:"Suto, Saori",dy:"MWF",tm:"1:00–2:00p",s:780,r:"—",se:"",tg:["Japanese"],n:"Prereq: JPN 412L or 317C (C or better). Conversation on more complex situations and topics."},
-{u:"33035",d:"JPN",c:"JPN 326",t:"Business Japanese (Junior?)",p:"Okada, Yukie",dy:"MWF",tm:"11:00a–12:00p",s:660,r:"—",se:"",tg:["Japanese"],n:"Prereq: JPN 317C (C or better)."},
-{u:"33040",d:"JPN",c:"JPN 327",t:"Adv Rdng/Writ Kanji Characters (Junior?)",p:"Tanaka, Midori",dy:"TTH",tm:"9:30–11:00a",s:570,r:"—",se:"",tg:["Japanese"],n:"Prereq: JPN 317C (C or better)."},
-{u:"33045",d:"JPN",c:"JPN 330",t:"Practical Reading In Adv Jpn (Senior)",p:"Sano, Ryosuke",dy:"TTH",tm:"12:30–2:00p",s:750,r:"—",se:"",tg:["Japanese"],n:"Prereq: JPN 320L (C or better). Catalog: fourth-year Japanese readings on special topics."},
+{u:"32965",d:"JPN",c:"JPN 601D",t:"Japanese I (Freshman)",p:"Tanaka, Midori",dy:"MWF",tm:"11:00a–12:00p",s:660,r:"WCH",se:"",tg:["Japanese"],n:"No prior Japanese required; not open to native speakers. Six lecture hours a week."},
+{u:"32970",d:"JPN",c:"JPN 601D",t:"Japanese I (Freshman)",p:"Cooke, Chikako",dy:"MWF",tm:"1:00–2:00p",s:780,r:"WCH",se:"",tg:["Japanese"],n:"No prior Japanese required; not open to native speakers. Six lecture hours a week."},
+{u:"32975",d:"JPN",c:"JPN 601D",t:"Japanese I (Freshman)",p:"Suto, Saori",dy:"MWF",tm:"2:00–3:00p",s:840,r:"WCH",se:"",tg:["Japanese"],n:"No prior Japanese required; not open to native speakers. Six lecture hours a week."},
+{u:"32955",d:"JPN",c:"JPN 601D",t:"Japanese I (Freshman)",p:"Hatanaka, Junko",dy:"TTH",tm:"9:30–11:00a",s:570,r:"WCH",se:"",tg:["Japanese"],n:"Linked sections 32955–32960. No prior Japanese required; not open to native speakers. Six lecture hours a week."},
+{u:"32995",d:"JPN",c:"JPN 610D",t:"Japanese II (Sophomore)",p:"Okada, Yukie",dy:"MWF",tm:"1:00–2:00p",s:780,r:"WCH",se:"",tg:["Japanese"],n:"Prereq: JPN 601D or 506 (C or better). Six lecture hours a week."},
+{u:"32980",d:"JPN",c:"JPN 610D",t:"Japanese II (Sophomore)",p:"Sano, Ryosuke",dy:"MWF",tm:"9:00–10:00a",s:540,r:"WCH",se:"",tg:["Japanese"],n:"Prereq: JPN 601D or 506 (C or better). Six lecture hours a week."},
+{u:"32985",d:"JPN",c:"JPN 610D",t:"Japanese II (Sophomore)",p:"Duffey, Kaori",dy:"TTH",tm:"9:30–11:00a",s:570,r:"WCH",se:"",tg:["Japanese"],n:"Linked sections 32985–32990. Prereq: JPN 601D or 506 (C or better). Six lecture hours a week."},
+{u:"33000",d:"JPN",c:"JPN 611D",t:"Intermediate Japanese (Sophomore)",p:"Yanagisawa, Shohko",dy:"TTH",tm:"11:00a–12:30p",s:660,r:"WCH",se:"",tg:["Japanese"],n:"Linked sections 33000–33005. Prereq: JPN 507 or 610D (C or better). Real-life intermediate competency. Six lecture hours a week."},
+{u:"33015",d:"JPN",c:"JPN 317C",t:"Japanese Gram/Comp/Conversatn (Junior?)",p:"Cooke, Chikako",dy:"MWF",tm:"2:00–3:00p",s:840,r:"WCH",se:"",tg:["Japanese"],n:"Prereq: JPN 611D (C or better). Prepares for advanced Japanese courses."},
+{u:"33010",d:"JPN",c:"JPN 317C",t:"Japanese Gram/Comp/Conversatn (Junior?)",p:"Yanagisawa, Shohko",dy:"MWF",tm:"12:00–1:00p",s:720,r:"WCH",se:"",tg:["Japanese"],n:"Prereq: JPN 611D (C or better). Prepares for advanced Japanese courses."},
+{u:"33020",d:"JPN",c:"JPN 320K",t:"Readings In Modern Japanese I (Junior?)",p:"Hatanaka, Junko",dy:"MWF",tm:"12:00–1:00p",s:720,r:"WCH",se:"",tg:["Japanese"],n:"Prereq: JPN 412L or 317C (C or better). Intermediate expository prose."},
+{u:"33025",d:"JPN",c:"JPN 320L",t:"Readings In Modern Japanese II (Junior?)",p:"Duffey, Kaori",dy:"MWF",tm:"9:00–10:00a",s:540,r:"WCH",se:"",tg:["Japanese"],n:"Prereq: JPN 320K (C or better)."},
+{u:"33030",d:"JPN",c:"JPN 325K",t:"Advanced Conversation I (Junior?)",p:"Suto, Saori",dy:"MWF",tm:"1:00–2:00p",s:780,r:"WCH",se:"",tg:["Japanese"],n:"Prereq: JPN 412L or 317C (C or better). Conversation on more complex situations and topics."},
+{u:"33035",d:"JPN",c:"JPN 326",t:"Business Japanese (Junior?)",p:"Okada, Yukie",dy:"MWF",tm:"11:00a–12:00p",s:660,r:"WCH",se:"",tg:["Japanese"],n:"Prereq: JPN 317C (C or better)."},
+{u:"33040",d:"JPN",c:"JPN 327",t:"Adv Rdng/Writ Kanji Characters (Junior?)",p:"Tanaka, Midori",dy:"TTH",tm:"9:30–11:00a",s:570,r:"WCH",se:"",tg:["Japanese"],n:"Prereq: JPN 317C (C or better)."},
+{u:"33045",d:"JPN",c:"JPN 330",t:"Practical Reading In Adv Jpn (Senior)",p:"Sano, Ryosuke",dy:"TTH",tm:"12:30–2:00p",s:750,r:"WCH",se:"",tg:["Japanese"],n:"Prereq: JPN 320L (C or better). Catalog: fourth-year Japanese readings on special topics."},
 // Oct 27 registration list: 2027 STEP programs (STP 080) and Washington Campus (W C 080). Times TBD.
 {u:"66661",d:"STEP",c:"STP 080",t:"STEP: Copenhagen AI for Social Entrepreneurship (March)",p:"TBD",dy:"—",tm:"—",s:9999,r:"—",se:"",tg:["Abroad"],n:"March program · 5 seats. Short-Term Exchange Program; satisfies Global Business Option B."},
 {u:"66662",d:"STEP",c:"STP 080",t:"STEP: Doing Business in Mexico City (March)",p:"TBD",dy:"—",tm:"—",s:9999,r:"—",se:"",tg:["Abroad"],n:"March program · 5 seats. Short-Term Exchange Program; satisfies Global Business Option B."},
@@ -576,14 +576,15 @@ const BLD={
   CBA:{n:'McCombs School of Business (CBA)',a:'2110 Speedway',w:8},
   TNH:{n:'Townes Hall (School of Law)',a:'727 E Dean Keeton St',w:22},
   JON:{n:'Jesse H. Jones Hall (School of Law)',a:'727 E Dean Keeton St',w:22},
-  ECJ:{n:'Ernest Cockrell Jr. Hall',a:'301 E Dean Keeton St',w:17}
+  ECJ:{n:'Ernest Cockrell Jr. Hall',a:'301 E Dean Keeton St',w:17},
+  WCH:{n:'Will C. Hogg Building',a:'120 Inner Campus Dr',w:10}
 };
 function bldOf(x){const code=(x.r||'').split(/[\s/]/)[0]; return BLD[code]?code:null;}
 function locCell(x){
   if(!x.r||x.r==='—')return '<span style="color:var(--muted)">TBD</span>';
   const b=bldOf(x); if(!b)return esc(x.r);
-  const B=BLD[b], walk=B.w===0?'here':`${B.w} min`;
-  return `<span title="${esc(B.n)} · ${esc(B.a)} · ${B.w===0?'in Rowling Hall':`≈${B.w} min walk from Rowling Hall`}">${esc(x.r)} <span style="color:var(--muted)">· ${walk}</span></span>`;
+  const B=BLD[b], walk=B.w===0?'here':`${B.w} min`, room=x.r.trim()===b?`${b} (room TBD)`:x.r;
+  return `<span title="${esc(B.n)} · ${esc(B.a)} · ${B.w===0?'in Rowling Hall':`≈${B.w} min walk from Rowling Hall`}">${esc(room)} <span style="color:var(--muted)">· ${walk}</span></span>`;
 }
 // RateMyProfessors (UT Austin, school 1255): professor -> [rating /5 (null = profile exists but no ratings yet), # ratings, profile URL].
 // Read live from ratemyprofessors.com in Oct 2026. Professors absent from the map have no UT Austin RMP profile.

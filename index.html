@@ -178,7 +178,7 @@ td.num .more{color:var(--accent); font-weight:700}
   <div class="typegrid">
     <div class="type"><div class="tn">Required core</div><div class="tv">8 classes · ≈16 hrs</div><div class="td2">7 in fall plus Strategic Management in spring — core classes run 2 hrs each (course numbers 28x)</div></div>
     <div class="type"><div class="tn">Custom core</div><div class="tv">4 classes · 8 hrs</div><div class="td2">2 hrs each, chosen from the core menu: #1 in fall, #2–#4 in spring</div></div>
-    <div class="type"><div class="tn">Electives</div><div class="tv">≈12 classes · ≈36 hrs</div><div class="td2">Typically 3 hrs each (38x/39x numbers); the Worldview and R&amp;I requirement courses count within these</div></div>
+    <div class="type"><div class="tn">Electives || Japanese language</div><div class="tv">≈12 classes · ≈36 hrs</div><div class="td2">Typically 3 hrs each (38x/39x numbers); a Japanese language course can fill an elective slot (JPN 601D–611D run 6 hrs). The Worldview and R&amp;I requirement courses count within these</div></div>
     <div class="type"><div class="tn">Concentration — Global Business</div><div class="tv">within electives</div><div class="td2">12 hrs incl. one I B course (Option A) · 9 hrs + STEP (Option B) · 6 hrs + semester abroad (Option C)</div></div>
   </div>
   <p class="concnote">Class counts assume the commonly cited 60-hour full-time MBA; the public curriculum page doesn't publish per-type hour totals, so treat the ≈ figures as planning estimates and confirm the exact split with your advisor.</p>
@@ -205,15 +205,15 @@ td.num .more{color:var(--accent); font-weight:700}
       <ul>
         <li><b>Strategic Management (B A 288T)</b> — 1 class · 2 hrs, required, cohort-locked</li>
         <li><b>1 custom core</b> — 2 hrs, from the Spring 1 menu: Valuation I, Performance Mgmt &amp; Control, Leading People &amp; Orgs, AI in Business &amp; Society</li>
-        <li><b>Elective 1</b> — 3 hrs, full-term</li>
-        <li><b>Elective 2</b> — 3 hrs, full-term</li>
+        <li><b>Elective 1 || Japanese language</b> — 3 hrs, full-term (6 hrs for JPN 601D–611D)</li>
+        <li><b>Elective 2 || Japanese language</b> — 3 hrs, full-term</li>
         <li><b>In session: 4 classes · 10 hrs</b></li>
       </ul>
       <div class="hb s2">Spring 2 · Mar 1 – Apr 30</div>
       <ul>
         <li><b>Custom core class 1</b> — 2 hrs, from the Spring 2 menu: Managerial Macro, Managing Human Capital, Corporate Strategy, Business Analytics, Performance Mgmt &amp; Control</li>
         <li><b>Custom core class 2</b> — 2 hrs, a second pick from the same menu</li>
-        <li><b>Electives 1 &amp; 2 continue</b> — full-term</li>
+        <li><b>Electives 1 &amp; 2 || Japanese language continue</b> — full-term</li>
         <li><b>In session: 4 classes · 10 hrs</b></li>
       </ul>
       <div class="hb both">Semester total</div>
@@ -226,16 +226,16 @@ td.num .more{color:var(--accent); font-weight:700}
       <div class="semname">Fall 2027 · Semester 3</div>
       <div class="hb s1">Fall 1 · Aug – Oct</div>
       <ul>
-        <li><b>0 required classes</b> — electives only; any 28x-numbered elective runs a single half</li>
+        <li><b>0 required classes</b> — electives || Japanese language only; any 28x-numbered elective runs a single half</li>
         <li>Board Fellows &amp; fellows applications open in September</li>
       </ul>
       <div class="hb s2">Fall 2 · Oct – Dec</div>
       <ul>
-        <li><b>0 required classes</b> — electives only</li>
+        <li><b>0 required classes</b> — electives || Japanese language only</li>
       </ul>
       <div class="hb both">Both halves · full term</div>
       <ul>
-        <li><b>≈5 electives</b> — 3 hrs each (≈15 hrs); most meet all semester</li>
+        <li><b>≈5 electives || Japanese language</b> — 3 hrs each (≈15 hrs); most meet all semester</li>
         <li><b>Worldview of Business &amp; Society</b> requirement if not yet met; Global Business concentration hours</li>
       </ul>
     </div>
@@ -243,15 +243,15 @@ td.num .more{color:var(--accent); font-weight:700}
       <div class="semname">Spring 2028 · Semester 4</div>
       <div class="hb s1">Spring 1 · Jan – Feb</div>
       <ul>
-        <li><b>0 required classes</b> — electives only; Global Connections classes meet now ahead of the March trip</li>
+        <li><b>0 required classes</b> — electives || Japanese language only; Global Connections classes meet now ahead of the March trip</li>
       </ul>
       <div class="hb s2">Spring 2 · Mar – Apr</div>
       <ul>
-        <li><b>0 required classes</b> — electives only; Global Connections trips travel Mar 7–16, May STEPs depart after finals</li>
+        <li><b>0 required classes</b> — electives || Japanese language only; Global Connections trips travel Mar 7–16, May STEPs depart after finals</li>
       </ul>
       <div class="hb both">Both halves · full term</div>
       <ul>
-        <li><b>≈5 electives</b> — 3 hrs each (≈15 hrs) to close out hour requirements</li>
+        <li><b>≈5 electives || Japanese language</b> — 3 hrs each (≈15 hrs) to close out hour requirements</li>
         <li><b>Responsibility &amp; Integrity</b> requirement if not yet met (Investing in Philanthropy, Social/Ethical Resp, Managing Diverse Workforce qualify)</li>
         <li>Finish Global Business: 12 hrs incl. one I B course (Option A), or 9 hrs + a STEP (Option B)</li>
       </ul>
@@ -686,7 +686,7 @@ function updateRoad(){
   const el=document.getElementById('roadprog'); if(!el)return;
   const cats={'Required core':0,'Custom core':0,'Electives':0,'Japanese language':0,'Abroad':0};
   for(const u of planned){const x=C.find(c=>c.u===u); if(x)cats[catOf(x)]++;}
-  el.innerHTML=`Your Planned tab so far: <b>${cats['Required core']}</b> of 1 required core · <b>${cats['Custom core']}</b> of 3 custom core · <b>${cats['Electives']+cats['Abroad']}</b> elective/abroad pick${cats['Electives']+cats['Abroad']===1?'':'s'}${cats['Japanese language']?` · <b>${cats['Japanese language']}</b> Japanese`:''}`;
+  el.innerHTML=`Your Planned tab so far: <b>${cats['Required core']}</b> of 1 required core · <b>${cats['Custom core']}</b> of 3 custom core · <b>${cats['Electives']+cats['Japanese language']+cats['Abroad']}</b> elective || language || abroad pick${cats['Electives']+cats['Japanese language']+cats['Abroad']===1?'':'s'}`;
 }
 function updateConc(){
   const el=document.getElementById('concprog'); if(!el)return;

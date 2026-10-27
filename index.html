@@ -294,7 +294,7 @@ td.num .more{color:var(--accent); font-weight:700}
     <li><b>Fall 2026 half-term sequencing</b> on the Roadmap — shown as typical; your section schedule governs</li>
     <li><b>Fall 2027 availability</b> — only courses whose notes say "fall and spring" offer Fa '27; others may still run in fall</li>
     <li><b>Spring 2028 availability</b> — assumed from this spring's schedule and past springs' bid sheets</li>
-    <li><b>Walk times from Rowling Hall</b> — estimated from building coordinates by street-grid distance at ~80 m/min (≈8 min to the McCombs CBA/GSB complex, ≈10 min to Will C. Hogg, ≈17 min to ECJ, ≈22 min to the law school); Japanese room numbers and STEP / Washington Campus locations are TBD</li>
+    <li><b>Walk times from Rowling Hall</b> — estimated from building coordinates by street-grid distance at ~80 m/min (≈8 min to the McCombs CBA/GSB complex, ≈10 min to Will C. Hogg, ≈17 min to ECJ, ≈22 min to the law school); Japanese room numbers are TBD; off-campus and arranged courses (STEP, Washington Campus, independent studies, the web section) show where they happen instead of a walk time</li>
     <li><b>Japanese years marked "?"</b> — inferred one step per prerequisite from 611D</li>
     <li><b>Fuzzy matches in bid history</b> — e.g. Envir/Social/Gov Investing → Sustainable Finance, BGS 381M → 381N, Behaviorl Science for Business → Psych of Persuasion/Influence, Copenhagen history split March → AI for Social Ent, May → ESG</li>
     <li><b>RMP matches</b> — some ratings come mostly from undergraduate sections; a few matches are probable rather than certain (e.g. Murphy for Negotiation)</li>
@@ -581,7 +581,16 @@ const BLD={
 };
 function bldOf(x){const code=(x.r||'').split(/[\s/]/)[0]; return BLD[code]?code:null;}
 function locCell(x){
-  if(!x.r||x.r==='—')return '<span style="color:var(--muted)">TBD</span>';
+  if(!x.r||x.r==='—'){
+    // No campus room: say where the course happens instead of a walk time.
+    const off=x.d==='STEP'?['Abroad · travel','Short-Term Exchange Program, traveling abroad']
+      :x.d==='W C'?['Washington, D.C.','Washington Campus program in D.C.']
+      :x.u.startsWith('AB')?['Abroad · past program','Prior-year program, bid history only']
+      :/Independent Study/.test(x.t)?['Arranged','Arranged with the supervising instructor']
+      :x.u==='03670'?['Online','Web-based section']
+      :null;
+    return off?`<span style="color:var(--muted)" title="${off[1]}">${off[0]}</span>`:'<span style="color:var(--muted)">TBD</span>';
+  }
   const b=bldOf(x); if(!b)return esc(x.r);
   const B=BLD[b], walk=B.w===0?'here':`${B.w} min`, room=x.r.trim()===b?`${b} (room TBD)`:x.r;
   return `<span title="${esc(B.n)} · ${esc(B.a)} · ${B.w===0?'in Rowling Hall':`≈${B.w} min walk from Rowling Hall`}">${esc(room)} <span style="color:var(--muted)">· ${walk}</span></span>`;

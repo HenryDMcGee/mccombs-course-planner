@@ -283,6 +283,7 @@ td.num .more{color:var(--accent); font-weight:700}
       <tr><td>Credit hours</td><td><a href="https://catalog.utexas.edu/archive/2019-20/general-information/academic-policies-and-procedures/credit-value-and-course-numbers/" target="_blank" rel="noopener">UT catalog — Credit Value and Course Numbers</a></td><td>Hours from the first digit of the course number; lower/upper-division/graduate rank</td></tr>
       <tr><td>Course descriptions</td><td><a href="https://catalog.utexas.edu/archive/2020-21/graduate/fields-of-study/business/management/graduate-courses/" target="_blank" rel="noopener">UT graduate catalog — Management courses</a></td><td>MAN 283 format and topic descriptions</td></tr>
       <tr><td>Japanese courses</td><td>Spring 2027 Japanese course list — from Henry (Oct 27, 2026); <a href="https://catalog.utexas.edu/courses/jpn/" target="_blank" rel="noopener">UT catalog — JPN courses</a>; <a href="https://laits.utexas.edu/japanese/program/major.php" target="_blank" rel="noopener">UT Japanese program pages</a></td><td>JPN sections and times, prerequisites, First-/Second-Year equivalences, 330 as fourth-year</td></tr>
+      <tr><td>Locations</td><td>Room fields from the schedule and Oct 27 list; building addresses from <a href="https://mccombs.utexas.edu/graduate/specialized-masters/ms-technology-commercialization/connect-with-us" target="_blank" rel="noopener">McCombs</a>, <a href="https://tarlton.law.utexas.edu/visiting-the-library/location-and-parking" target="_blank" rel="noopener">Texas Law</a> and <a href="https://cockrell.utexas.edu/contact" target="_blank" rel="noopener">Cockrell School</a> pages; coordinates from Google Places</td><td>Location column and walk time from Rowling Hall</td></tr>
       <tr><td>Class year (611D)</td><td>From Henry</td><td>JPN 611D = Sophomore, the anchor for the other Japanese years</td></tr>
     </tbody>
   </table>
@@ -293,6 +294,7 @@ td.num .more{color:var(--accent); font-weight:700}
     <li><b>Fall 2026 half-term sequencing</b> on the Roadmap — shown as typical; your section schedule governs</li>
     <li><b>Fall 2027 availability</b> — only courses whose notes say "fall and spring" offer Fa '27; others may still run in fall</li>
     <li><b>Spring 2028 availability</b> — assumed from this spring's schedule and past springs' bid sheets</li>
+    <li><b>Walk times from Rowling Hall</b> — estimated from building coordinates by street-grid distance at ~80 m/min (≈8 min to the McCombs CBA/GSB complex, ≈17 min to ECJ, ≈22 min to the law school); Japanese and program rooms are TBD</li>
     <li><b>Japanese years marked "?"</b> — inferred one step per prerequisite from 611D</li>
     <li><b>Fuzzy matches in bid history</b> — e.g. Envir/Social/Gov Investing → Sustainable Finance, BGS 381M → 381N, Behaviorl Science for Business → Psych of Persuasion/Influence, Copenhagen history split March → AI for Social Ent, May → ESG</li>
     <li><b>RMP matches</b> — some ratings come mostly from undergraduate sections; a few matches are probable rather than certain (e.g. Murphy for Negotiation)</li>
@@ -361,6 +363,7 @@ td.num .more{color:var(--accent); font-weight:700}
     <th><button data-k="prof">Professor</button></th>
     <th><button data-k="rmp">RMP</button></th>
     <th><button data-k="start">Days · Time</button></th>
+    <th title="Building and room; minutes is the estimated walk from Rowling Hall"><button data-k="walk">Location · walk</button></th>
     <th style="text-align:right" title="2024–25 average market-clearing bid per course. 0 = seats still open at close, n/a = no data. Hover a row for section number, room, '25 seats, and notes."><button data-k="r1">Rd 1</button> · <button data-k="r2">Rd 2</button></th>
   </tr></thead>
   <tbody id="tb"></tbody>
@@ -460,7 +463,7 @@ const C=[
 {u:"06655",d:"MAN",c:"MAN 385.68",t:"Performance / Sports Anlytcs",p:"Goldsberry, K",dy:"TH",tm:"3:30–6:30p",s:930,r:"RRH 3.414",se:"",tg:[],n:""},
 {u:"06665",d:"MAN",c:"MAN 385.73",t:"Opportnty Identity / Analysis",p:"Doggett, J",dy:"MW",tm:"2:00–3:30p",s:840,r:"RRH 3.304",se:"",tg:[],n:""},
 {u:"06670",d:"MAN",c:"MAN 385.74",t:"Technology Strategy",p:"Polidoro, F",dy:"TTH",tm:"2:00–3:30p",s:840,r:"RRH 5.382",se:"",tg:[],n:""},
-{u:"06675",d:"MAN",c:"MAN 385.75",t:"Energy Technology / Policy",p:"Kennard, H",dy:"TTH",tm:"8:00–9:30a",s:480,r:"ACS 0.104",se:"",tg:[],n:""},
+{u:"06675",d:"MAN",c:"MAN 385.75",t:"Energy Technology / Policy",p:"Kennard, H",dy:"TTH",tm:"8:00–9:30a",s:480,r:"ECJ",se:"",tg:[],n:"Building per Oct 27 registration list (schedule had ACS 0.104)."},
 {u:"06900",d:"MAN",c:"MAN 391S",t:"Independent Study",p:"—",dy:"—",tm:"—",s:9999,r:"—",se:"",tg:["Restricted"],n:"Contact an academic advisor. Not in the Oct 27 registration list."},
 {u:"05400",d:"MIS",c:"MIS 281N",t:"AI For Digital Transformatn",p:"Bardhan, I",dy:"TTH",tm:"11:00a–12:30p",s:660,r:"RRH 3.304",se:"S2",tg:[],n:"Spring 2 (per Oct 27 registration list; 2-credit half-term)."},
 {u:"05440",d:"MIS",c:"MIS 281N.33",t:"AI In Business And Society",p:"Saar-Tsechansky, M",dy:"TTH",tm:"8:30–10:30a",s:510,r:"RRH 5.408",se:"S1",tg:["Custom core"],n:"Jan 12–Feb 25. Final exam Feb 26."},
@@ -565,6 +568,23 @@ C.forEach(x=>{x.gb = (x.d==='I B'||x.d==='JPN'||x.u==='03520'||x.u==='06635') ? 
 function creditsOf(x){const m=x.c.match(/(\d)\d\d/); return m?+m[1]:0;}
 function fmtStat(v){return v==null?'n/a':(Number.isInteger(v)?v:v.toFixed(1))}
 
+// Buildings: name, address, estimated walk from Rowling Hall (minutes). Walks are estimates from map coordinates
+// (Google Places) using street-grid distance at ~80 m/min, rounded up for entry; RRH is "here".
+const BLD={
+  RRH:{n:'Robert B. Rowling Hall',a:'300 W Martin Luther King Jr Blvd',w:0},
+  GSB:{n:'Graduate School of Business (McCombs complex)',a:'2110 Speedway',w:8},
+  CBA:{n:'McCombs School of Business (CBA)',a:'2110 Speedway',w:8},
+  TNH:{n:'Townes Hall (School of Law)',a:'727 E Dean Keeton St',w:22},
+  JON:{n:'Jesse H. Jones Hall (School of Law)',a:'727 E Dean Keeton St',w:22},
+  ECJ:{n:'Ernest Cockrell Jr. Hall',a:'301 E Dean Keeton St',w:17}
+};
+function bldOf(x){const code=(x.r||'').split(/[\s/]/)[0]; return BLD[code]?code:null;}
+function locCell(x){
+  if(!x.r||x.r==='—')return '<span style="color:var(--muted)">TBD</span>';
+  const b=bldOf(x); if(!b)return esc(x.r);
+  const B=BLD[b], walk=B.w===0?'here':`${B.w} min`;
+  return `<span title="${esc(B.n)} · ${esc(B.a)} · ${B.w===0?'in Rowling Hall':`≈${B.w} min walk from Rowling Hall`}">${esc(x.r)} <span style="color:var(--muted)">· ${walk}</span></span>`;
+}
 // RateMyProfessors (UT Austin, school 1255): professor -> [rating /5 (null = profile exists but no ratings yet), # ratings, profile URL].
 // Read live from ratemyprofessors.com in Oct 2026. Professors absent from the map have no UT Austin RMP profile.
 const RM={
@@ -868,6 +888,7 @@ let sortKey='code', sortDir='asc';
 const keyOf={u:x=>x.u, code:x=>x.c, title:x=>x.t, prof:x=>x.p, days:x=>x.dy, start:x=>x.s, room:x=>x.r,
   seats:x=>x.st?x.st[0]:-1, r1:x=>x.st&&x.st[1]!=null?x.st[1]:-1, r2:x=>x.st&&x.st[2]!=null?x.st[2]:-1,
   rmp:x=>{const m=RM[normP(x.p)]; return m?(m[0]==null?0:m[0]):-1},
+  walk:x=>{const b=bldOf(x); return b?BLD[b].w:999},
   gb:x=>x.gb==='course'?2:x.gb==='step'?1:0};
 
 function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
@@ -951,6 +972,7 @@ function render(){
       <td>${esc(x.p)}</td>
       <td class="rmpc">${x.p==='—'?'':rmpCell(x.p)}</td>
       <td class="days">${esc(x.dy)}${x.tm&&x.tm!=='—'?' · '+esc(x.tm):''}</td>
+      <td class="room">${locCell(x)}</td>
       <td class="num" style="text-align:right">${x.st?`${bidHTML(x.st[1])} · ${bidHTML(x.st[2])}`:'<span style="color:var(--muted)">— · —</span>'}</td>
     </tr>`;
   }
@@ -978,17 +1000,17 @@ function render(){
     const sub=rows.filter(r=>r.s!==9999&&codeOf(r).split('-')[0]===pb&&partsOf(r).includes(ph));
     const nosched=rows.filter(r=>r.s===9999&&codeOf(r).split('-')[0]===pb);
     const hrs=sub.reduce((t,x)=>t+creditsOf(x),0);
-    let html=`<tr class="group half${ph==='S2'?' s2':''}"><td colspan="9">${plab} plan — ${sub.length} course${sub.length===1?'':'s'} · ${hrs} hrs${pb!=='SP27'?" · sections shown are this spring's listings":''}</td></tr>`;
+    let html=`<tr class="group half${ph==='S2'?' s2':''}"><td colspan="10">${plab} plan — ${sub.length} course${sub.length===1?'':'s'} · ${hrs} hrs${pb!=='SP27'?" · sections shown are this spring's listings":''}</td></tr>`;
     if(!sub.length&&!nosched.length){
-      html+=`<tr><td colspan="9" style="text-align:center;color:var(--muted);padding:28px 12px">Nothing planned for ${plab} yet. Switch to All sections and pick it in the Plan column next to a course.</td></tr>`;
+      html+=`<tr><td colspan="10" style="text-align:center;color:var(--muted);padding:28px 12px">Nothing planned for ${plab} yet. Switch to All sections and pick it in the Plan column next to a course.</td></tr>`;
     }
     const sc={'Required core':'core','Custom core':'cust','Electives':'elec','Japanese language':'jpn','Abroad':'abr'};
     for(const cg of catOrder){
       const grp=sub.filter(r=>catOf(r)===cg).sort((a,b)=>ptsRow(b)-ptsRow(a));
       if(!grp.length)continue;
-      html+=`<tr class="group sub ${sc[cg]}"><td colspan="9">${cg} (${grp.length})</td></tr>`+grp.map((x,i)=>rowHTML(x,i%2===1)).join('');
+      html+=`<tr class="group sub ${sc[cg]}"><td colspan="10">${cg} (${grp.length})</td></tr>`+grp.map((x,i)=>rowHTML(x,i%2===1)).join('');
     }
-    if(nosched.length)html+=`<tr class="group half plain"><td colspan="9">No set schedule</td></tr>`+nosched.map((x,i)=>rowHTML(x,i%2===1)).join('');
+    if(nosched.length)html+=`<tr class="group half plain"><td colspan="10">No set schedule</td></tr>`+nosched.map((x,i)=>rowHTML(x,i%2===1)).join('');
     tb.innerHTML=html;
     const nReq=rows.filter(r=>catOf(r)==='Required core').length,
       nCC=rows.filter(r=>catOf(r)==='Custom core').length,

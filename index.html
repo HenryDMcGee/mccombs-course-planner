@@ -854,6 +854,7 @@ function setPlanned(u,on){
   }
 }
 function setView(v){
+  if(v!==view)q.value=''; // each tab starts with an empty search
   view=v;
   tabAll.setAttribute('aria-selected',String(v==='all'));
   tabPlan.setAttribute('aria-selected',String(v==='plan'));

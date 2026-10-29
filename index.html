@@ -119,6 +119,8 @@ td.notes{color:var(--muted); font-size:12.5px; max-width:34ch}
 .chip.core{border-color:var(--accent); color:var(--accent); background:var(--accent-soft)}
 .chip.cancel{border-color:var(--danger); color:var(--danger)}
 .chip.req{border-color:currentColor}
+.chip.st-awarded{border-color:#2F6B3A; color:#fff; background:#2F6B3A}
+.chip.st-bidding{border-color:#9A6A12; color:#7A520B; background:#FBF0D6}
 tr.dim td{opacity:.55}
 tr.cancel td .t{text-decoration:line-through}
 tr.group td{background:var(--head); color:var(--ink); font-family:var(--font-display); font-weight:700; font-size:11.5px; text-transform:uppercase; letter-spacing:.05em; padding:5px 10px; text-align:center}
@@ -700,10 +702,13 @@ partTabs.addEventListener('click',e=>{
 function loadLocal(){try{return new Set(JSON.parse(localStorage.getItem('plan2027')||'[]'))}catch(e){return new Set()}}
 function loadLocalPts(){try{return JSON.parse(localStorage.getItem('plan2027pts')||'{}')}catch(e){return {}}}
 function loadLocalSems(){try{return JSON.parse(localStorage.getItem('plan2027sems')||'{}')}catch(e){return {}}}
-function saveLocal(){try{localStorage.setItem('plan2027',JSON.stringify([...planned])); localStorage.setItem('plan2027pts',JSON.stringify(points)); localStorage.setItem('plan2027sems',JSON.stringify(sems))}catch(e){}}
+function loadLocalStatus(){try{return JSON.parse(localStorage.getItem('plan2027status')||'{}')}catch(e){return {}}}
+function saveLocal(){try{localStorage.setItem('plan2027',JSON.stringify([...planned])); localStorage.setItem('plan2027pts',JSON.stringify(points)); localStorage.setItem('plan2027sems',JSON.stringify(sems)); localStorage.setItem('plan2027status',JSON.stringify(status))}catch(e){}}
+const STATUS_LABEL={awarded:'Awarded',bidding:'Bidding'};
 let planned=loadLocal();
 let points=loadLocalPts();
 let sems=loadLocalSems();
+let status=loadLocalStatus();
 // Bid-history placeholders replaced by real 2027 STEP sections (Oct 27 list): carry saved picks over.
 const MIGRATE={AB104:'66665',AB105:'66666',AB106:'66664',AB107:'66663'};
 for(const [o,n] of Object.entries(MIGRATE)){
@@ -757,8 +762,8 @@ function planBody(x){return {u:x.u,course:x.c,title:x.t,professor:x.p,days:x.dy,
   },()=>{});
   let first=true;
   dbCol.onSnapshot(snap=>{
-    const remote=new Set(), remotePts={}, remoteSems={};
-    snap.docs.filter(d=>d.exists).forEach(d=>{remote.add(d.id); const dd=d.data()||{}; const p=Number(dd.pts); remotePts[d.id]=isFinite(p)?p:0; remoteSems[d.id]=VALID_SEMS.includes(dd.sem)?dd.sem:'SP27';});
+    const remote=new Set(), remotePts={}, remoteSems={}, remoteStatus={};
+    snap.docs.filter(d=>d.exists).forEach(d=>{remote.add(d.id); const dd=d.data()||{}; const p=Number(dd.pts); remotePts[d.id]=isFinite(p)?p:0; remoteSems[d.id]=VALID_SEMS.includes(dd.sem)?dd.sem:'SP27'; if(STATUS_LABEL[dd.status])remoteStatus[d.id]=dd.status;});
     for(const [o,n] of Object.entries(MIGRATE)){
       if(!remote.has(o))continue;
       const x=C.find(c=>c.u===n);
@@ -771,11 +776,14 @@ function planBody(x){return {u:x.u,course:x.c,title:x.t,professor:x.p,days:x.dy,
     }
     if(first){
       first=false;
-      for(const u of planned){
+      // The shared plan is the source of truth. A browser's local copy is only
+      // pushed up when the shared plan is empty (first use); otherwise picks
+      // removed from the shared plan would come back from a stale local copy.
+      if(remote.size===0)for(const u of planned){
         if(!remote.has(u)){const x=C.find(c=>c.u===u); if(x){dbCol.doc(u).set(planBody(x)).catch(()=>{}); remote.add(u); remotePts[u]=points[u]||0; remoteSems[u]=sems[u]||'SP27';}}
       }
     }
-    planned=remote; points=remotePts; sems=remoteSems; saveLocal(); updateTabs(); render();
+    planned=remote; points=remotePts; sems=remoteSems; status=remoteStatus; saveLocal(); updateTabs(); render();
   },()=>{});
 })();
 function updateTabs(){tabPlan.textContent=`Planned (${planned.size})`; updateBudget(); updateConc(); updateRoad();}
@@ -815,7 +823,7 @@ function setPoints(u,v){
   if(dbCol&&planned.has(u))dbCol.doc(u).update({pts:v}).catch(()=>{});
 }
 function setPlanned(u,on){
-  if(on){planned.add(u); if(!sems[u])sems[u]='SP27';} else {planned.delete(u); delete points[u]; delete sems[u];}
+  if(on){planned.add(u); if(!sems[u])sems[u]='SP27';} else {planned.delete(u); delete points[u]; delete sems[u]; delete status[u];}
   saveLocal(); updateTabs();
   render();
   if(dbCol){
@@ -967,7 +975,8 @@ function render(){
     return `<select class="plan-sel${checked?' on':''}" data-us="${x.us.join(',')}" data-key="${esc(key)}"${n>1?' title="Choosing a term plans the earliest matching section; — removes every section of this course."':''} aria-label="Plan ${esc(x.c)}"><option value="">—</option>${opts.map(o=>`<option value="${o[0]}"${o[0]===cur?' selected':''}>${o[1]}</option>`).join('')}</select>`;
   }
   function rowHTML(x,alt){
-    const chips=[...x.sess.filter(s=>s==='S1'||s==='S2').map(s=>s==='S1'?'Spring 1':'Spring 2'),...x.tg]
+    const st=planned.has(x.u)&&STATUS_LABEL[status[x.u]]?`<span class="chip st-${status[x.u]}">${STATUS_LABEL[status[x.u]]}</span>`:'';
+    const chips=st+[...x.sess.filter(s=>s==='S1'||s==='S2').map(s=>s==='S1'?'Spring 1':'Spring 2'),...x.tg]
       .map(t=>`<span class="${t==='Spring 1'||t==='Spring 2'?'chip':chipClass(t)}">${esc(t)}</span>`).join('');
     let cls=alt?'alt':'';
     if(x.tg.includes('Restricted')||x.tg.includes('Canceled'))cls+=(cls?' ':'')+'dim'+(x.tg.includes('Canceled')?' cancel':'');

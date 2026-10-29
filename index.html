@@ -151,6 +151,8 @@ select.plan-sel{font:inherit; font-size:12px; color:var(--fg); background:var(--
 select.plan-sel.on{background:rgba(168,53,44,.08); border-color:var(--accent); color:#7A1E18; font-weight:700}
 select.plan-sel:focus-visible{outline:2px solid var(--accent); outline-offset:1px}
 tr.group.semh td{background:var(--head); color:var(--ink); font-size:13px; letter-spacing:.06em; padding:8px 10px; border-top:3px double var(--line)}
+.stsrc{font-family:var(--font-body); font-size:10px; color:var(--muted); letter-spacing:.02em}
+.stsrc.fa{color:#9A5B12; font-weight:600}
 .chip.gb{border-color:#1D4ED8; color:#1D4ED8; background:rgba(29,78,216,.06)}
 td.num .more{color:var(--accent); font-weight:700}
 /* Planned tab: weekly schedule */
@@ -303,6 +305,7 @@ td.num .more{color:var(--accent); font-weight:700}
     <tbody>
       <tr><td>Course schedule</td><td>McCombs MBA Spring 2027 course schedule — from Henry (Oct 18, 2026)</td><td>Sections, unique numbers, professors, days and times, rooms, session (Spring 1 / Spring 2), section notes, restrictions, core tags</td></tr>
       <tr><td>Registration list</td><td>Spring 2027 registration list — from Henry (Oct 27, 2026)</td><td>2027 STEP and Washington Campus sections and seats; MIS 281N moved to Spring 2; the "Not in the Oct 27 registration list" notes</td></tr>
+      <tr><td>Fall bid history</td><td>20249 (Fall 2024) bid stats sheet — from Henry (Oct 29, 2026)</td><td>Fall '24 Round 1 / Round 2 clears; Fall '27 availability; the 29 fall-only rows (no rooms or seat counts on the sheet)</td></tr>
       <tr><td>Bid history</td><td>20242 (Spring 2024) and 20252 (Spring 2025) bid stats sheets — from Henry</td><td>'25 seats awarded and the Round 1 / Round 2 clearing-bid averages; prior-year abroad programs</td></tr>
       <tr><td>Bid budgets</td><td>From Henry</td><td>1,000 pts Spring 2027; 1,500 pts each for Fall 2027 and Spring 2028</td></tr>
       <tr><td>Professor ratings</td><td><a href="https://www.ratemyprofessors.com/school/1255" target="_blank" rel="noopener">RateMyProfessors, UT Austin</a> — read Oct 21 (MBA faculty) and Oct 27 (Japanese faculty), 2026</td><td>RMP column: rating, number of ratings, profile link</td></tr>
@@ -320,7 +323,8 @@ td.num .more{color:var(--accent); font-weight:700}
   <ul class="conclist">
     <li><b>60-hour degree total</b> and the ≈12 electives / ≈36 hrs on the Roadmap — commonly cited, not published by type; confirm with your advisor</li>
     <li><b>Fall 2026 half-term sequencing</b> on the Roadmap — shown as typical; your section schedule governs</li>
-    <li><b>Fall 2027 availability</b> — only courses whose notes say "fall and spring" offer Fa '27; others may still run in fall</li>
+    <li><b>Fall 2027 availability</b> — assumed from Fall 2024: courses on the 20249 sheet, or whose notes say "fall and spring", offer Fa '27; others may still run in fall. Fall '24-only courses offer Fa '27 only</li>
+    <li><b>Fall '24 ↔ Spring '27 matches</b> — by course number and title; Opportunity Ident And Analysis → MAN 385.73, Behav/Game Thry → FIN 397.17, and Merger/Acq Advisory → ACC 380K.34 had no topic number on the fall sheet. Fall '24 professors sometimes differ from Spring '27 (e.g. Investment Theory: Kocher in fall, Brown in spring)</li>
     <li><b>Spring 2028 availability</b> — assumed from this spring's schedule and past springs' bid sheets</li>
     <li><b>Walk times from Rowling Hall</b> — estimated from building coordinates by street-grid distance at ~80 m/min (≈8 min to the McCombs CBA/GSB complex, ≈10 min to Will C. Hogg, ≈17 min to ECJ, ≈22 min to the law school); Japanese room numbers are TBD; off-campus and arranged courses (STEP, Washington Campus, independent studies, the web section) show where they happen instead of a walk time</li>
     <li><b>Japanese years marked "?"</b> — inferred one step per prerequisite from 611D</li>
@@ -343,10 +347,10 @@ td.num .more{color:var(--accent); font-weight:700}
     <li><b>I B — any graduate course</b> — offered: the five Global Connections trips (Portugal, New Zealand, Italy, S Korea, Mexico), Busn/Geopolitics/Diplomacy, Global Net Zero Strategy, and the web-based Studies in Global Mgmt</li>
     <li><b>BGS 380E Global Political Economy</b> — offered, MW 9:30–11:00a (Martinez Espinosa)</li>
     <li><b>MAN — Global Management</b> — offered as MAN 385.51, T 3:30–6:30p (Doggett)</li>
-    <li><b>BGS 380 Global Regulatory Policy</b> — not on the Spring 2027 schedule</li>
-    <li><b>MAN 385 Management &amp; Marketing in the Global Arena</b> — not on the Spring 2027 schedule</li>
+    <li><b>BGS 380 Global Regulatory Policy</b> — not on the Spring 2027 schedule; Fall 2024 ran a BGS 380 "Global Regulatory Strategy" (Mihm), possibly the same course — confirm before counting it</li>
+    <li><b>MAN 385 Management &amp; Marketing in the Global Arena</b> — not on the Spring 2027 schedule; ran Fall 2024 as MAN 385.33, W 3:30–6:30p (Doggett)</li>
     <li><b>MKT 382 Invisible Global Marketing</b> — not on the Spring 2027 schedule</li>
-    <li><b>RM 395 / PA 388K Managing International Risk</b> — not on the Spring 2027 schedule</li>
+    <li><b>RM 395 / PA 388K Managing International Risk</b> — not on the Spring 2027 schedule; ran Fall 2024 as R M 395.7, TTH 9:30–11:00a (Brockett)</li>
     <li><b>UT Foreign Language</b> — any UT foreign-language course counts; Spring 2027 Japanese sections (JPN 601D–330) are in the table under the Japanese language category</li>
   </ul>
   <p class="concnote">Courses marked <span class="chip gb">GB</span> in the table count toward the concentration; STEP rows satisfy Option B's program leg.</p>
@@ -364,6 +368,7 @@ td.num .more{color:var(--accent); font-weight:700}
     <option value="S1">Meets in Spring 1</option>
     <option value="S2">Meets in Spring 2</option>
     <option value="full">Full semester only</option>
+    <option value="f24">Fall '24 listings</option>
   </select>
   <select id="cat" aria-label="Category">
     <option value="">Any category</option>
@@ -393,7 +398,7 @@ td.num .more{color:var(--accent); font-weight:700}
     <th><button data-k="rmp">RMP</button></th>
     <th><button data-k="start">Days · Time</button></th>
     <th title="Building and room; minutes is the estimated walk from Rowling Hall"><button data-k="walk">Location · walk</button></th>
-    <th style="text-align:right" title="2024–25 average market-clearing bid per course. 0 = seats still open at close, n/a = no data. Hover a row for section number, room, '25 seats, and notes."><button data-k="r1">Rd 1</button> · <button data-k="r2">Rd 2</button></th>
+    <th style="text-align:right" title="Market-clearing bid per course for the semester you're planning: spring rows average Spring 2024 and 2025; Fall '27 plans show Fall 2024. 0 = seats still open at close, n/a = no data. Hover a row for section number, room, '25 seats, and notes."><button data-k="r1">Rd 1</button> · <button data-k="r2">Rd 2</button></th>
   </tr></thead>
   <tbody id="tb"></tbody>
 </table>
@@ -563,7 +568,37 @@ const C=[
 {u:"00001",d:"W C",c:"W C 080",t:"Washington Campus: General (January)",p:"TBD",dy:"—",tm:"—",s:9999,r:"—",se:"",tg:[],n:"January program in Washington, D.C. · 30 seats."},
 {u:"00002",d:"W C",c:"W C 080",t:"Washington Campus: Healthcare (January)",p:"TBD",dy:"—",tm:"—",s:9999,r:"—",se:"",tg:[],n:"January program in Washington, D.C. · 30 seats."},
 {u:"00003",d:"W C",c:"W C 080",t:"Washington Campus: General (March)",p:"TBD",dy:"—",tm:"—",s:9999,r:"—",se:"",tg:[],n:"March program in Washington, D.C. · 30 seats."},
-{u:"00004",d:"W C",c:"W C 080",t:"Washington Campus: Healthcare (March)",p:"TBD",dy:"—",tm:"—",s:9999,r:"—",se:"",tg:[],n:"March program in Washington, D.C. · 30 seats."}
+{u:"00004",d:"W C",c:"W C 080",t:"Washington Campus: Healthcare (March)",p:"TBD",dy:"—",tm:"—",s:9999,r:"—",se:"",tg:[],n:"March program in Washington, D.C. · 30 seats."},
+// Fall 2024 sections from the 20249 bid sheet that have no Spring 2027 match (plannable for Fall '27 only).
+{u:"F2401",d:"ACC",c:"ACC 380K",t:"Oil Gas Acct / Sustainability",p:"Parsons, P",dy:"TTH",tm:"12:30–2:00p",s:750,r:"—",se:"",tg:["Fall '24"],n:"Fall 2024 section (20249 bid sheet). Not on the Spring 2027 schedule; room not listed.",f24:[0,0]},
+{u:"F2402",d:"ACC",c:"ACC 380K.28",t:"Corporate Sustainability",p:"Hales, J",dy:"MW",tm:"11:00a–12:30p",s:660,r:"—",se:"",tg:["Fall '24"],n:"Fall 2024 section (20249 bid sheet). Not on the Spring 2027 schedule; room not listed.",f24:[0,1000]},
+{u:"F2403",d:"ACC",c:"ACC 380K.28",t:"Corporate Sustainability",p:"Parsons, P",dy:"TTH",tm:"2:00–3:30p",s:840,r:"—",se:"",tg:["Fall '24"],n:"Fall 2024 section (20249 bid sheet). Not on the Spring 2027 schedule; room not listed.",f24:[0,0]},
+{u:"F2404",d:"ACC",c:"ACC 380K.29",t:"Tax Factors For Fincl Plan",p:"De Simone, L",dy:"TTH",tm:"2:00–3:30p",s:840,r:"—",se:"",tg:["Fall '24"],n:"Fall 2024 section (20249 bid sheet). Not on the Spring 2027 schedule; room not listed.",f24:[150,0]},
+{u:"F2405",d:"ACC",c:"ACC 380K.29",t:"Tax Factors For Fincl Plan",p:"De Simone, L",dy:"TTH",tm:"3:30–5:00p",s:930,r:"—",se:"",tg:["Fall '24"],n:"Fall 2024 section (20249 bid sheet). Not on the Spring 2027 schedule; room not listed.",f24:[60,0]},
+{u:"F2406",d:"ACC",c:"ACC 383K.2",t:"Manage Auditing And Control",p:"Goodson, S",dy:"M",tm:"11:00a–2:00p",s:660,r:"—",se:"",tg:["Fall '24"],n:"Fall 2024 section (20249 bid sheet). Not on the Spring 2027 schedule; room not listed.",f24:[0,0]},
+{u:"F2407",d:"ACC",c:"ACC 383K.2",t:"Manage Auditing And Control",p:"Goodson, S",dy:"M",tm:"3:30–6:30p",s:930,r:"—",se:"",tg:["Fall '24"],n:"Fall 2024 section (20249 bid sheet). Not on the Spring 2027 schedule; room not listed.",f24:[0,0]},
+{u:"F2408",d:"BGS",c:"BGS 380",t:"Cybersecurity Law / Policy",p:"Springer, D",dy:"MTH",tm:"9:00–10:30a",s:540,r:"—",se:"",tg:["Fall '24"],n:"Fall 2024 section (20249 bid sheet). Not on the Spring 2027 schedule; room not listed.",f24:[0,0]},
+{u:"F2409",d:"BGS",c:"BGS 380",t:"Global Regulatory Strategy",p:"Mihm, J",dy:"TTH",tm:"12:30–2:00p",s:750,r:"—",se:"",tg:["Fall '24"],n:"Fall 2024 section (20249 bid sheet). Not on the Spring 2027 schedule; room not listed.",f24:[0,0]},
+{u:"F2410",d:"BGS",c:"BGS 380",t:"Innov Frnt: Tech, Ethcs / Actn",p:"Gabbi, A",dy:"TTH",tm:"2:00–3:30p",s:840,r:"—",se:"",tg:["Fall '24"],n:"Fall 2024 section (20249 bid sheet). Not on the Spring 2027 schedule; room not listed.",f24:[151,0]},
+{u:"F2411",d:"BGS",c:"BGS 380",t:"Law / Econ Captl Mrkts / Fincl Int",p:"Spindler, J",dy:"TTH",tm:"2:00–3:30p",s:840,r:"—",se:"",tg:["Fall '24"],n:"Fall 2024 section (20249 bid sheet). Not on the Spring 2027 schedule; room not listed.",f24:[0,0]},
+{u:"F2412",d:"FIN",c:"FIN 394.11",t:"Private Equity",p:"Wiles, K",dy:"MW",tm:"11:00a–12:30p",s:660,r:"—",se:"",tg:["Fall '24"],n:"Fall 2024 section (20249 bid sheet). Not on the Spring 2027 schedule; room not listed.",f24:[1,0]},
+{u:"F2413",d:"FIN",c:"FIN 394.11",t:"Private Equity",p:"Wiles, K",dy:"MW",tm:"12:30–2:00p",s:750,r:"—",se:"",tg:["Fall '24"],n:"Fall 2024 section (20249 bid sheet). Not on the Spring 2027 schedule; room not listed.",f24:[0,0]},
+{u:"F2414",d:"FIN",c:"FIN 394.8",t:"Fincl Strat For Energy Firms",p:"Butler, J",dy:"MW",tm:"2:00–3:30p",s:840,r:"—",se:"",tg:["Fall '24"],n:"Fall 2024 section (20249 bid sheet). Not on the Spring 2027 schedule; room not listed.",f24:[0,0]},
+{u:"F2415",d:"LEB",c:"LEB 380.3",t:"Law Of Commrcl R E Fin & Dev",p:"Murray, P",dy:"MW",tm:"2:00–3:30p",s:840,r:"—",se:"",tg:["Fall '24"],n:"Fall 2024 section (20249 bid sheet). Not on the Spring 2027 schedule; room not listed.",f24:[0,0]},
+{u:"F2416",d:"MAN",c:"MAN 385",t:"Entrepreneurship & Incubation",p:"Nelson, J",dy:"MW",tm:"3:30–5:00p",s:930,r:"—",se:"",tg:["Fall '24"],n:"Fall 2024 section (20249 bid sheet). Not on the Spring 2027 schedule; room not listed.",f24:[0,0]},
+{u:"F2417",d:"MAN",c:"MAN 385",t:"Nutrition Entrepreneurship",p:"Epstein, M",dy:"TTH",tm:"2:00–3:30p",s:840,r:"—",se:"",tg:["Fall '24"],n:"Fall 2024 section (20249 bid sheet). Not on the Spring 2027 schedule; room not listed.",f24:[0,0]},
+{u:"F2418",d:"MAN",c:"MAN 385.33",t:"Manag / Mkt In Global Arena",p:"Doggett, J",dy:"W",tm:"3:30–6:30p",s:930,r:"—",se:"",tg:["Fall '24"],n:"Fall 2024 section (20249 bid sheet). Not on the Spring 2027 schedule; room not listed.",f24:[0,0]},
+{u:"F2419",d:"MAN",c:"MAN 385.36",t:"Power And Politics",p:"Wilt, R",dy:"TTH",tm:"12:30–2:00p",s:750,r:"—",se:"",tg:["Fall '24"],n:"Fall 2024 section (20249 bid sheet). Not on the Spring 2027 schedule; room not listed.",f24:[1,0]},
+{u:"F2420",d:"MKT",c:"MKT 188",t:"Bus Dev & Mkt Sales Leadrshp",p:"Nemeroff, G",dy:"M",tm:"5:00–8:00p",s:1020,r:"—",se:"",tg:["Fall '24"],n:"Fall 2024 section (20249 bid sheet). Not on the Spring 2027 schedule; room not listed.",f24:[0,0]},
+{u:"F2421",d:"MKT",c:"MKT 188",t:"Data Storytellg / Visualizatn",p:"Forrest, M",dy:"M",tm:"6:00–9:00p",s:1080,r:"—",se:"",tg:["Fall '24"],n:"Fall 2024 section (20249 bid sheet). Not on the Spring 2027 schedule; room not listed.",f24:[0,0]},
+{u:"F2422",d:"MKT",c:"MKT 382",t:"Influence Of Mktg In Society",p:"Crabbe, R",dy:"MW",tm:"11:00a–12:30p",s:660,r:"—",se:"",tg:["Fall '24"],n:"Fall 2024 section (20249 bid sheet). Not on the Spring 2027 schedule; room not listed.",f24:[0,0]},
+{u:"F2423",d:"MKT",c:"MKT 382.33",t:"Dsgn Thinking Busn Innovatn",p:"Raghunathan, R",dy:"MW",tm:"9:30–11:00a",s:570,r:"—",se:"",tg:["Fall '24"],n:"Fall 2024 section (20249 bid sheet). Not on the Spring 2027 schedule; room not listed.",f24:[0,0]},
+{u:"F2424",d:"MKT",c:"MKT 382.54",t:"Data Driven Marketing",p:"Duan, J",dy:"MW",tm:"3:30–5:00p",s:930,r:"—",se:"",tg:["Fall '24"],n:"Fall 2024 section (20249 bid sheet). Not on the Spring 2027 schedule; room not listed.",f24:[0,0]},
+{u:"F2425",d:"O M",c:"O M 386",t:"Data-Driven Revenue Management",p:"Lai, G",dy:"MW",tm:"3:30–5:00p",s:930,r:"—",se:"",tg:["Fall '24"],n:"Fall 2024 section (20249 bid sheet). Not on the Spring 2027 schedule; room not listed.",f24:[0,0]},
+{u:"F2426",d:"O M",c:"O M 386",t:"Supply Chain Management",p:"Gilbert, S",dy:"MW",tm:"12:30–2:00p",s:750,r:"—",se:"",tg:["Fall '24"],n:"Fall 2024 section (20249 bid sheet). Not on the Spring 2027 schedule; room not listed.",f24:[0,200]},
+{u:"F2427",d:"R E",c:"R E 389",t:"Real Estate Practicum",p:"Pope, M",dy:"TTH",tm:"11:00a–12:30p",s:660,r:"—",se:"",tg:["Fall '24"],n:"Fall 2024 section (20249 bid sheet). Not on the Spring 2027 schedule; room not listed.",f24:[0,0]},
+{u:"F2428",d:"R M",c:"R M 392.1",t:"Modeling / Optmzatn In Fnce",p:"Lai, G",dy:"MW",tm:"2:00–3:30p",s:840,r:"—",se:"",tg:["Fall '24"],n:"Fall 2024 section (20249 bid sheet). Not on the Spring 2027 schedule; room not listed.",f24:[0,0]},
+{u:"F2429",d:"R M",c:"R M 395.7",t:"Managing International Risk",p:"Brockett, P",dy:"TTH",tm:"9:30–11:00a",s:570,r:"—",se:"",tg:["Fall '24"],n:"Fall 2024 section (20249 bid sheet). Not on the Spring 2027 schedule; room not listed.",f24:[0,0]},
 ];
 
 // Bid history per course: [Spring 2025 avg seats awarded, Rd 1 clear avg, Rd 2 clear avg].
@@ -591,9 +626,17 @@ const ST={
 const stKey={};
 C.forEach(x=>{if(ST[x.u])stKey[x.c+'|'+x.t]=ST[x.u]});
 C.forEach(x=>{x.st=stKey[x.c+'|'+x.t]||null});
+// Fall 2024 bid history (20249 sheet) for courses on the Spring 2027 schedule, keyed by one spring section's unique:
+// fall sections as [days time, professor, Rd 1 clear, Rd 2 clear]. Averaged per course like the spring history.
+const F24={"03140": [["MW 12:30–2:00p", "Bradshaw, M", 200, 0]], "03105": [["MW 11:00a–12:30p", "—", 8, 0]], "03125": [["MW 2:00–3:30p", "Henry, B", 0, 0]], "03040": [["MW 12:30–2:00p", "Badolato, P", 1250, 0], ["MW 2:00–3:30p", "Badolato, P", 1200, 0], ["MW 3:30–5:00p", "Badolato, P", 950, 0]], "03525": [["TTH 12:30–2:00p", "Bredeson, D", 0, 150], ["TTH 2:00–3:30p", "Bredeson, D", 0, 0]], "04500": [["TTH 2:00–3:30p", "Alti, A", 0, 0]], "04520": [["MW 9:30–11:00a", "Alexander, J", 0, 750]], "04635": [["TTH 11:00a–12:30p", "Shamoun, D", 0, 0]], "04605": [["TTH 11:00a–12:30p", "Kocher, J", 0, 0]], "03830": [["TTH 11:00a–12:30p", "Landolt, K", 0, 0]], "06540": [["MW 12:30–2:00p", "Dierking, D", 0, 1197], ["MW 8:00–9:30a", "Brodsky, A", 0, 400], ["MW 9:30–11:00a", "Brodsky, A", 206, 0]], "06665": [["TTH 9:30–11:00a", "Doggett, J", 300, 0]], "06615": [["MW 9:30–11:00a", "Peterson, M", 0, 0]], "06620": [["TTH 11:00a–12:30p", "Doggett, J", 0, 0]], "06650": [["TH 3:30–6:30p", "Cunningham, W", 0, 0]], "07470": [["TTH 11:00a–12:30p", "Aarons, C", 0, 1349]], "07450": [["MW 2:00–3:30p", "Brister, S", 1, 0]]};
+const avg=a=>{const v=a.filter(n=>n!=null); return v.length?Math.round(v.reduce((t,n)=>t+n,0)/v.length*10)/10:null;};
+const f24Key={};
+for(const [u,secs] of Object.entries(F24)){const x=C.find(c=>c.u===u); if(x)f24Key[x.c+'|'+x.t]={v:[avg(secs.map(z=>z[2])),avg(secs.map(z=>z[3]))],secs};}
+C.forEach(x=>{const f=f24Key[x.c+'|'+x.t]; if(f){x.f24=f.v; x.f24s=f.secs;}});
 // Global Business concentration (2024-25 sheet): any I B graduate course, BGS 380E Global Political Economy,
 // MAN Global Management. STEP programs satisfy Option B's program leg rather than counting as hours.
-C.forEach(x=>{x.gb = (x.d==='I B'||x.d==='JPN'||x.u==='03520'||x.u==='06635') ? 'course' : x.d==='STEP' ? 'step' : null;});
+// Fall 2024's MAN 385.33 (Mgmt & Mktg in the Global Arena) and R M 395.7 (Managing International Risk) are on the approved list.
+C.forEach(x=>{x.gb = (x.d==='I B'||x.d==='JPN'||x.u==='03520'||x.u==='06635'||x.c==='MAN 385.33'||x.c==='R M 395.7') ? 'course' : x.d==='STEP' ? 'step' : null;});
 function creditsOf(x){const m=x.c.match(/(\d)\d\d/); return m?+m[1]:0;}
 function fmtStat(v){return v==null?'n/a':(Number.isInteger(v)?v:v.toFixed(1))}
 
@@ -615,6 +658,7 @@ function locCell(x){
     const off=x.d==='STEP'?['Abroad · travel','Short-Term Exchange Program, traveling abroad']
       :x.d==='W C'?['Washington, D.C.','Washington Campus program in D.C.']
       :x.u.startsWith('AB')?['Abroad · past program','Prior-year program, bid history only']
+      :x.u.startsWith('F24')?['Room not listed','Fall 2024 section; the bid sheet lists no room']
       :/Independent Study/.test(x.t)?['Arranged','Arranged with the supervising instructor']
       :x.u==='03670'?['Online','Web-based section']
       :null;
@@ -749,20 +793,21 @@ const SEML={'SP27':"Sp '27",'FA27':"Fa '27",'SP28':"Sp '28",'FA27-1':"Fa '27 · 
 const VALID_SEMS=Object.keys(SEML);
 // Terms a course can be planned into, from evidence in the schedule:
 //  Sp '27 — has a 2027 section that isn't canceled (half-term courses list the part they meet in)
-//  Fa '27 — section notes say "fall and spring" (or independent study); year-one core excluded
-//  Sp '28 — runs in spring (on the 2027 schedule or in prior springs' bid history); year-one core excluded
+//  Fa '27 — ran in Fall 2024 (20249 bid sheet), section notes say "fall and spring", or independent study; year-one core excluded
+//  Sp '28 — runs in spring (on the 2027 schedule or in prior springs' bid history); year-one core excluded; Fall '24-only rows excluded
 function availTerms(x){
   const key=x.c+'|'+x.t, secs=C.filter(c=>c.c+'|'+c.t===key);
   const halves=[...new Set(secs.map(c=>c.se))].filter(s=>s==='S1'||s==='S2').sort();
   const half=halves.length>0;
-  const history=secs.every(c=>c.u.startsWith('AB'));
+  const fallOnly=secs.every(c=>c.u.startsWith('F24'));
+  const history=fallOnly||secs.every(c=>c.u.startsWith('AB'));
   const canceled=secs.every(c=>c.tg.includes('Canceled'));
   const yr1=secs.some(c=>c.tg.includes('MBA core')||c.tg.includes('Custom core'));
-  const fall=/Independent Study/.test(x.t)||secs.some(c=>/fall (and|&) spring/i.test(c.n));
+  const fall=/Independent Study/.test(x.t)||secs.some(c=>c.f24||/fall (and|&) spring/i.test(c.n));
   const pn=h=>h==='S1'?1:2, out=[];
   if(!history&&!canceled){ if(half)halves.forEach(h=>out.push(['H:'+h,`Sp '27 · ${pn(h)}`])); else out.push(['SP27',"Sp '27"]); }
   if(fall&&!yr1){ if(half)['1','2'].forEach(p=>out.push(['FA27-'+p,SEML['FA27-'+p]])); else out.push(['FA27',"Fa '27"]); }
-  if(!yr1){ if(half)halves.forEach(h=>out.push(['SP28-'+pn(h),SEML['SP28-'+pn(h)]])); else out.push(['SP28',"Sp '28"]); }
+  if(!yr1&&!fallOnly){ if(half)halves.forEach(h=>out.push(['SP28-'+pn(h),SEML['SP28-'+pn(h)]])); else out.push(['SP28',"Sp '28"]); }
   return out;
 }
 // Bid budgets per semester (each auction is separate).
@@ -854,6 +899,7 @@ function setPlanned(u,on){
   }
 }
 function setView(v){
+  if(v!==view)q.value=''; // each tab starts with an empty search
   view=v;
   tabAll.setAttribute('aria-selected',String(v==='all'));
   tabPlan.setAttribute('aria-selected',String(v==='plan'));
@@ -925,8 +971,21 @@ tb.addEventListener('input',e=>{
 });
 
 let sortKey='code', sortDir='asc';
+// Bid stats follow the semester being planned: a planned row uses its own semester; other rows use the
+// semester on the points badge. Fall plans show Fall 2024 clears, spring plans the Spring '24–'25 averages;
+// a course with only one season's data shows that season, labeled.
+function statsOf(x){
+  const us=x.us||[x.u], pu=us.find(u=>planned.has(u));
+  const want=baseOfCode(pu?sems[pu]:activeSem)==='FA27'?'fa':'sp';
+  const sp=x.st?[x.st[1],x.st[2]]:null, fa=x.f24||null;
+  if(want==='fa'&&fa)return {src:'fa',want,v:fa};
+  if(want==='sp'&&sp)return {src:'sp',want,v:sp};
+  if(sp)return {src:'sp',want,v:sp};
+  if(fa)return {src:'fa',want,v:fa};
+  return null;
+}
 const keyOf={u:x=>x.u, code:x=>x.c, title:x=>x.t, prof:x=>x.p, days:x=>x.dy, start:x=>x.s, room:x=>x.r,
-  seats:x=>x.st?x.st[0]:-1, r1:x=>x.st&&x.st[1]!=null?x.st[1]:-1, r2:x=>x.st&&x.st[2]!=null?x.st[2]:-1,
+  seats:x=>x.st?x.st[0]:-1, r1:x=>{const t=statsOf(x); return t&&t.v[0]!=null?t.v[0]:-1}, r2:x=>{const t=statsOf(x); return t&&t.v[1]!=null?t.v[1]:-1},
   rmp:x=>{const m=RM[normP(x.p)]; return m?(m[0]==null?0:m[0]):-1},
   walk:x=>{const b=bldOf(x); return b?BLD[b].w:999},
   gb:x=>x.gb==='course'?2:x.gb==='step'?1:0};
@@ -944,6 +1003,9 @@ function render(){
     if(view==='plan'&&!planned.has(x.u))return false;
     if(dept.value&&x.d!==dept.value)return false;
     if(daysSel.value&&x.dy!==daysSel.value)return false;
+    const f24row=x.u.startsWith('F24');
+    if(sess.value==='f24')return f24row||!!x.f24;
+    if(sess.value&&f24row)return false;
     if(sess.value==='full'&&x.se!=='')return false;
     if(sess.value==='S1'&&!(x.se===''||x.se==='S1'||x.se==='short'))return false;
     if(sess.value==='S2'&&!(x.se===''||x.se==='S2'||x.se==='short'))return false;
@@ -1002,7 +1064,7 @@ function render(){
     let cls=alt?'alt':'';
     if(x.tg.includes('Restricted')||x.tg.includes('Canceled'))cls+=(cls?' ':'')+'dim'+(x.tg.includes('Canceled')?' cancel':'');
     const n=x.us.length, checked=x.us.some(u=>planned.has(u)), u0=x.us.find(u=>planned.has(u));
-    const tip=esc(`Section ${x.us.join(', ')}${x.r&&x.r!=='—'?` · Room ${x.r}`:''}${x.st?` · '25 avg seats ${fmtStat(x.st[0])}`:''}${x.n?` · ${x.n}`:''}`).replace(/"/g,'&quot;');
+    const tip=esc(`Section ${x.us.join(', ')}${x.r&&x.r!=='—'?` · Room ${x.r}`:''}${x.st?` · '25 avg seats ${fmtStat(x.st[0])}`:''}${x.f24s?` · Fall '24: ${x.f24s.map(z=>`${z[0]} ${z[1]} ${z[2]}/${z[3]}`).join('; ')}`:''}${x.n?` · ${x.n}`:''}`).replace(/"/g,'&quot;');
     return `<tr${cls?` class="${cls}"`:''} title="${tip}">
       <td class="plan">${planSel(x,checked,u0,n)}</td>
       <td class="pts">${checked?`<input type="number" class="${(points[u0]||0)>0?'on':''}" min="0" max="${BUDGETS[(sems[u0]||'SP27').split('-')[0]]}" step="10" value="${points[u0]||0}" data-u="${u0}" aria-label="Bid points for ${esc(x.c)}">`:''}</td>
@@ -1013,7 +1075,9 @@ function render(){
       <td class="rmpc">${x.p==='—'?'':rmpCell(x.p)}</td>
       <td class="days">${esc(x.dy)}${x.tm&&x.tm!=='—'?' · '+esc(x.tm):''}</td>
       <td class="room">${locCell(x)}</td>
-      <td class="num" style="text-align:right">${x.st?`${bidHTML(x.st[1])} · ${bidHTML(x.st[2])}`:'<span style="color:var(--muted)">— · —</span>'}</td>
+      <td class="num" style="text-align:right">${(()=>{const t=statsOf(x); if(!t)return '<span style="color:var(--muted)">— · —</span>';
+        const lab=t.src==='fa'?"Fall '24":t.want==='fa'?'Spring · no fall data':(x.f24?"Spring '24–'25":'');
+        return `${bidHTML(t.v[0])} · ${bidHTML(t.v[1])}${lab?`<div class="stsrc${t.src==='fa'?' fa':''}">${lab}</div>`:''}`;})()}</td>
     </tr>`;
   }
   partTabs.hidden=view!=='plan'; weekView.hidden=view!=='plan';
@@ -1126,7 +1190,7 @@ function weekHTML(pb,ph,plab){
     pairs.get(k).days.push(WK_DAYS.find(w=>w[0]===a.d)[1]);
   });
   const hrs=secs.reduce((t,x)=>t+creditsOf(x),0);
-  let head=`<div class="wk-head"><span class="wk-title">Weekly schedule · ${esc(plab)}</span><span class="wk-sum">${secs.length} course${secs.length===1?'':'s'} · ${hrs} hrs${pairs.size?` · <span style="color:#B3261E;font-weight:700">${pairs.size} overlap${pairs.size===1?'':'s'}</span>`:''}${pb!=='SP27'?" · times are this spring's listings":''}</span></div>`;
+  let head=`<div class="wk-head"><span class="wk-title">Weekly schedule · ${esc(plab)}</span><span class="wk-sum">${secs.length} course${secs.length===1?'':'s'} · ${hrs} hrs${pairs.size?` · <span style="color:#B3261E;font-weight:700">${pairs.size} overlap${pairs.size===1?'':'s'}</span>`:''}${pb!=='SP27'?" · times are the latest listings (Spring '27 or Fall '24)":''}</span></div>`;
   if(!evs.length){
     return head+`<div class="wk-notes"><span class="off">${secs.length?'None of these courses has a set weekly time.':`Nothing planned for ${esc(plab)} yet.`}</span>${off.length?`<span class="off">Not on the grid: ${off.map(x=>esc(x.c+' '+x.t)).join(' · ')}</span>`:''}</div>`;
   }

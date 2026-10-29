@@ -153,6 +153,34 @@ select.plan-sel:focus-visible{outline:2px solid var(--accent); outline-offset:1p
 tr.group.semh td{background:var(--head); color:var(--ink); font-size:13px; letter-spacing:.06em; padding:8px 10px; border-top:3px double var(--line)}
 .chip.gb{border-color:#1D4ED8; color:#1D4ED8; background:rgba(29,78,216,.06)}
 td.num .more{color:var(--accent); font-weight:700}
+/* Planned tab: weekly schedule */
+.weekview{margin:0 0 12px; background:var(--surface); border:1px solid var(--line); border-radius:6px; box-shadow:0 2px 10px rgba(59,42,23,.12); padding:10px 12px 12px}
+.weekview[hidden]{display:none}
+.wk-head{display:flex; align-items:baseline; gap:6px 12px; flex-wrap:wrap; margin:0 0 8px}
+.wk-title{font-family:var(--font-display); font-weight:700; font-size:12.5px; letter-spacing:.06em; text-transform:uppercase; color:var(--ink)}
+.wk-sum{font-size:12.5px; color:var(--muted); font-variant-numeric:tabular-nums}
+.wk-scroll{overflow-x:auto}
+.wk-grid{display:grid; font-size:11.5px}
+.wk-dayh{font-family:var(--font-display); font-weight:700; font-size:11px; letter-spacing:.06em; text-transform:uppercase; color:var(--ink); text-align:center; padding:2px 0 5px; border-bottom:1px solid var(--line)}
+.wk-gutter{position:relative}
+.wk-hr{position:absolute; right:6px; transform:translateY(-50%); font-size:10.5px; color:var(--muted); font-variant-numeric:tabular-nums; white-space:nowrap}
+.wk-col{position:relative; border-left:1px solid var(--hairline)}
+.wk-col:last-child{border-right:1px solid var(--hairline)}
+.wk-ev{position:absolute; box-sizing:border-box; border-radius:4px; padding:3px 5px; line-height:1.25; overflow:hidden; color:var(--fg); background:#F7F0DD; border:1px solid var(--line); border-left:3px solid var(--muted)}
+.wk-ev b{display:block; font-weight:700; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+.wk-ev .wt{display:block; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+.wk-ev .wm{display:block; color:var(--muted); font-variant-numeric:tabular-nums; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+.wk-ev.core{border-left-color:#A8352C}
+.wk-ev.cust{border-left-color:#4338CA; background:#EFEEFB}
+.wk-ev.elec{border-left-color:#0F766E; background:#E8F3F1}
+.wk-ev.jpn{border-left-color:#BE185D; background:#F9EAF1}
+.wk-ev.abr{border-left-color:#1D4ED8; background:#E9EFFC}
+.wk-ev.clash{background:#B3261E; border-color:#7F1D1D; border-left-color:#7F1D1D; color:#fff; z-index:1}
+.wk-ev.clash .wm{color:#FDE2E0}
+.wk-flag{display:inline-block; font-size:9.5px; font-weight:800; letter-spacing:.06em; text-transform:uppercase; background:#fff; color:#B3261E; border-radius:3px; padding:0 4px; margin-bottom:1px}
+.wk-notes{margin:8px 0 0; font-size:12.5px; display:flex; flex-direction:column; gap:3px}
+.wk-notes .bad{color:#B3261E; font-weight:600}
+.wk-notes .ok,.wk-notes .off{color:var(--muted)}
 @media (max-width:640px){ header h1{font-size:19px} }
 </style>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Libre+Franklin:wght@400;600;700;800&display=swap">
@@ -352,6 +380,7 @@ td.num .more{color:var(--accent); font-weight:700}
 <p id="legend">★ green ≥4.0 · amber 3.0–3.9 · red below 3.0 — bid pills: amber = cleared above 0, red = 500+ — hover any row for section number, room, '25 seats, and notes</p>
 
 <div id="parttabs" class="parttabs" role="tablist" aria-label="Semester part" hidden></div>
+<section id="weekview" class="weekview" aria-label="Weekly schedule" hidden></section>
 <div class="tablewrap">
 <table>
   <thead><tr>
@@ -684,7 +713,8 @@ const tb=document.getElementById('tb'), q=document.getElementById('q'),
   tabSrc=document.getElementById('tab-src'), srcView=document.getElementById('srcview'),
   notesTa=document.getElementById('notes'), noteState=document.getElementById('notestate'),
   toolbarEl=document.querySelector('.toolbar'), wrapEl=document.querySelector('.tablewrap'),
-  legendEl=document.getElementById('legend'), partTabs=document.getElementById('parttabs');
+  legendEl=document.getElementById('legend'), partTabs=document.getElementById('parttabs'),
+  weekView=document.getElementById('weekview');
 // Planned-tab sub-tabs: one per semester part, Spring 2027 through Spring 2028.
 const PARTS=[['SP27','S1',"Spring 1 '27"],['SP27','S2',"Spring 2 '27"],['FA27','S1',"Fall 1 '27"],['FA27','S2',"Fall 2 '27"],['SP28','S1',"Spring 1 '28"],['SP28','S2',"Spring 2 '28"]];
 let planPart='SP27-S1';
@@ -834,7 +864,7 @@ function setView(v){
   const n=v==='notes', c=v==='conc', r=v==='road', sr=v==='src';
   notesView.hidden=!n; concView.hidden=!c; roadView.hidden=!r; srcView.hidden=!sr;
   const off=n||c||r||sr;
-  toolbarEl.hidden=off; count.hidden=off; wrapEl.hidden=off; legendEl.hidden=off; partTabs.hidden=off||v!=='plan';
+  toolbarEl.hidden=off; count.hidden=off; wrapEl.hidden=off; legendEl.hidden=off; partTabs.hidden=off||v!=='plan'; weekView.hidden=off||v!=='plan';
   if(!off)render();
 }
 tabConc.addEventListener('click',()=>setView('conc'));
@@ -986,7 +1016,7 @@ function render(){
       <td class="num" style="text-align:right">${x.st?`${bidHTML(x.st[1])} · ${bidHTML(x.st[2])}`:'<span style="color:var(--muted)">— · —</span>'}</td>
     </tr>`;
   }
-  partTabs.hidden=view!=='plan';
+  partTabs.hidden=view!=='plan'; weekView.hidden=view!=='plan';
   if(view==='plan'){
     const ptsRow=x=>x.us.reduce((t,u)=>t+(planned.has(u)?(points[u]||0):0),0);
     const catOrder=['Required core','Custom core','Electives','Japanese language','Abroad'];
@@ -1006,6 +1036,7 @@ function render(){
       return `<button type="button" role="tab" data-part="${k}" class="${h==='S2'?'p2':'p1'}" aria-selected="${planPart===k}">${l} <span class="n">${n}</span></button>`;
     }).join('');
     const [pb,ph]=planPart.split('-'), plab=PARTS.find(p=>p[0]+'-'+p[1]===planPart)[2];
+    weekView.innerHTML=weekHTML(pb,ph,plab);
     if(activeSem!==pb){activeSem=pb; updateBudget();}
     const sub=rows.filter(r=>r.s!==9999&&codeOf(r).split('-')[0]===pb&&partsOf(r).includes(ph));
     const nosched=rows.filter(r=>r.s===9999&&codeOf(r).split('-')[0]===pb);
@@ -1036,6 +1067,97 @@ function render(){
       ?`${rows.length} courses (of ${C.length} sections)`
       :`${rows.length} of ${C.length} sections`;
   }
+}
+// ---- Weekly schedule (Planned tab) ----
+const WK_DAYS=[['M','Mon'],['T','Tue'],['W','Wed'],['TH','Thu'],['F','Fri'],['S','Sat']];
+const WK_PX=0.9; // pixels per minute
+function wkDays(str){return (String(str).replace(/\s+/g,'').match(/TH|M|T|W|F|S/g)||[]);}
+function wkRange(seg){
+  const m=String(seg).match(/(\d{1,2}):(\d{2})([ap])?\s*[–-]\s*(\d{1,2}):(\d{2})([ap])/);
+  if(!m)return null;
+  const to=(h,mi,ap)=>(Number(h)%12+(ap==='p'?12:0))*60+Number(mi);
+  const e=to(m[4],m[5],m[6]);
+  let st=to(m[1],m[2],m[3]||m[6]);
+  if(!m[3]&&st>e)st=to(m[1],m[2],'a');
+  return [st,e];
+}
+// Meetings of one section: [{d,s,e}]. Handles "MW" + "10:30a–12:30p" and per-day strings like "W 5:00–8:00p, F 1:00–4:00p".
+function wkMeetings(x){
+  if(x.s===9999)return [];
+  const out=[];
+  if(/^[MTWFSH]+\s+\d/.test(x.tm)){
+    x.tm.split(/,\s*/).forEach(part=>{const m=part.match(/^([MTWFSH]+)\s+(.*)$/); const r=m&&wkRange(m[2]); if(r)wkDays(m[1]).forEach(d=>out.push({d,s:r[0],e:r[1]}));});
+  }else{
+    const r=wkRange(x.tm); if(r)wkDays(x.dy).forEach(d=>out.push({d,s:r[0],e:r[1]}));
+  }
+  return out;
+}
+function wkFmt(m){const h=Math.floor(m/60), mi=m%60, ap=h>=12?'p':'a'; return `${h%12||12}:${String(mi).padStart(2,'0')}${ap}`;}
+function wkHour(h){return `${h%12||12}${h>=12?'p':'a'}`;}
+// Planned sections that meet in semester pb, part ph (S1/S2).
+function wkSections(pb,ph){
+  const out=[];
+  for(const u of planned){
+    const x=C.find(c=>c.u===u); if(!x)continue;
+    const code=sems[u]||'SP27';
+    if(code.split('-')[0]!==pb)continue;
+    const parts=code.endsWith('-1')?['S1']:code.endsWith('-2')?['S2']
+      :(code==='SP27'&&(x.se==='S1'||x.se==='S2'))?[x.se]:['S1','S2'];
+    if(parts.includes(ph))out.push(x);
+  }
+  return out;
+}
+function weekHTML(pb,ph,plab){
+  const secs=wkSections(pb,ph);
+  const sc={'Required core':'core','Custom core':'cust','Electives':'elec','Japanese language':'jpn','Abroad':'abr'};
+  const evs=[], off=[];
+  secs.forEach(x=>{const ms=wkMeetings(x); if(!ms.length)off.push(x); ms.forEach(m=>evs.push(Object.assign({x},m)));});
+  // Overlaps: same day, time ranges intersect (back-to-back is fine).
+  const clashes=[];
+  for(let i=0;i<evs.length;i++)for(let j=i+1;j<evs.length;j++){
+    const a=evs[i], b=evs[j];
+    if(a.d===b.d&&a.x.u!==b.x.u&&a.s<b.e&&b.s<a.e){a.clash=b.clash=true; clashes.push([a,b]);}
+  }
+  // Group clash pairs by course pair so a TTH clash is one line.
+  const pairs=new Map();
+  clashes.forEach(([a,b])=>{
+    const [p,q]=a.x.u<b.x.u?[a,b]:[b,a], k=p.x.u+'|'+q.x.u;
+    if(!pairs.has(k))pairs.set(k,{p:p.x,q:q.x,days:[],s:Math.max(a.s,b.s),e:Math.min(a.e,b.e)});
+    pairs.get(k).days.push(WK_DAYS.find(w=>w[0]===a.d)[1]);
+  });
+  const hrs=secs.reduce((t,x)=>t+creditsOf(x),0);
+  let head=`<div class="wk-head"><span class="wk-title">Weekly schedule · ${esc(plab)}</span><span class="wk-sum">${secs.length} course${secs.length===1?'':'s'} · ${hrs} hrs${pairs.size?` · <span style="color:#B3261E;font-weight:700">${pairs.size} overlap${pairs.size===1?'':'s'}</span>`:''}${pb!=='SP27'?" · times are this spring's listings":''}</span></div>`;
+  if(!evs.length){
+    return head+`<div class="wk-notes"><span class="off">${secs.length?'None of these courses has a set weekly time.':`Nothing planned for ${esc(plab)} yet.`}</span>${off.length?`<span class="off">Not on the grid: ${off.map(x=>esc(x.c+' '+x.t)).join(' · ')}</span>`:''}</div>`;
+  }
+  const days=WK_DAYS.filter(w=>w[0]!=='S'||evs.some(e=>e.d==='S'));
+  const h0=Math.min(8,Math.floor(Math.min(...evs.map(e=>e.s))/60)), h1=Math.max(17,Math.ceil(Math.max(...evs.map(e=>e.e))/60));
+  const H=(h1-h0)*60*WK_PX, hourPx=60*WK_PX;
+  const lines=`background-image:repeating-linear-gradient(to bottom,var(--hairline) 0,var(--hairline) 1px,transparent 1px,transparent ${hourPx}px)`;
+  let gut=`<div class="wk-gutter" style="height:${H}px">`;
+  for(let h=h0+1;h<h1;h++)gut+=`<span class="wk-hr" style="top:${(h-h0)*hourPx}px">${wkHour(h)}</span>`;
+  gut+='</div>';
+  const cols=days.map(([d])=>{
+    const list=evs.filter(e=>e.d===d).sort((a,b)=>a.s-b.s||a.e-b.e);
+    // Side-by-side lanes inside each cluster of overlapping blocks.
+    let cluster=[], end=-1; const done=[];
+    const flush=()=>{const lanes=[]; cluster.forEach(e=>{let i=lanes.findIndex(t=>t<=e.s); if(i<0){i=lanes.length; lanes.push(0);} lanes[i]=e.e; e.lane=i;}); cluster.forEach(e=>{e.lanes=lanes.length; done.push(e);}); cluster=[];};
+    list.forEach(e=>{if(cluster.length&&e.s>=end){flush(); end=-1;} cluster.push(e); end=Math.max(end,e.e);});
+    flush();
+    const blocks=done.map(e=>{
+      const x=e.x, top=(e.s-h0*60)*WK_PX, ht=Math.max(18,(e.e-e.s)*WK_PX-2), w=100/e.lanes;
+      const tip=`${x.c} ${x.t} · ${wkFmt(e.s)}–${wkFmt(e.e)} · ${x.r||'room TBD'}${e.clash?' · OVERLAPS another planned course':''}`;
+      return `<div class="wk-ev ${sc[catOf(x)]||''}${e.clash?' clash':''}" style="top:${top}px;height:${ht}px;left:calc(${e.lane*w}% + 2px);width:calc(${w}% - 4px)" title="${esc(tip).replace(/"/g,'&quot;')}">${e.clash?'<span class="wk-flag">Overlap</span>':''}<b>${esc(x.c)}</b><span class="wt">${esc(x.t)}</span><span class="wm">${wkFmt(e.s)}–${wkFmt(e.e)}${x.r?' · '+esc(x.r):''}</span></div>`;
+    }).join('');
+    return `<div class="wk-col" style="height:${H}px;${lines}">${blocks}</div>`;
+  }).join('');
+  const grid=`<div class="wk-scroll"><div class="wk-grid" style="grid-template-columns:40px repeat(${days.length},minmax(104px,1fr));min-width:${40+days.length*104}px"><div></div>${days.map(d=>`<div class="wk-dayh">${d[1]}</div>`).join('')}${gut}${cols}</div></div>`;
+  let notes='<div class="wk-notes">';
+  if(pairs.size)pairs.forEach(c=>{notes+=`<span class="bad">⚠ ${esc(c.p.c)} ${esc(c.p.t)} and ${esc(c.q.c)} ${esc(c.q.t)} overlap ${c.days.join(', ')} ${wkFmt(c.s)}–${wkFmt(c.e)}</span>`;});
+  else notes+='<span class="ok">No overlapping times.</span>';
+  if(off.length)notes+=`<span class="off">Not on the grid (no set weekly time): ${off.map(x=>esc(x.c+' '+x.t)).join(' · ')}</span>`;
+  notes+='</div>';
+  return head+grid+notes;
 }
 function catOf(x){
   return x.d==='JPN'?'Japanese language'

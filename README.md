@@ -18,6 +18,8 @@ Interactive planning dashboard for the McCombs Full-Time MBA Spring 2027 course 
 ## Structure
 
 - `index.html` — the whole app (markup, styles, data, and script in one file)
+- `docs/specs/` — design spec and wireframe for the parchment theme
+- `docs/linkedin/Codex-of-Courses-LinkedIn-Carousel.pptx` — 7-slide LinkedIn carousel about the project (4:5 portrait, editable)
 
 ## Data notes
 
